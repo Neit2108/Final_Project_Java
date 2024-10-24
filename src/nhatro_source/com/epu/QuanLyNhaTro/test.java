@@ -15,11 +15,6 @@ import java.util.List;
 
 public class test {
     public static void main(String[] args) throws SQLException {
-        //AdminDAO ad = new AdminDAOImpl();
-        //Admin admin = new Admin("001204034041", "Lê Dũng Tiến", LocalDate.now(), "Nam", "0962004713", "Hà Nội", 1, 20);
-        //ad.updateAdmin("123456789030", "Lê Dũng Tiến", LocalDate.now(), "Nam", "0962004713", "Hà Nội", 19, 19);
-        AdminDAO adminDAO = new AdminDAOImpl();
-        Admin admin = adminDAO.getAdmin("123456789030");
-        System.out.println(admin);
+        System.out.println("hello dcmm");
     }
 }
