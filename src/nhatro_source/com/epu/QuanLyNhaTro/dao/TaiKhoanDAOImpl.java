@@ -62,11 +62,11 @@ public class TaiKhoanDAOImpl implements TaiKhoanDAO {
     }
 
     @Override
-    public TaiKhoan getTaiKhoan(int maTaiKhoan) {
-        String query = "select * from TaiKhoan where maTaiKhoan = ?";
+    public TaiKhoan getTaiKhoan(String email) {
+        String query = "select * from TaiKhoan where email = ?";
         try {
             PreparedStatement ps = conn.prepareStatement(query);
-            ps.setInt(1, maTaiKhoan);
+            ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 TaiKhoan tk = new TaiKhoan();
@@ -84,14 +84,13 @@ public class TaiKhoanDAOImpl implements TaiKhoanDAO {
     }
 
     @Override
-    public void updateTaiKhoan(int maTaiKhoan, String email, String password, String vaiTro) {
-        String query = "update TaiKhoan set email = ?, password = ?, vaiTro = ? where maTaiKhoan = ?";
+    public void updateTaiKhoan(String email, String password, String vaiTro) {
+        String query = "update TaiKhoan set password = ?, vaiTro = ? where email = ?";
         try {
             PreparedStatement ps = conn.prepareStatement(query);
-            ps.setString(1, email);
-            ps.setString(2, password);
-            ps.setString(3, vaiTro);
-            ps.setInt(4, maTaiKhoan);
+            ps.setString(1, password);
+            ps.setString(2, vaiTro);
+            ps.setString(3, email);
             ps.executeUpdate();
             this.conn.commit();
         } catch (SQLException e) {
@@ -100,11 +99,11 @@ public class TaiKhoanDAOImpl implements TaiKhoanDAO {
     }
 
     @Override
-    public void deleteTaiKhoan(int maTaiKhoan) {
-        String query = "delete from TaiKhoan where maTaiKhoan = ?";
+    public void deleteTaiKhoan(String email) {
+        String query = "delete from TaiKhoan where email = ?";
         try {
             PreparedStatement ps = conn.prepareStatement(query);
-            ps.setInt(1, maTaiKhoan);
+            ps.setString(1, email);
             ps.executeUpdate();
             this.conn.commit();
         } catch (Exception e) {
