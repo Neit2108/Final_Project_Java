@@ -14,6 +14,7 @@ public class Phong {
     private String tenPhong;
     private int maKieuPhong;
     private int maNhaTro;
+    private String urlImage;
 
     public String toString(){
         return "Phong{" +
@@ -21,6 +22,7 @@ public class Phong {
                 + ", tenPhong='" + tenPhong + '\''
                 + ", maKieuPhong=" + maKieuPhong
                 + ", maNhaTro=" + maNhaTro
+                + ", urlImage='" + urlImage + '\''
                 + "}";
     }
 }

@@ -2,26 +2,26 @@ package com.epu.QuanLyNhaTro.controller;
 
 import com.epu.QuanLyNhaTro.dao.TaiKhoanDAO;
 import com.epu.QuanLyNhaTro.dao.TaiKhoanDAOImpl;
-import com.epu.QuanLyNhaTro.model.TaiKhoan;
 import com.epu.QuanLyNhaTro.util.Authenticator;
-import com.epu.QuanLyNhaTro.util.Constant;
 import com.epu.QuanLyNhaTro.util.EmailVerification;
+import com.epu.QuanLyNhaTro.view.SignInForm;
 import com.epu.QuanLyNhaTro.view.SignUpForm;
 import com.epu.QuanLyNhaTro.view.signUpCode;
+import lombok.SneakyThrows;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.Objects;
 
-public class LoginController{
+public class SignUpController {
     private final SignUpForm signUpForm;
     private final signUpCode signUpCode;
     private final TaiKhoanDAO taiKhoanDAO;
     private final EmailVerification emailVerification;
     private String verifyCode;
 
-    public LoginController(SignUpForm signUpForm, signUpCode signUpCode) throws SQLException {
+    public SignUpController(SignUpForm signUpForm, signUpCode signUpCode) throws SQLException {
         this.signUpForm = signUpForm;
         this.signUpCode = signUpCode;
         this.taiKhoanDAO = new TaiKhoanDAOImpl();
@@ -70,9 +70,18 @@ public class LoginController{
         String confirmPass = new String(signUpForm.getPasswordField2().getPassword());
         String code = signUpCode.getCodeField().getText();
         if(code.equals(verifyCode)){
-            taiKhoanDAO.addTaiKhoan(email, password, "Admin");
-            JOptionPane.showMessageDialog(null, "Đăng ký thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-            signUpCode.setVisible(false);
+            try{
+                taiKhoanDAO.addTaiKhoan(email, password, "Admin");
+                JOptionPane.showMessageDialog(null, "Đăng ký thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                signUpCode.dispose();
+                signUpForm.dispose();
+                SignInForm signInForm = new SignInForm();
+                signInForm.setVisible(true);
+            }
+            catch (SQLException exception){
+                JOptionPane.showMessageDialog(null, "Đăng ký thất bại", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            }
+
         }
         else{
             JOptionPane.showMessageDialog(null, "Mã xác thực không đúng", "Lỗi", JOptionPane.ERROR_MESSAGE);

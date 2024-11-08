@@ -15,6 +15,7 @@ public class NhaTro {
     private String diaChi;
     private int soLuongPhong;
     private String trangThai;
+    private String urlImage;
 
     public String toString(){
         return "NhaTro{" +
@@ -23,6 +24,7 @@ public class NhaTro {
                 + ", diaChi='" + diaChi + '\''
                 + ", soLuongPhong='" + soLuongPhong + '\''
                 + ", trangThai='" + trangThai + '\''
+                + ", urlImage='" + urlImage + '\''
                 + "}";
     }
 }
