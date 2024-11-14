@@ -10,5 +10,6 @@ public class Constant {
     public final static String senderMail = "ldungtien.210804@gmail.com";
     public final static String senderPass = "cncawmbjswiyagwf";
 
+    public static String role;
 
 }

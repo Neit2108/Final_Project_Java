@@ -1,5 +1,5 @@
-﻿create database final_QuanLyNhaTro_db
-use final_QuanLyNhaTro_db
+﻿create database final_QuanLyNhaTro
+use final_QuanLyNhaTro
 
 create table TaiKhoan(
 	maTaiKhoan int identity(1,1) unique,
@@ -85,12 +85,10 @@ create table NhaTro(
 	diaChi nvarchar(255) not null,
 	soLuongPhong int not null,
 	trangThai nvarchar(255) not null,
+	urlImage varchar(255) not null,
 	constraint fk_nhatro_machunha foreign key (maChuNha) references ChuNha(maChuNha),
 	constraint chk_nhatro_soluong check (soLuongPhong > 0) 
 )
-
-alter table NhaTro add urlImage varchar(255)
-
 
 create table Phong(
 	maPhong int identity(1,1) primary key,
@@ -98,16 +96,17 @@ create table Phong(
 	maKieuPhong int not null,
 	maNhaTro int not null,
 	unique (tenPhong, maNhaTro),
+	urlImage varchar(255) not null,
 	constraint fk_phong_makieuphong foreign key (maKieuPhong) references KieuPhong(maKieuPhong),
 	constraint fk_phong_manhatro foreign key (maNhaTro) references NhaTro(maNhaTro)
 )
-alter table Phong add urlImage varchar(255)
+
 create table DichVu(
 	maDichVu int identity(1,1) primary key,
 	tenDichVu nvarchar(255) not null unique,
+	giaDichVu decimal not null,
 	trangThai nvarchar(255) not null
 )
-alter table DichVu add giaDichVu decimal
 
 --Phòng quan hệ n - n với Dịch vụ
 create table Phong_DichVu(
@@ -148,12 +147,10 @@ create table ThanhToan(
 	soTien decimal not null,
 	hinhThucThanhToan nvarchar(50) not null,
 	trangThai nvarchar(255) not null,
-	ngayThanhToan date not null,
+	ngayThanhToan date not null default getdate(),
 	constraint fk_thanhtoan_hopdong foreign key (maHopDong) references HopDong(maHopDong),
-	constraint chk_thanhtoan_hinhthuc check( hinhThucThanhToan in (N'Chuyển Khoản', N'Tiền Mặt', N'Thẻ'))
+	constraint chk_thanhtoan_hinhthuc check( hinhThucThanhToan in (N'Chuyển Khoản', N'Tiền Mặt', N'Thẻ')),
 )
-alter table ThanhToan 
-add constraint df_thanhtoan_ngayThanhToan default getdate() for ngayThanhToan
 
 --Xem chủ nhà này có những nhà nào
 create view ChuNha_NhaTro as
@@ -171,29 +168,4 @@ from NhaTro nt
 join Phong p on nt.maNhaTro = p.maNhaTro
 join KieuPhong kp on p.maKieuPhong = kp.maKieuPhong
 
-select * from NhaTro_Phong where [Mã nhà trọ] = 1
-
---Xem phòng có những dịch vụ và cơ sở vật chất nào
-CREATE VIEW Phong_CoSoVaDichVu AS
-SELECT 
-    p.maPhong AS [Mã Phòng], 
-    p.tenPhong AS [Tên Phòng], 
-    STRING_AGG(distinct csvc.tenCSVC, ', ') AS [Tên Cơ Sở Vật Chất],
-    STRING_AGG(distinct dv.tenDichVu, ', ') AS [Tên Dịch Vụ]
-FROM 
-    Phong p
-LEFT JOIN 
-    Phong_DichVu pdv ON p.maPhong = pdv.maPhong
-LEFT JOIN 
-    DichVu dv ON pdv.maDichVu = dv.maDichVu
-LEFT JOIN 
-    KieuPhong_CoSoVatChat kcsvc ON p.maKieuPhong = kcsvc.maKieuPhong
-LEFT JOIN 
-    (SELECT DISTINCT maCSVC ,tenCSVC FROM CoSoVatChat) csvc ON kcsvc.maCSVC = csvc.maCSVC
-GROUP BY 
-    p.maPhong, p.tenPhong;
-
-
-select * from Phong_CoSoVaDichVu
-
-drop view Phong_CoSoVaDichVu
+select * from NhaTro_Phong
