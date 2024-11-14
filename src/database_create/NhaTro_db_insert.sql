@@ -193,30 +193,15 @@ INSERT INTO Phong(tenPhong, maKieuPhong, maNhaTro) VALUES
 (N'Phòng 4C', 3, 4),
 (N'Phòng 4D', 4, 4);
 
-INSERT INTO DichVu(tenDichVu, trangThai) VALUES
-(N'Giặt ủi', N'Hoạt động'),
-(N'Dọn dẹp', N'Hoạt động'),
-(N'Internet', N'Hoạt động'),
-(N'Chỗ đậu xe', N'Hoạt động'),
-(N'Dịch vụ ăn uống', N'Hoạt động'),
-(N'Ti vi cáp', N'Hoạt động'),
-(N'Máy lạnh', N'Hoạt động'),
-(N'Giữ đồ', N'Hoạt động'),
-(N'Thẻ điện thoại', N'Hoạt động'),
-(N'Dịch vụ xe đưa đón', N'Hoạt động'),
-(N'Dịch vụ bảo vệ', N'Hoạt động'),
-(N'Quản lý sự kiện', N'Hoạt động'),
-(N'Dịch vụ spa', N'Hoạt động'),
-(N'Thuê xe máy', N'Hoạt động'),
-(N'Dịch vụ thực phẩm', N'Hoạt động'),
-(N'Thuê đồ nội thất', N'Hoạt động'),
-(N'Dịch vụ sửa chữa', N'Hoạt động'),
-(N'Dịch vụ bơi lội', N'Hoạt động'),
-(N'Dịch vụ hướng dẫn', N'Hoạt động'),
-(N'Dịch vụ chăm sóc khách hàng', N'Hoạt động');
+INSERT INTO DichVu(tenDichVu, trangThai, giaDichVu) VALUES
+(N'Điện', N'Hoạt động', 4000),
+(N'Nước', N'Hoạt động', 100000),
+(N'Internet', N'Hoạt động', 100000),
+(N'Chỗ đậu xe', N'Hoạt động', 50000),
+(N'Thang máy', N'Hoạt động', 50000),
+(N'Vệ sinh', N'Hoạt động', 10000)
 
 INSERT INTO Phong_DichVu(maPhong, maDichVu, ghiChu) VALUES
-
 (3, 4, N'Dịch vụ đậu xe miễn phí'),
 (4, 5, N'Dịch vụ ăn sáng'),
 (5, 6, N'Ti vi có cáp'),
@@ -233,7 +218,7 @@ INSERT INTO Phong_DichVu(maPhong, maDichVu, ghiChu) VALUES
 (16, 17, N'Dịch vụ sửa chữa điện nước'),
 (17, 18, N'Dịch vụ bơi lội vào cuối tuần'),
 (18, 19, N'Dịch vụ hướng dẫn địa phương');
-
+delete from Phong_DichVu
 INSERT INTO Phong_Khach(maPhong, maKhachThue, ghiChu) VALUES
 (3, 5, N'Tháng 5, 2024'),
 (3, 1, N'Tháng 6, 2024'),
@@ -290,6 +275,7 @@ INSERT INTO ThanhToan(maHopDong, soTien, hinhThucThanhToan, trangThai) VALUES
 (10, 4000000, N'Tiền Mặt', N'Đã thanh toán'),
 (10, 2000000, N'Chuyển Khoản', N'Đã thanh toán');
 
+delete from ThanhToan
 DBCC CHECKIDENT ('NhaTro', RESEED, 0); -- Giá trị tiếp theo sẽ là 1
 
 

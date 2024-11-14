@@ -71,7 +71,7 @@ public class SignUpController {
         String code = signUpCode.getCodeField().getText();
         if(code.equals(verifyCode)){
             try{
-                taiKhoanDAO.addTaiKhoan(email, password, "Admin");
+                taiKhoanDAO.addTaiKhoan(email, password, "Khách Thuê");
                 JOptionPane.showMessageDialog(null, "Đăng ký thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 signUpCode.dispose();
                 signUpForm.dispose();

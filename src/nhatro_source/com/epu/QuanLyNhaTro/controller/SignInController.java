@@ -1,8 +1,12 @@
 package com.epu.QuanLyNhaTro.controller;
 
+import com.epu.QuanLyNhaTro.Pack_chua_code_mau_tren_gpt.ContractFrame;
 import com.epu.QuanLyNhaTro.dao.TaiKhoanDAO;
 import com.epu.QuanLyNhaTro.dao.TaiKhoanDAOImpl;
+import com.epu.QuanLyNhaTro.model.TaiKhoan;
 import com.epu.QuanLyNhaTro.util.Authenticator;
+import com.epu.QuanLyNhaTro.util.Constant;
+import com.epu.QuanLyNhaTro.view.HomePage;
 import com.epu.QuanLyNhaTro.view.SignInForm;
 
 import javax.swing.*;
@@ -51,7 +55,11 @@ public class SignInController {
                 return;
             }
             else {
+                TaiKhoan tk = taiKhoanDAO.getTaiKhoan(email);
+                Constant.role = tk.getVaiTro();
                 JOptionPane.showMessageDialog(null, "Đăng nhập thành công", "Thành công", JOptionPane.INFORMATION_MESSAGE);
+                signInForm.dispose();
+                new ContractFrame().setVisible(true);
             }
         }
     }
