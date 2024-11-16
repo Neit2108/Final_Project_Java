@@ -1,17 +1,14 @@
 package com.epu.QuanLyNhaTro.view;
 
-import com.epu.QuanLyNhaTro.controller.TenantManagerController;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.util.ArrayList;
 
-@Setter
 @Getter
+@Setter
 public class TenantManagement extends JPanel {
 
     private JPanel buttonPanel;
@@ -26,24 +23,18 @@ public class TenantManagement extends JPanel {
     private JTextField genderField;
     private JTextField phoneField;
     private JTextField addressField;
-    private JPanel searchInputPanel;
     private JTextField searchField;
     private JButton searchBtn;
-    private JTable searchTable;
-    private JPanel mainTablePanel;
     private JTable mainTable;
-    private ArrayList inputFields;
+    private JPanel mainTablePanel;
 
     public TenantManagement() {
         initComponents();
-
     }
 
     private void initComponents() {
-//        setTitle("Quản lý khách thuê");
-        //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1100, 700);  // Increased form size
-        setLayout(null); // Using null layout for precise positioning
+        setSize(1346, 793); // Đặt kích thước form mới
+        setLayout(null); // Dùng layout null để đặt các thành phần với kích thước cụ thể
 
         // Menu Button
         JButton menuBtn = new JButton("Menu");
@@ -52,44 +43,33 @@ public class TenantManagement extends JPanel {
 
         // Input Panel
         JPanel inputPanel = createInputPanel();
-        inputPanel.setBounds(10, 50, 300, 350);  // Increased width and height
+        inputPanel.setBounds(10, 50, 300, 350);
         add(inputPanel);
 
         // Button Panel
         JPanel buttonPanel = createButtonPanel();
-        buttonPanel.setBounds(10, 410, 300, 50);  // Positioned below input panel
+        buttonPanel.setBounds(10, 410, 300, 50); // Đặt nút dưới panel nhập liệu
         add(buttonPanel);
 
         // Main Table Panel
         JPanel mainTablePanel = createMainTablePanel();
-        mainTablePanel.setBounds(330, 10, 740, 300);  // Made it wider and taller
+        mainTablePanel.setBounds(330, 10, 1000, 700); // Điều chỉnh bảng chi tiết
         add(mainTablePanel);
-
-        // Search Panel
-        JPanel searchPanel = createSearchPanel();
-        searchPanel.setBounds(330, 320, 740, 300);  // Positioned below main table panel
-        add(searchPanel);
-
-        TenantManagerController controller = new TenantManagerController(this);
-        controller.init();
     }
 
     private JPanel createInputPanel() {
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(7, 2, 10, 10)); // Increased spacing for better readability
+        panel.setLayout(new GridLayout(7, 2, 10, 10));
         panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
                 "Nhập thông tin khách thuê", TitledBorder.CENTER, TitledBorder.TOP));
 
-        // Added larger text fields
-
-        this.numberField = new JTextField(20);
-        this.cccdField = new JTextField(20);
-        this.nameField = new JTextField(20);
-        this.dateField = new JTextField(20);
-        this.genderField = new JTextField(20);
-        this.phoneField = new JTextField(20);
-        this.addressField = new JTextField(20);
-
+        numberField = new JTextField(20);
+        cccdField = new JTextField(20);
+        nameField = new JTextField(20);
+        dateField = new JTextField(20);
+        genderField = new JTextField(20);
+        phoneField = new JTextField(20);
+        addressField = new JTextField(20);
 
         panel.add(new JLabel("Mã khách:"));
         panel.add(numberField);
@@ -117,11 +97,11 @@ public class TenantManagement extends JPanel {
 
     private JPanel createButtonPanel() {
         JPanel panel = new JPanel();
-        panel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 10));  // Adjusted spacing
+        panel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 10));
 
-        this.addBtn = new JButton("Thêm");
-        this.editBtn = new JButton("Thay đổi");
-        this.deleteBtn = new JButton("Xóa");
+        addBtn = new JButton("Thêm");
+        editBtn = new JButton("Thay đổi");
+        deleteBtn = new JButton("Xóa");
 
         panel.add(addBtn);
         panel.add(editBtn);
@@ -136,18 +116,21 @@ public class TenantManagement extends JPanel {
         panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
                 "Thông tin chi tiết", TitledBorder.CENTER, TitledBorder.TOP));
 
+        // Search Field Panel
+        JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+        JLabel searchLabel = new JLabel("Tìm kiếm:");
+        searchField = new JTextField(30); // Kéo dài trường tìm kiếm
+        searchBtn = new JButton("Tìm");
+        searchPanel.add(searchLabel);
+        searchPanel.add(searchField);
+        searchPanel.add(searchBtn);
+        panel.add(searchPanel, BorderLayout.NORTH);
+
+        // Table
         String[] columnNames = {"Mã khách", "CCCD", "Tên khách", "Ngày sinh", "Giới tính", "Số điện thoại", "Địa chỉ", "Mã tài khoản"};
-        DefaultTableModel dtm = new DefaultTableModel(columnNames, 0){
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-        this.mainTable = new JTable(dtm);
-        mainTable.setRowHeight(30);  // Increased row height for better readability
+        mainTable = new JTable(new Object[][]{}, columnNames);
+        mainTable.setRowHeight(30);
         mainTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-        mainTable.getTableHeader().setReorderingAllowed(false);
-        dtm.addRow(new Object[]{"1", "123456789", "Nguyễn Văn A", "01/01/1990", "Nam", "0123456789", "123 Đường ABC", "1"});
 
         JScrollPane scrollPane = new JScrollPane(mainTable);
         panel.add(scrollPane, BorderLayout.CENTER);
@@ -155,44 +138,14 @@ public class TenantManagement extends JPanel {
         return panel;
     }
 
-    private JPanel createSearchPanel() {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
-        panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
-                "Chi tiết tìm kiếm:", TitledBorder.CENTER, TitledBorder.TOP));
-
-        JPanel searchInputPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
-        JLabel label1 = new JLabel("Nhập mã khách cần tìm:");
-        JTextField searchField = new JTextField(20);  // Larger search field
-        JButton searchBtn = new JButton("Tìm kiếm");
-
-        searchInputPanel.add(label1);
-        searchInputPanel.add(searchField);
-        searchInputPanel.add(searchBtn);
-        panel.add(searchInputPanel, BorderLayout.NORTH);
-
-        String[] searchColumnNames = {"Mã khách", "CCCD", "Tên khách", "Ngày sinh", "Giới tính", "Số điện thoại", "Địa chỉ", "Mã tài khoản"};
-        DefaultTableModel dtm = new DefaultTableModel(searchColumnNames, 0){
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-        this.searchTable = new JTable(new Object[][]{}, searchColumnNames);
-        searchTable.setRowHeight(30);  // Increased row height for better readability
-        searchTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-        searchTable.getTableHeader().setReorderingAllowed(false);
-
-        JScrollPane searchScrollPane = new JScrollPane(searchTable);
-        panel.add(searchScrollPane, BorderLayout.CENTER);
-
-        return panel;
-    }
-
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             TenantManagement form = new TenantManagement();
-            form.setVisible(true);
+            JFrame frame = new JFrame("Quản lý khách thuê");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(1346, 793); // Kích thước của cửa sổ
+            frame.add(form);
+            frame.setVisible(true);
         });
     }
 }

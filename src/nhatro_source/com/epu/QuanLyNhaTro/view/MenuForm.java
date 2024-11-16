@@ -123,6 +123,9 @@ public class MenuForm extends JFrame {
         SwingUtilities.invokeLater(() -> {
             MenuForm form = new MenuForm();
             form.setVisible(true);
+            SwingUtilities.invokeLater(() -> {
+                System.out.println("MainPanel Size: " + form.mainPanel.getSize());
+            });
         });
     }
 }
