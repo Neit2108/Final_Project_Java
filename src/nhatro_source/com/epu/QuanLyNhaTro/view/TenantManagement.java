@@ -1,10 +1,18 @@
 package com.epu.QuanLyNhaTro.view;
 
+import com.epu.QuanLyNhaTro.controller.TenantManagerController;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.ArrayList;
 
-public class TenantManagement extends JFrame {
+@Setter
+@Getter
+public class TenantManagement extends JPanel {
 
     private JPanel buttonPanel;
     private JButton addBtn;
@@ -24,14 +32,16 @@ public class TenantManagement extends JFrame {
     private JTable searchTable;
     private JPanel mainTablePanel;
     private JTable mainTable;
+    private ArrayList inputFields;
 
     public TenantManagement() {
         initComponents();
+
     }
 
     private void initComponents() {
-        setTitle("Quản lý khách thuê");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        setTitle("Quản lý khách thuê");
+        //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1100, 700);  // Increased form size
         setLayout(null); // Using null layout for precise positioning
 
@@ -59,6 +69,9 @@ public class TenantManagement extends JFrame {
         JPanel searchPanel = createSearchPanel();
         searchPanel.setBounds(330, 320, 740, 300);  // Positioned below main table panel
         add(searchPanel);
+
+        TenantManagerController controller = new TenantManagerController(this);
+        controller.init();
     }
 
     private JPanel createInputPanel() {
@@ -68,13 +81,15 @@ public class TenantManagement extends JFrame {
                 "Nhập thông tin khách thuê", TitledBorder.CENTER, TitledBorder.TOP));
 
         // Added larger text fields
-        JTextField numberField = new JTextField(20);
-        JTextField cccdField = new JTextField(20);
-        JTextField nameField = new JTextField(20);
-        JTextField dateField = new JTextField(20);
-        JTextField genderField = new JTextField(20);
-        JTextField phoneField = new JTextField(20);
-        JTextField addressField = new JTextField(20);
+
+        this.numberField = new JTextField(20);
+        this.cccdField = new JTextField(20);
+        this.nameField = new JTextField(20);
+        this.dateField = new JTextField(20);
+        this.genderField = new JTextField(20);
+        this.phoneField = new JTextField(20);
+        this.addressField = new JTextField(20);
+
 
         panel.add(new JLabel("Mã khách:"));
         panel.add(numberField);
@@ -104,9 +119,9 @@ public class TenantManagement extends JFrame {
         JPanel panel = new JPanel();
         panel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 10));  // Adjusted spacing
 
-        JButton addBtn = new JButton("Thêm");
-        JButton editBtn = new JButton("Thay đổi");
-        JButton deleteBtn = new JButton("Xóa");
+        this.addBtn = new JButton("Thêm");
+        this.editBtn = new JButton("Thay đổi");
+        this.deleteBtn = new JButton("Xóa");
 
         panel.add(addBtn);
         panel.add(editBtn);
@@ -122,9 +137,17 @@ public class TenantManagement extends JFrame {
                 "Thông tin chi tiết", TitledBorder.CENTER, TitledBorder.TOP));
 
         String[] columnNames = {"Mã khách", "CCCD", "Tên khách", "Ngày sinh", "Giới tính", "Số điện thoại", "Địa chỉ", "Mã tài khoản"};
-        JTable mainTable = new JTable(new Object[][]{}, columnNames);
+        DefaultTableModel dtm = new DefaultTableModel(columnNames, 0){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        this.mainTable = new JTable(dtm);
         mainTable.setRowHeight(30);  // Increased row height for better readability
         mainTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        mainTable.getTableHeader().setReorderingAllowed(false);
+        dtm.addRow(new Object[]{"1", "123456789", "Nguyễn Văn A", "01/01/1990", "Nam", "0123456789", "123 Đường ABC", "1"});
 
         JScrollPane scrollPane = new JScrollPane(mainTable);
         panel.add(scrollPane, BorderLayout.CENTER);
@@ -149,9 +172,16 @@ public class TenantManagement extends JFrame {
         panel.add(searchInputPanel, BorderLayout.NORTH);
 
         String[] searchColumnNames = {"Mã khách", "CCCD", "Tên khách", "Ngày sinh", "Giới tính", "Số điện thoại", "Địa chỉ", "Mã tài khoản"};
-        JTable searchTable = new JTable(new Object[][]{}, searchColumnNames);
+        DefaultTableModel dtm = new DefaultTableModel(searchColumnNames, 0){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        this.searchTable = new JTable(new Object[][]{}, searchColumnNames);
         searchTable.setRowHeight(30);  // Increased row height for better readability
         searchTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        searchTable.getTableHeader().setReorderingAllowed(false);
 
         JScrollPane searchScrollPane = new JScrollPane(searchTable);
         panel.add(searchScrollPane, BorderLayout.CENTER);

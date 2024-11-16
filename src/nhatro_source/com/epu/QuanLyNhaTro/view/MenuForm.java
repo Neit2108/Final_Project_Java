@@ -1,10 +1,14 @@
 package com.epu.QuanLyNhaTro.view;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.swing.*;
 import java.awt.*;
 
+@Getter
+@Setter
 public class MenuForm extends JFrame {
-
     private JButton phongBtn;
     private JButton dangxuatBtn;
     private JButton quanlyBtn;
@@ -13,6 +17,7 @@ public class MenuForm extends JFrame {
     private JButton pctBtn;
     private JPanel buttonPanel;
     private JPanel mainPanel;
+    private CardLayout cardLayout;
 
     public MenuForm() {
         // Initialize buttons with updated labels and custom rounded styles
@@ -66,9 +71,20 @@ public class MenuForm extends JFrame {
         add(buttonPanel, BorderLayout.WEST);
         add(mainPanel, BorderLayout.CENTER);
 
+        //Xu ly mainPanel
+        cardLayout = new CardLayout();
+        mainPanel.setLayout(cardLayout);
+        TenantManagement tenantManagement = new TenantManagement();
+        mainPanel.add(tenantManagement, "QuanLy");
+
+        //init controller
+        new com.epu.QuanLyNhaTro.controller.MenuFormController(this).init();
+
         // Frame settings
         setTitle("Menu Form");
-        setSize(800, 600); // Larger frame size for better spacing
+//        setSize(800, 600);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        // Larger frame size for better spacing
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null); // Center the frame
     }
