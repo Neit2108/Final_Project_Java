@@ -1,10 +1,12 @@
 package com.epu.QuanLyNhaTro.view;
 
+import com.epu.QuanLyNhaTro.controller.TenantManagerController;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 @Getter
@@ -27,9 +29,11 @@ public class TenantManagement extends JPanel {
     private JButton searchBtn;
     private JTable mainTable;
     private JPanel mainTablePanel;
+    private DefaultTableModel tableModel;
 
     public TenantManagement() {
         initComponents();
+        new TenantManagerController(this).init();
     }
 
     private void initComponents() {
@@ -128,9 +132,17 @@ public class TenantManagement extends JPanel {
 
         // Table
         String[] columnNames = {"Mã khách", "CCCD", "Tên khách", "Ngày sinh", "Giới tính", "Số điện thoại", "Địa chỉ", "Mã tài khoản"};
-        mainTable = new JTable(new Object[][]{}, columnNames);
+        this.tableModel = new DefaultTableModel(columnNames, 0){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        mainTable = new JTable(tableModel);
         mainTable.setRowHeight(30);
         mainTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        mainTable.getTableHeader().setReorderingAllowed(false);
 
         JScrollPane scrollPane = new JScrollPane(mainTable);
         panel.add(scrollPane, BorderLayout.CENTER);

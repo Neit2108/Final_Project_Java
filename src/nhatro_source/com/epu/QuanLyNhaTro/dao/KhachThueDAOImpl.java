@@ -6,6 +6,7 @@ import com.epu.QuanLyNhaTro.util.DatabaseConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 public class KhachThueDAOImpl implements KhachThueDAO {
@@ -22,13 +23,13 @@ public class KhachThueDAOImpl implements KhachThueDAO {
 
     @Override
     public List<KhachThue> getAllKhachThue() {
-        List<KhachThue> khachThueList = null;
+        List<KhachThue> khachThueList = new ArrayList<>();
         String query = "select * from KhachThue";
         try(PreparedStatement pstm = connection.prepareStatement(query)){
             ResultSet rs = pstm.executeQuery();
             while (rs.next()){
                 KhachThue khachThue = new KhachThue();
-                khachThue.setMaKhach(rs.getInt("maKhach"));
+                khachThue.setMaKhach(rs.getInt("maKhachThue"));
                 khachThue.setMaCCCD(rs.getString("maCCCD"));
                 khachThue.setTen(rs.getString("tenKhach"));
                 khachThue.setNgaySinh(rs.getDate("ngaySinh").toLocalDate());
@@ -47,14 +48,13 @@ public class KhachThueDAOImpl implements KhachThueDAO {
 
     @Override
     public KhachThue getKhachThue(String maCCCD) {
-        KhachThue khachThue = null;
+        KhachThue khachThue = new KhachThue();
         String query = "select * from KhachThue where maCCCD = ?";
         try(PreparedStatement pstm = connection.prepareStatement(query)){
             pstm.setString(1, maCCCD);
             ResultSet rs = pstm.executeQuery();
             if (rs.next()){
-                khachThue = new KhachThue();
-                khachThue.setMaKhach(rs.getInt("maKhach"));
+                khachThue.setMaKhach(rs.getInt("maKhachThue"));
                 khachThue.setMaCCCD(rs.getString("maCCCD"));
                 khachThue.setTen(rs.getString("tenKhach"));
                 khachThue.setNgaySinh(rs.getDate("ngaySinh").toLocalDate());
@@ -68,6 +68,58 @@ public class KhachThueDAOImpl implements KhachThueDAO {
             throw new RuntimeException(e);
         }
         return khachThue;
+    }
+
+    @Override
+    public void addKhachThue(String maCCCD, String ten, String ngaySinh, String gioiTinh, String soDienThoai, String diaChi, int maTaiKhoan) {
+        String query = "insert into KhachThue(maCCCD, tenKhach, ngaySinh, gioiTinh, soDienThoai, diaChi, maTaiKhoan) values(?,?,?,?,?,?,?)";
+        try(PreparedStatement pstm = connection.prepareStatement(query)){
+            pstm.setString(1, maCCCD);
+            pstm.setString(2, ten);
+            pstm.setString(3, ngaySinh);
+            pstm.setString(4, gioiTinh);
+            pstm.setString(5, soDienThoai);
+            pstm.setString(6, diaChi);
+            pstm.setInt(7, maTaiKhoan);
+
+            pstm.executeUpdate();
+            connection.commit();
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void updateKhachThue(String maCCCD, String ten, String ngaySinh, String gioiTinh, String soDienThoai, String diaChi, int maTaiKhoan) {
+        String query = "update KhachThue set tenKhach = ?, ngaySinh = ?, gioiTinh = ?, soDienThoai = ?, diaChi = ?, maTaiKhoan = ? where maCCCD = ?";
+        try(PreparedStatement pstm = connection.prepareStatement(query)){
+            pstm.setString(1, ten);
+            pstm.setString(2, ngaySinh);
+            pstm.setString(3, gioiTinh);
+            pstm.setString(4, soDienThoai);
+            pstm.setString(5, diaChi);
+            pstm.setInt(6, maTaiKhoan);
+            pstm.setString(7, maCCCD);
+            pstm.executeUpdate();
+            connection.commit();
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void deleteKhachThue(String maCCCD) {
+        String query = "delete from KhachThue where maCCCD = ?";
+        try(PreparedStatement pstm = connection.prepareStatement(query)){
+            pstm.setString(1, maCCCD);
+            pstm.executeUpdate();
+            connection.commit();
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
