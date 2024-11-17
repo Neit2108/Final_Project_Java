@@ -22,7 +22,7 @@ public class MenuForm extends JFrame {
     public MenuForm() {
         // Initialize buttons with updated labels and custom rounded styles
         phongBtn = createRoundedButton("Phòng");
-        pctBtn = createRoundedButton("Phòng của tôi");
+        pctBtn = createRoundedButton("Quản lý phòng");
         nhaBtn = createRoundedButton("Nhà");
         hopdongBtn = createRoundedButton("Hợp Đồng");
         quanlyBtn = createRoundedButton("Quản Lý Khách Thuê");
@@ -74,8 +74,11 @@ public class MenuForm extends JFrame {
         //Xu ly mainPanel
         cardLayout = new CardLayout();
         mainPanel.setLayout(cardLayout);
-        TenantManagement tenantManagement = new TenantManagement();
-        mainPanel.add(tenantManagement, "QuanLy");
+        //TenantManagement tenantManagement = new TenantManagement();
+        //QuanLyPhongForm qlpf = new QuanLyPhongForm();
+        NewHomePage newhome = new NewHomePage();
+
+        mainPanel.add(newhome, "QuanLy");
 
         //init controller
         new com.epu.QuanLyNhaTro.controller.MenuFormController(this).init();
