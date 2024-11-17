@@ -64,7 +64,6 @@ create table KieuPhong(
 	loaiPhong nvarchar(255) not null,
 	dienTich decimal not null,
 	giaPhong decimal not null,
-	--soNguoi int not null, --chú ý
 	ngayTao datetime default getdate(),
 	constraint chk_kieuphong_dientich check ( dienTich > 0),
 	constraint chk_kieuphong_gia check (giaPhong > 0)
@@ -87,7 +86,8 @@ create table NhaTro(
 	trangThai nvarchar(255) not null,
 	urlImage varchar(255) not null,
 	constraint fk_nhatro_machunha foreign key (maChuNha) references ChuNha(maChuNha),
-	constraint chk_nhatro_soluong check (soLuongPhong > 0) 
+	constraint chk_nhatro_soluong check (soLuongPhong > 0),
+	constraint chk_nhatro_trangthai check (trangThai in ( N'Hoạt động', N'Không hoạt động'))
 )
 
 create table Phong(
@@ -96,16 +96,19 @@ create table Phong(
 	maKieuPhong int not null,
 	maNhaTro int not null,
 	unique (tenPhong, maNhaTro),
+	trangThai nvarchar(255) not null,
 	urlImage varchar(255) not null,
 	constraint fk_phong_makieuphong foreign key (maKieuPhong) references KieuPhong(maKieuPhong),
-	constraint fk_phong_manhatro foreign key (maNhaTro) references NhaTro(maNhaTro)
+	constraint fk_phong_manhatro foreign key (maNhaTro) references NhaTro(maNhaTro),
+	constraint chk_phong_trangthai check (trangThai in (N'Đã thuê', N'Chưa thuê'))
 )
 
 create table DichVu(
 	maDichVu int identity(1,1) primary key,
 	tenDichVu nvarchar(255) not null unique,
 	giaDichVu decimal not null,
-	trangThai nvarchar(255) not null
+	trangThai nvarchar(255) not null,
+	constraint chk_dichvu_gia check (giaDichVu > 0)
 )
 
 --Phòng quan hệ n - n với Dịch vụ
@@ -134,23 +137,38 @@ create table HopDong(
 	maKhachThue int not null,
 	tienCoc decimal not null,
 	ngayThue date not null,
-	ngayDiDuKien date,
+	thoiHanHopDong int not null, -- thời hạn ở tối thiểu
 	trangThai nvarchar(255) not null,
 	ngayTao datetime default getdate(),
 	constraint fk_hopdong_makhach foreign key (maKhachThue) references KhachThue(maKhachThue),
-	constraint fk_hopdong_phong foreign key (maPhong) references Phong(maPhong)
+	constraint fk_hopdong_phong foreign key (maPhong) references Phong(maPhong),
+	constraint chk_hopdong_tiencoc check (tienCoc >= 0),
+	constraint chk_hopdong_trangthai check ( trangThai in ( N'Còn hiệu lực', N'Hết hiệu lực')),
+	constraint chk_hopdong_thoihan check ( thoiHanHopDong > 0)
 )
+
+CREATE TABLE HoaDon (
+    maHoaDon INT IDENTITY(1,1) PRIMARY KEY,
+    maHopDong INT NOT NULL, 
+    ngayTao DATETIME DEFAULT GETDATE() NOT NULL,
+    tongTien DECIMAL(18,2) NOT NULL,
+    trangThai NVARCHAR(255) NOT NULL,
+    CONSTRAINT fk_hoadon_hopdong FOREIGN KEY (maHopDong) REFERENCES HopDong(maHopDong),
+	constraint chk_hoadon_tongtien check (tongTien >=0),
+	constraint chk_hoadon_trangthai check ( trangThai in (N'Chưa thanh toán', N'Đã thanh toán', N'Quá hạn'))
+);
+
 
 create table ThanhToan(
 	maThanhToan int identity(1,1) primary key,
-	maHopDong int not null,
+	maHoaDon int not null,
 	soTien decimal not null,
 	hinhThucThanhToan nvarchar(50) not null,
 	trangThai nvarchar(255) not null,
 	ngayThanhToan date not null default getdate(),
-	constraint fk_thanhtoan_hopdong foreign key (maHopDong) references HopDong(maHopDong),
 	constraint chk_thanhtoan_hinhthuc check( hinhThucThanhToan in (N'Chuyển Khoản', N'Tiền Mặt', N'Thẻ')),
 )
+
 
 --Xem chủ nhà này có những nhà nào
 create view ChuNha_NhaTro as
