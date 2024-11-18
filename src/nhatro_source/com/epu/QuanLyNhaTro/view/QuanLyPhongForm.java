@@ -58,7 +58,7 @@ public class QuanLyPhongForm extends JPanel {
         themBtn = createButton("Thêm");
         suaBtn = createButton("Sửa");
         xoaBtn = createButton("Xóa");
-        lamMoiBtn = createButton("Làm Mới");
+        lamMoiBtn = createButton("Tìm kiếm");
 
         buttonPanel.add(themBtn);
         buttonPanel.add(suaBtn);

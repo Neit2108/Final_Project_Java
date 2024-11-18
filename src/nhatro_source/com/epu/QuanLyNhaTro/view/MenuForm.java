@@ -93,6 +93,7 @@ public class MenuForm extends JFrame {
         setTitle("Menu Form");
 //        setSize(800, 600);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
+
         // Larger frame size for better spacing
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null); // Center the frame

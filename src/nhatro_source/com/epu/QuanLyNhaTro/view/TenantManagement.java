@@ -1,12 +1,10 @@
 package com.epu.QuanLyNhaTro.view;
 
-import com.epu.QuanLyNhaTro.controller.TenantManagerController;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 @Getter
@@ -29,12 +27,9 @@ public class TenantManagement extends JPanel {
     private JButton searchBtn;
     private JTable mainTable;
     private JPanel mainTablePanel;
-    private JTextField accountNumberField;
-    private DefaultTableModel tableModel;
 
     public TenantManagement() {
         initComponents();
-        new TenantManagerController(this).init();
     }
 
     private void initComponents() {
@@ -64,7 +59,7 @@ public class TenantManagement extends JPanel {
 
     private JPanel createInputPanel() {
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(8, 2, 10, 10));
+        panel.setLayout(new GridLayout(7, 2, 10, 10));
         panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
                 "Nhập thông tin khách thuê", TitledBorder.CENTER, TitledBorder.TOP));
 
@@ -75,7 +70,6 @@ public class TenantManagement extends JPanel {
         genderField = new JTextField(20);
         phoneField = new JTextField(20);
         addressField = new JTextField(20);
-        accountNumberField = new JTextField(20);
 
         panel.add(new JLabel("Mã khách:"));
         panel.add(numberField);
@@ -97,9 +91,6 @@ public class TenantManagement extends JPanel {
 
         panel.add(new JLabel("Địa chỉ:"));
         panel.add(addressField);
-
-        panel.add(new JLabel("Mã tài khoản:"));
-        panel.add(accountNumberField);
 
         return panel;
     }
@@ -137,17 +128,9 @@ public class TenantManagement extends JPanel {
 
         // Table
         String[] columnNames = {"Mã khách", "CCCD", "Tên khách", "Ngày sinh", "Giới tính", "Số điện thoại", "Địa chỉ", "Mã tài khoản"};
-        this.tableModel = new DefaultTableModel(columnNames, 0){
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-
-        mainTable = new JTable(tableModel);
+        mainTable = new JTable(new Object[][]{}, columnNames);
         mainTable.setRowHeight(30);
         mainTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-        mainTable.getTableHeader().setReorderingAllowed(false);
 
         JScrollPane scrollPane = new JScrollPane(mainTable);
         panel.add(scrollPane, BorderLayout.CENTER);
