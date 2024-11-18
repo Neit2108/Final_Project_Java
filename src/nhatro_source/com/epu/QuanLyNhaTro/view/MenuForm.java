@@ -9,7 +9,7 @@ import java.awt.*;
 @Getter
 @Setter
 public class MenuForm extends JFrame {
-    private JButton phongBtn;
+    private JButton homePageBtn;
     private JButton dangxuatBtn;
     private JButton quanlyBtn;
     private JButton hopdongBtn;
@@ -22,7 +22,7 @@ public class MenuForm extends JFrame {
 
     public MenuForm() {
         // Initialize buttons with updated labels and custom rounded styles
-        phongBtn = createRoundedButton("Phòng");
+        homePageBtn = createRoundedButton("Trang chủ");
         pctBtn = createRoundedButton("Quản lý phòng");
         nhaBtn = createRoundedButton("Nhà");
         hopdongBtn = createRoundedButton("Hợp Đồng");
@@ -51,7 +51,7 @@ public class MenuForm extends JFrame {
         // Add label and buttons to the panel with adjusted spacing
         buttonPanel.add(menuLabel);
         buttonPanel.add(Box.createVerticalStrut(25)); // Space below the label
-        buttonPanel.add(phongBtn);
+        buttonPanel.add(homePageBtn);
         buttonPanel.add(Box.createVerticalStrut(15));
         buttonPanel.add(pctBtn);
         buttonPanel.add(Box.createVerticalStrut(15));
@@ -78,11 +78,13 @@ public class MenuForm extends JFrame {
         //Xu ly mainPanel
         cardLayout = new CardLayout();
         mainPanel.setLayout(cardLayout);
-        //TenantManagement tenantManagement = new TenantManagement();
-        //QuanLyPhongForm qlpf = new QuanLyPhongForm();
+        TenantManagement tenantManagement = new TenantManagement();
+        QuanLyPhongForm qlpf = new QuanLyPhongForm();
         NewHomePage newhome = new NewHomePage();
 
-        mainPanel.add(newhome, "QuanLy");
+        mainPanel.add(newhome, "HomePage");
+        mainPanel.add(tenantManagement, "QuanLyKhachThue");
+        mainPanel.add(qlpf, "QuanLyPhong");
 
         //init controller
         new com.epu.QuanLyNhaTro.controller.MenuFormController(this).init();
