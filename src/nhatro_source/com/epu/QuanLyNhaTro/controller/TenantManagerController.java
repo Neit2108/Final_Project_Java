@@ -35,6 +35,8 @@ public class TenantManagerController {
 
         this.tenantManagement.getSearchBtn().addActionListener(this::handleSearchBtn);
         this.tenantManagement.getAddBtn().addActionListener(this::handleAddBtn);
+        this.tenantManagement.getEditBtn().addActionListener(this::handleUpdateBtn);
+        this.tenantManagement.getDeleteBtn().addActionListener(this::handleDeleteBtn);
     }
 
     public void showData(){
@@ -101,6 +103,7 @@ public class TenantManagerController {
         tenantManagement.getGenderField().setText("");
         tenantManagement.getPhoneField().setText("");
         tenantManagement.getAddressField().setText("");
+        tenantManagement.getAccountNumberField().setText("");
     }
 
     private void handleAddBtn(ActionEvent event){
@@ -114,31 +117,65 @@ public class TenantManagerController {
         String address = tenantManagement.getAddressField().getText();
         int account = Integer.parseInt(tenantManagement.getAccountNumberField().getText());
         System.out.println(0);
-        if (number.isEmpty() || cccd.isEmpty() || name.isEmpty() || date == null || gender.isEmpty() || phone.isEmpty() || address.isEmpty()){
+        if (cccd.isEmpty() || name.isEmpty() || date == null || gender.isEmpty() || phone.isEmpty() || address.isEmpty()){
             JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin");
             return;
         }
         else{
-            KhachThueDAO khachThueDAO = new KhachThueDAOImpl();
-            System.out.println(1);
-            khachThueDAO.addKhachThue(cccd, name, LocalDate.parse(date), gender, phone, address, account);
-            System.out.println(2);
-            this.tenantManagement.getTableModel().setRowCount(0);
-            System.out.println(3);
-            this.showData();
-            System.out.println(4);
-            JOptionPane.showMessageDialog(null, "Thêm khách thuê thành công");
+            int i = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn thêm khách thuê này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+            if(i == JOptionPane.YES_OPTION){
+                KhachThueDAO khachThueDAO = new KhachThueDAOImpl();
+                khachThueDAO.addKhachThue(cccd, name, LocalDate.parse(date), gender, phone, address, account);
+                setNull();
+                this.tenantManagement.getTableModel().setRowCount(0);
+                this.showData();
+                JOptionPane.showMessageDialog(null, "Thêm khách thuê thành công");
+            }
         }
-
     }
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Quản lý khách thuê");
-        TenantManagement tenantManagement = new TenantManagement();
-        TenantManagerController tenantManagerController = new TenantManagerController(tenantManagement);
-        frame.add(tenantManagement);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1346, 793);
-        frame.setVisible(true);
+    private void handleUpdateBtn(ActionEvent event) {
+        String number = tenantManagement.getNumberField().getText();
+        String cccd = tenantManagement.getCccdField().getText();
+        String name = tenantManagement.getNameField().getText();
+        String date = tenantManagement.getDateField().getText();
+        date = Authenticator.normalizeDate(date);
+        String gender = tenantManagement.getGenderField().getText();
+        String phone = tenantManagement.getPhoneField().getText();
+        String address = tenantManagement.getAddressField().getText();
+        int account = Integer.parseInt(tenantManagement.getAccountNumberField().getText());
+
+        if (cccd.isEmpty() || name.isEmpty() || date == null || gender.isEmpty() || phone.isEmpty() || address.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin");
+            return;
+        } else {
+            int i = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn cập nhật thông tin khách thuê này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+            if (i == JOptionPane.YES_OPTION) {
+                KhachThueDAO khachThueDAO = new KhachThueDAOImpl();
+                khachThueDAO.updateKhachThue(cccd, name, LocalDate.parse(date), gender, phone, address, account);
+                setNull();
+                this.tenantManagement.getTableModel().setRowCount(0);
+                this.showData();
+                JOptionPane.showMessageDialog(null, "Thay đổi thông tin thành công");
+            }
+        }
+    }
+
+    private void handleDeleteBtn(ActionEvent event) {
+        String cccd = tenantManagement.getCccdField().getText();
+        if (cccd.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn khách thuê cần xóa");
+            return;
+        } else {
+            int i = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa khách thuê này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+            if (i == JOptionPane.YES_OPTION) {
+                KhachThueDAO khachThueDAO = new KhachThueDAOImpl();
+                khachThueDAO.deleteKhachThue(cccd);
+                setNull();
+                this.tenantManagement.getTableModel().setRowCount(0);
+                this.showData();
+                JOptionPane.showMessageDialog(null, "Xóa khách thuê thành công");
+            }
+        }
     }
 }

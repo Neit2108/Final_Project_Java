@@ -1,5 +1,9 @@
 package com.epu.QuanLyNhaTro.view;
 
+import com.epu.QuanLyNhaTro.dao.PhongDAO;
+import com.epu.QuanLyNhaTro.dao.PhongDAOImpl;
+import com.epu.QuanLyNhaTro.model.Phong;
+
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
@@ -12,12 +16,14 @@ public class NewHomePage extends JPanel {
 
         // Dữ liệu mẫu: Khung hiển thị thông tin phòng
         for (int i = 1; i <= 9; i++) {
-            add(createPhongPanel("P00" + i, "Phòng " + i, "Nhà Trọ A", "Loại 1", "1,500,000 VND", "Ảnh Phòng"));
+            PhongDAO phongDAO = new PhongDAOImpl();
+            Phong phong = phongDAO.getPhong(i + 2);
+            add(createPhongPanel( i + 2, "Phòng " + (i + 2), phong.getMaNhaTro(), String.valueOf(phong.getMaKieuPhong()), phongDAO.getGiaPhong(i + 2), phong.getUrlImage()));
         }
     }
 
     // Hàm tạo khung hiển thị thông tin phòng
-    private JPanel createPhongPanel(String maPhong, String tenPhong, String maNhaTro, String loaiPhong, String giaPhong, String anhPhong) {
+    private JPanel createPhongPanel(int maPhong, String tenPhong, int maNhaTro, String loaiPhong, double giaPhong, String anhPhong) {
         JPanel phongPanel = new JPanel();
         phongPanel.setLayout(new BorderLayout(5, 5));
         phongPanel.setBorder(BorderFactory.createTitledBorder("Mã Phòng: " + maPhong));
