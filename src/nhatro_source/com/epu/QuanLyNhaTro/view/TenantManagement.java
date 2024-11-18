@@ -24,6 +24,7 @@ public class TenantManagement extends JPanel {
     private JTextField phoneField;
     private JTextField addressField;
     private JTextField searchField;
+    private JTextField accountNumberField;
     private JButton searchBtn;
     private JTable mainTable;
     private JPanel mainTablePanel;
@@ -59,7 +60,7 @@ public class TenantManagement extends JPanel {
 
     private JPanel createInputPanel() {
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(7, 2, 10, 10));
+        panel.setLayout(new GridLayout(8, 2, 10, 10)); // Tăng số hàng từ 7 lên 8
         panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
                 "Nhập thông tin khách thuê", TitledBorder.CENTER, TitledBorder.TOP));
 
@@ -70,6 +71,7 @@ public class TenantManagement extends JPanel {
         genderField = new JTextField(20);
         phoneField = new JTextField(20);
         addressField = new JTextField(20);
+        accountNumberField = new JTextField(20); // Khởi tạo trường mới
 
         panel.add(new JLabel("Mã khách:"));
         panel.add(numberField);
@@ -91,6 +93,9 @@ public class TenantManagement extends JPanel {
 
         panel.add(new JLabel("Địa chỉ:"));
         panel.add(addressField);
+
+        panel.add(new JLabel("Mã tài khoản:")); // Thêm nhãn mới
+        panel.add(accountNumberField); // Thêm trường mới
 
         return panel;
     }
