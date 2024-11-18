@@ -16,7 +16,9 @@ public class MenuFormController {
 
     public void init(){
         this.menuForm.getDangxuatBtn().addActionListener(this::handleDangXuatBtn);
-        this.menuForm.getQuanlyBtn().addActionListener(this::handleQuanLyBtn);
+        this.menuForm.getHomePageBtn().addActionListener(this::handleHomePageBtn);
+        this.menuForm.getQuanlyBtn().addActionListener(this::handleKhachThueBtn);
+        this.menuForm.getPctBtn().addActionListener(this::handleQuanLyPhongBtn);
         this.menuForm.getNhaBtn().addActionListener(this::handleNhaBtn);
     }
 
@@ -29,12 +31,20 @@ public class MenuFormController {
         }
     }
 
-    private void handleQuanLyBtn(ActionEvent event){
-        this.menuForm.getCardLayout().show(this.menuForm.getMainPanel(), "QuanLy");
-    }
-
     private void handleNhaBtn(ActionEvent event){
         System.out.println(2);
+    }
+
+    private void handleKhachThueBtn(ActionEvent event){
+        this.menuForm.getCardLayout().show(this.menuForm.getMainPanel(), "QuanLyKhachThue");
+    }
+
+    private void handleQuanLyPhongBtn(ActionEvent event){
+        this.menuForm.getCardLayout().show(this.menuForm.getMainPanel(), "QuanLyPhong");
+    }
+
+    private void handleHomePageBtn(ActionEvent event){
+        this.menuForm.getCardLayout().show(this.menuForm.getMainPanel(), "HomePage");
     }
 
 

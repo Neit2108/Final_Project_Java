@@ -116,6 +116,7 @@ public class DetailRoom extends JFrame {
 
 
     public static void main(String[] args) {
+
         new DetailRoom().setVisible(true);
     }
 }
