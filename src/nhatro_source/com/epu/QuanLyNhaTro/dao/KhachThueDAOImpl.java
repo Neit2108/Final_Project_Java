@@ -3,6 +3,7 @@ package com.epu.QuanLyNhaTro.dao;
 import com.epu.QuanLyNhaTro.model.KhachThue;
 import com.epu.QuanLyNhaTro.util.DatabaseConnection;
 
+import javax.swing.*;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -92,16 +93,17 @@ public class KhachThueDAOImpl implements KhachThueDAO {
 
         }
         catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Thêm không thành công", "Lỗi", JOptionPane.ERROR_MESSAGE);
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void updateKhachThue(String maCCCD, String ten, String ngaySinh, String gioiTinh, String soDienThoai, String diaChi, int maTaiKhoan) {
+    public void updateKhachThue(String maCCCD, String ten, LocalDate ngaySinh, String gioiTinh, String soDienThoai, String diaChi, int maTaiKhoan) {
         String query = "update KhachThue set tenKhach = ?, ngaySinh = ?, gioiTinh = ?, soDienThoai = ?, diaChi = ?, maTaiKhoan = ? where maCCCD = ?";
         try(PreparedStatement pstm = connection.prepareStatement(query)){
             pstm.setString(1, ten);
-            pstm.setString(2, ngaySinh);
+            pstm.setDate(2, Date.valueOf(ngaySinh));
             pstm.setString(3, gioiTinh);
             pstm.setString(4, soDienThoai);
             pstm.setString(5, diaChi);
@@ -111,6 +113,7 @@ public class KhachThueDAOImpl implements KhachThueDAO {
             connection.commit();
         }
         catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Chỉnh sửa không thành công", "Lỗi", JOptionPane.ERROR_MESSAGE);
             throw new RuntimeException(e);
         }
     }
@@ -124,6 +127,7 @@ public class KhachThueDAOImpl implements KhachThueDAO {
             connection.commit();
         }
         catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Xóa không thành công", "Lỗi", JOptionPane.ERROR_MESSAGE);
             throw new RuntimeException(e);
         }
     }

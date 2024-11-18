@@ -60,6 +60,21 @@ public class PhongDAOImpl implements PhongDAO{
 
     @Override
     public double getGiaPhong(int maPhong) {
-        return 0;
+        String query = "select * from PhongView where maPhong = ?";
+        try (PreparedStatement pstm = connection.prepareStatement(query)) {
+            pstm.setInt(1, maPhong);
+            ResultSet rs = pstm.executeQuery();
+            if (rs.next()) {
+                return rs.getDouble("giaPhong");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public static void main(String[] args) {
+        PhongDAO phongDAO = new PhongDAOImpl();
+        System.out.println(phongDAO.getGiaPhong(4));
     }
 }

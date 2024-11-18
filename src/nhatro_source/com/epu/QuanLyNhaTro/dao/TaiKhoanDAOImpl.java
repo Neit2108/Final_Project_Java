@@ -112,10 +112,11 @@ public class TaiKhoanDAOImpl implements TaiKhoanDAO {
     }
 
     public static void main(String[] args) {
-        String pss = "password18";
-        String hashed = "dKjsa7pcA/otwCU+yBIL4g==:YXUOl6CxrkDZiv0EBqEj5OhzBCymLwFdxyyVJ2/anx4=";
-
-        boolean check = PasswordUtils.verifyPassword(pss, hashed);
-        System.out.println(check);
+        try {
+            TaiKhoanDAO taiKhoanDAO = new TaiKhoanDAOImpl();
+            taiKhoanDAO.addTaiKhoan("cabuto993@gmail.com", "123456", "Khách Thuê");
+    } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
