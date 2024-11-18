@@ -4,6 +4,7 @@ import com.epu.QuanLyNhaTro.controller.SignUpController;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
@@ -12,27 +13,19 @@ import java.awt.*;
 import java.sql.SQLException;
 import java.util.Locale;
 
+@Setter
+@Getter
 public class SignUpForm extends JFrame {
     private JPanel loginPnl;
-
-    @Getter
     private JTextField emailField;
-    @Getter
     private JButton signUpBtn;
-    @Getter
     private JTextField verifyField;
-    @Getter
     private JPasswordField passwordField1;
-    @Getter
     private JPasswordField passwordField2;
-    @Getter
     private JButton getCodeButton;
-    @Getter
     private JButton logBtn;
-
     private JPanel rightPnl;
     private JPanel txtPnl;
-
     private JLabel emailLbl;
     private JLabel passLbl;
     private JLabel pass2Lbl;
@@ -148,6 +141,5 @@ public class SignUpForm extends JFrame {
         new SignUpForm();
 
     }
-
 
 }

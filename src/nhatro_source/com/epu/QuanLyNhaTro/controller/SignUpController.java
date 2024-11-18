@@ -32,9 +32,10 @@ public class SignUpController {
     public void initController() {
         this.signUpForm.getSignUpBtn().addActionListener(this::handleSignUp);
         this.signUpCode.getOkBtn().addActionListener(this::handleGetCode);
+        this.signUpForm.getLogBtn().addActionListener(this::handleSignIn);
     }
 
-    public void handleSignUp(ActionEvent e){
+    private void handleSignUp(ActionEvent e){
         String email = signUpForm.getEmailField().getText();
         String password = new String(signUpForm.getPasswordField1().getPassword());
         String confirmPassword = new String(signUpForm.getPasswordField2().getPassword());
@@ -64,7 +65,7 @@ public class SignUpController {
         this.signUpCode.setVisible(true);
     }
 
-    public void handleGetCode(ActionEvent e){
+    private void handleGetCode(ActionEvent e){
         String email = signUpForm.getEmailField().getText();
         String password = new String(signUpForm.getPasswordField1().getPassword());
         String confirmPass = new String(signUpForm.getPasswordField2().getPassword());
@@ -85,6 +86,15 @@ public class SignUpController {
         }
         else{
             JOptionPane.showMessageDialog(null, "Mã xác thực không đúng", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void handleSignIn(ActionEvent e){
+        try{
+            signUpForm.dispose();
+            new SignInForm().setVisible(true);
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
         }
     }
 

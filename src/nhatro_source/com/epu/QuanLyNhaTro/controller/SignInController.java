@@ -8,6 +8,7 @@ import com.epu.QuanLyNhaTro.util.Authenticator;
 import com.epu.QuanLyNhaTro.util.Constant;
 import com.epu.QuanLyNhaTro.view.HomePage;
 import com.epu.QuanLyNhaTro.view.SignInForm;
+import com.epu.QuanLyNhaTro.view.SignUpForm;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -25,9 +26,10 @@ public class SignInController {
 
     public void initController() {
         this.signInForm.getSignInBtn().addActionListener(this::handleSignIn);
+        this.signInForm.getSignUpBtn().addActionListener(this::handleSignUp);
     }
 
-    public void handleSignIn(ActionEvent e){
+    private void handleSignIn(ActionEvent e){
         String email = signInForm.getEmailField().getText();
         String pass = new String(signInForm.getPassField().getPassword());
 
@@ -62,5 +64,15 @@ public class SignInController {
                 new ContractFrame().setVisible(true);
             }
         }
+    }
+
+    private void handleSignUp(ActionEvent e){
+        try{
+            signInForm.dispose();
+            new SignUpForm().setVisible(true);
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+
     }
 }
