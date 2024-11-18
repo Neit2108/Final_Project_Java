@@ -22,6 +22,7 @@
             </constraints>
             <properties>
               <icon value="dora.png"/>
+              <labelFor value="df7c3"/>
               <text value=""/>
             </properties>
           </component>
