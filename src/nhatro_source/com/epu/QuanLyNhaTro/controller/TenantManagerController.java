@@ -3,6 +3,7 @@ package com.epu.QuanLyNhaTro.controller;
 import com.epu.QuanLyNhaTro.dao.KhachThueDAO;
 import com.epu.QuanLyNhaTro.dao.KhachThueDAOImpl;
 import com.epu.QuanLyNhaTro.model.KhachThue;
+import com.epu.QuanLyNhaTro.util.Authenticator;
 import com.epu.QuanLyNhaTro.view.TenantManagement;
 
 
@@ -40,7 +41,7 @@ public class TenantManagerController {
         KhachThueDAO khachThueDAO = new KhachThueDAOImpl();
         List<KhachThue> khachThueList = khachThueDAO.getAllKhachThue();
         for(KhachThue x : khachThueList){
-            String[] rows = new String[]{String.valueOf(x.getMaKhach()), x.getMaCCCD(), x.getTen(), String.valueOf(x.getNgaySinh()), x.getGioiTinh(), x.getSoDienThoai(), x.getDiaChi(), x.getSoDienThoai()};
+            String[] rows = new String[]{String.valueOf(x.getMaKhach()), x.getMaCCCD(), x.getTen(), String.valueOf(x.getNgaySinh()), x.getGioiTinh(), x.getSoDienThoai(), x.getDiaChi(), String.valueOf(x.getMaTaiKhoan())};
             this.tenantManagement.getTableModel().addRow(rows);
         }
     }
@@ -79,7 +80,7 @@ public class TenantManagerController {
             String gender = tenantManagement.getMainTable().getModel().getValueAt(row, 4).toString();
             String phone = tenantManagement.getMainTable().getModel().getValueAt(row, 5).toString();
             String address = tenantManagement.getMainTable().getModel().getValueAt(row, 6).toString();
-
+            String account = tenantManagement.getMainTable().getModel().getValueAt(row, 7).toString();
             // Cập nhật các JTextField với dữ liệu từ dòng đã chọn
             tenantManagement.getNumberField().setText(number);
             tenantManagement.getCccdField().setText(cccd);
@@ -88,6 +89,7 @@ public class TenantManagerController {
             tenantManagement.getGenderField().setText(gender);
             tenantManagement.getPhoneField().setText(phone);
             tenantManagement.getAddressField().setText(address);
+            tenantManagement.getAccountNumberField().setText(account);
         }
     }
 
@@ -106,23 +108,37 @@ public class TenantManagerController {
         String cccd = tenantManagement.getCccdField().getText();
         String name = tenantManagement.getNameField().getText();
         String date = tenantManagement.getDateField().getText();
+        date = Authenticator.normalizeDate(date);
         String gender = tenantManagement.getGenderField().getText();
         String phone = tenantManagement.getPhoneField().getText();
         String address = tenantManagement.getAddressField().getText();
-
-        if (number.isEmpty() || cccd.isEmpty() || name.isEmpty() || date.isEmpty() || gender.isEmpty() || phone.isEmpty() || address.isEmpty()){
+        int account = Integer.parseInt(tenantManagement.getAccountNumberField().getText());
+        System.out.println(0);
+        if (number.isEmpty() || cccd.isEmpty() || name.isEmpty() || date == null || gender.isEmpty() || phone.isEmpty() || address.isEmpty()){
             JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin");
             return;
         }
         else{
             KhachThueDAO khachThueDAO = new KhachThueDAOImpl();
-            //khachThueDAO.addKhachThue(cccd, name, date, gender, phone, address);
+            System.out.println(1);
+            khachThueDAO.addKhachThue(cccd, name, LocalDate.parse(date), gender, phone, address, account);
+            System.out.println(2);
             this.tenantManagement.getTableModel().setRowCount(0);
+            System.out.println(3);
             this.showData();
+            System.out.println(4);
             JOptionPane.showMessageDialog(null, "Thêm khách thuê thành công");
         }
 
+    }
 
-
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Quản lý khách thuê");
+        TenantManagement tenantManagement = new TenantManagement();
+        TenantManagerController tenantManagerController = new TenantManagerController(tenantManagement);
+        frame.add(tenantManagement);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(1346, 793);
+        frame.setVisible(true);
     }
 }

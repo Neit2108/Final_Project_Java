@@ -4,8 +4,10 @@ import com.epu.QuanLyNhaTro.model.KhachThue;
 import com.epu.QuanLyNhaTro.util.DatabaseConnection;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,19 +73,23 @@ public class KhachThueDAOImpl implements KhachThueDAO {
     }
 
     @Override
-    public void addKhachThue(String maCCCD, String ten, String ngaySinh, String gioiTinh, String soDienThoai, String diaChi, int maTaiKhoan) {
+    public void addKhachThue(String maCCCD, String ten, LocalDate ngaySinh, String gioiTinh, String soDienThoai, String diaChi, int maTaiKhoan) {
         String query = "insert into KhachThue(maCCCD, tenKhach, ngaySinh, gioiTinh, soDienThoai, diaChi, maTaiKhoan) values(?,?,?,?,?,?,?)";
         try(PreparedStatement pstm = connection.prepareStatement(query)){
             pstm.setString(1, maCCCD);
             pstm.setString(2, ten);
-            pstm.setString(3, ngaySinh);
+            pstm.setDate(3, Date.valueOf(ngaySinh));
             pstm.setString(4, gioiTinh);
             pstm.setString(5, soDienThoai);
             pstm.setString(6, diaChi);
             pstm.setInt(7, maTaiKhoan);
 
-            pstm.executeUpdate();
-            connection.commit();
+            int i = pstm.executeUpdate();
+            if (i == 1){
+                connection.commit();
+                System.out.println("Thêm thành công");
+            }
+
         }
         catch (Exception e) {
             throw new RuntimeException(e);
