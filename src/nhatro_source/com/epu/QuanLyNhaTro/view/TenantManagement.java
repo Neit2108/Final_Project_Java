@@ -79,6 +79,7 @@ public class TenantManagement extends JPanel {
 
         panel.add(new JLabel("Mã khách:"));
         panel.add(numberField);
+        numberField.setEditable(false);
 
         panel.add(new JLabel("CCCD:"));
         panel.add(cccdField);
