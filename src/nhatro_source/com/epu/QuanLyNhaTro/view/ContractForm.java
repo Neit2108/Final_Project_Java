@@ -1,5 +1,6 @@
 package com.epu.QuanLyNhaTro.view;
 
+import com.epu.QuanLyNhaTro.controller.ContractFormController;
 import com.epu.QuanLyNhaTro.controller.TenantManagerController;
 import lombok.Getter;
 import lombok.Setter;
@@ -40,6 +41,7 @@ public class ContractForm extends JPanel {
 
     public ContractForm() {
         initComponents();
+        new ContractFormController(this).init();
     }
 
     private void initComponents() {

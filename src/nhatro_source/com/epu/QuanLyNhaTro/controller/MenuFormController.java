@@ -1,5 +1,6 @@
 package com.epu.QuanLyNhaTro.controller;
 
+import com.epu.QuanLyNhaTro.util.Constant;
 import com.epu.QuanLyNhaTro.view.MenuForm;
 import com.epu.QuanLyNhaTro.view.SignInForm;
 import com.epu.QuanLyNhaTro.view.TenantManagement;
@@ -15,11 +16,19 @@ public class MenuFormController {
     }
 
     public void init(){
+        if(Constant.role.equals("Khách Thuê")){
+            this.menuForm.getQuanlyBtn().setVisible(false);
+            this.menuForm.getPctBtn().setVisible(false);
+            this.menuForm.getNhaBtn().setVisible(false);
+            this.menuForm.getHopdongBtn().setVisible(false);
+        }
+
         this.menuForm.getDangxuatBtn().addActionListener(this::handleDangXuatBtn);
         this.menuForm.getHomePageBtn().addActionListener(this::handleHomePageBtn);
         this.menuForm.getQuanlyBtn().addActionListener(this::handleKhachThueBtn);
         this.menuForm.getPctBtn().addActionListener(this::handleQuanLyPhongBtn);
         this.menuForm.getNhaBtn().addActionListener(this::handleNhaBtn);
+        this.menuForm.getHopdongBtn().addActionListener(this::handleContractBtn);
     }
 
     private void handleDangXuatBtn(ActionEvent event){
@@ -47,6 +56,9 @@ public class MenuFormController {
         this.menuForm.getCardLayout().show(this.menuForm.getMainPanel(), "HomePage");
     }
 
+    private void handleContractBtn(ActionEvent event){
+        this.menuForm.getCardLayout().show(this.menuForm.getMainPanel(), "HopDong");
+    }
 
 
 }

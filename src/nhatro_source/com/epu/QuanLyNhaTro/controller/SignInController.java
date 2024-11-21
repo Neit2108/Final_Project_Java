@@ -7,6 +7,7 @@ import com.epu.QuanLyNhaTro.model.TaiKhoan;
 import com.epu.QuanLyNhaTro.util.Authenticator;
 import com.epu.QuanLyNhaTro.util.Constant;
 import com.epu.QuanLyNhaTro.view.HomePage;
+import com.epu.QuanLyNhaTro.view.MenuForm;
 import com.epu.QuanLyNhaTro.view.SignInForm;
 import com.epu.QuanLyNhaTro.view.SignUpForm;
 
@@ -61,7 +62,7 @@ public class SignInController {
                 Constant.role = tk.getVaiTro();
                 JOptionPane.showMessageDialog(null, "Đăng nhập thành công", "Thành công", JOptionPane.INFORMATION_MESSAGE);
                 signInForm.dispose();
-                new ContractFrame().setVisible(true);
+                new MenuForm().setVisible(true);
             }
         }
     }

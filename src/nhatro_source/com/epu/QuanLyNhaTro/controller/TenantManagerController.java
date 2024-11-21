@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalDate;
+import java.util.Formatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.Vector;
@@ -32,6 +33,8 @@ public class TenantManagerController {
                 handleMainTable();
             }
         });
+
+
 
         this.tenantManagement.getSearchBtn().addActionListener(this::handleSearchBtn);
         this.tenantManagement.getAddBtn().addActionListener(this::handleAddBtn);

@@ -110,6 +110,7 @@ create table DichVu(
 	trangThai nvarchar(255) not null,
 	constraint chk_dichvu_gia check (giaDichVu > 0)
 )
+sp_rename 'DichVu.trangThai', 'ghiChu', 'COLUMN';
 
 --Phòng quan hệ n - n với Dịch vụ
 create table Phong_DichVu(
@@ -147,6 +148,34 @@ create table HopDong(
 	constraint chk_hopdong_thoihan check ( thoiHanHopDong > 0)
 )
 
+create table ChiTietHopDong(
+	maChiTiet int identity(1,1) primary key,
+	maHopDong int not null,
+	maDichVu int not null,
+	maCSVC int not null,
+	ghiChu nvarchar(255),
+	constraint fk_cthd_hopdong foreign key (maHopDong) references HopDong(maHopDong),
+	constraint fk_cthd_dichvu foreign key (maDichVu) references DichVu(maDichVu),
+	constraint fk_cthd_csvc foreign key (maCSVC) references CoSoVatChat(maCSVC)
+)
+
+create table ChiTiet_DichVu(
+	maChiTiet int not null,
+	maDichVu int not null,
+	ghiChu nvarchar(255),
+	primary key (maChiTiet, maDichVu),
+	constraint fk_ctdv_chitiet foreign key (maChiTiet) references ChiTietHopDong(maChiTiet),
+	constraint fk_ctdv_dichvu foreign key (maDichVu) references DichVu(maDichVu)
+)
+
+create table ChiTiet_CSVC(
+	maChiTiet int not null, 
+	maCSVC int not null,
+	ghiChu nvarchar(255),
+	primary key (maChiTiet, maCSVC),
+	constraint fk_ctcsvc_chitiet foreign key (maChiTiet) references ChiTietHopDong(maChiTiet),
+	constraint fk_ctcsvc_csvc foreign key (maCSVC) references CoSoVatChat(maCSVC)
+)
 CREATE TABLE HoaDon (
     maHoaDon INT IDENTITY(1,1) PRIMARY KEY,
     maHopDong INT NOT NULL, 
@@ -168,6 +197,8 @@ create table ThanhToan(
 	ngayThanhToan date not null default getdate(),
 	constraint chk_thanhtoan_hinhthuc check( hinhThucThanhToan in (N'Chuyển Khoản', N'Tiền Mặt', N'Thẻ')),
 )
+alter table ThanhToan
+add constraint fk_thanhtoan_hoadon foreign key (maHoaDon) references HoaDon(maHoaDon)
 
 
 --Xem chủ nhà này có những nhà nào
@@ -185,5 +216,11 @@ select nt.maNhaTro as N'Mã nhà trọ', nt.diaChi as N'Địa chỉ', p.maPhong
 from NhaTro nt
 join Phong p on nt.maNhaTro = p.maNhaTro
 join KieuPhong kp on p.maKieuPhong = kp.maKieuPhong
+
+--xem gia  phong thuoc loai nao, gia bao nhieu
+create view PhongView as
+select maPhong, giaPhong, loaiPhong
+from Phong
+left join KieuPhong on Phong.maKieuPhong = KieuPhong.maKieuPhong
 
 select * from NhaTro_Phong

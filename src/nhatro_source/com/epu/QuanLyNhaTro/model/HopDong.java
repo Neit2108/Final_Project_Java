@@ -22,16 +22,7 @@ public class HopDong {
     private LocalDateTime ngayTao;
     private String trangThai;
 
-    public String toString(){
-        return "HopDong{" +
-                "maHopDong='" + maHopDong + '\''
-                + ", maPhong='" + maPhong + '\''
-                + ", maKhachThue='" + maKhachThue + '\''
-                + ", tienCoc='" + tienCoc + '\''
-                + ", ngayThue='" + ngayThue + '\''
-                + ", ngayDiDuKien='" + ngayDiDuKien + '\''
-                + ", ngayTao='" + ngayTao + '\''
-                + ", trangThai='" + trangThai + '\''
-                + "}";
+    public String toString() {
+        return "HopDong(maHopDong=" + this.getMaHopDong() + ", maPhong=" + this.getMaPhong() + ", maKhachThue=" + this.getMaKhachThue() + ", tienCoc=" + this.getTienCoc() + ", ngayThue=" + this.getNgayThue() + ", ngayDiDuKien=" + this.getNgayDiDuKien() + ", ngayTao=" + this.getNgayTao() + ", trangThai=" + this.getTrangThai() + ")";
     }
 }

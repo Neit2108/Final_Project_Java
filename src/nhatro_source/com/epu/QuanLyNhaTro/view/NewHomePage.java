@@ -14,7 +14,7 @@ public class NewHomePage extends JPanel {
         setLayout(new GridLayout(0, 3, 10, 10)); // Hiển thị 3 cột
         setBorder(BorderFactory.createTitledBorder("Danh Sách Phòng"));
 
-        // Dữ liệu mẫu: Khung hiển thị thông tin phòng
+        //hiển thị thông tin phòng
         for (int i = 1; i <= 9; i++) {
             PhongDAO phongDAO = new PhongDAOImpl();
             Phong phong = phongDAO.getPhong(i + 2);
