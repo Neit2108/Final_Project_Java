@@ -172,7 +172,8 @@ public class ContractForm extends JPanel {
         panel.add(searchPanel, BorderLayout.NORTH);
 
         // Table
-        String[] columnNames = {"Mã hợp đồng", "Mã phòng", "Mã khách", "Ngày thuê", "Thời hạn hợp đồng", "Ngày tạo", "Trạng thái"};
+        String[] columnNames = {"Mã hợp đồng", "Mã phòng", "Mã khách", "Tiền cọc", "Ngày thuê",
+                "Thời hạn hợp đồng", "Ngày tạo", "Trạng thái"};
         this.tableModel = new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -190,7 +191,6 @@ public class ContractForm extends JPanel {
 
         return panel;
     }
-
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             ContractForm form = new ContractForm();

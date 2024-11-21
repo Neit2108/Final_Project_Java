@@ -16,6 +16,7 @@ public class MenuForm extends JFrame {
     private JButton nhaBtn;
     private JButton pctBtn;
     private JButton hoadonBtn;
+    private JButton thongbaoBtn;
     private JPanel buttonPanel;
     private JPanel mainPanel;
     private CardLayout cardLayout;
@@ -28,6 +29,7 @@ public class MenuForm extends JFrame {
         hopdongBtn = createRoundedButton("Hợp Đồng");
         quanlyBtn = createRoundedButton("Quản Lý Khách Thuê");
         hoadonBtn = createRoundedButton("Hóa đơn");
+        thongbaoBtn = createRoundedButton("Thông báo");
         dangxuatBtn = createRoundedButton("Đăng Xuất");
 
         // set cỡ riêng cho nút Dang Xuat
@@ -62,6 +64,8 @@ public class MenuForm extends JFrame {
         buttonPanel.add(quanlyBtn);
         buttonPanel.add(Box.createVerticalStrut(15));
         buttonPanel.add(hoadonBtn);
+        buttonPanel.add(Box.createVerticalStrut(15));
+        buttonPanel.add(thongbaoBtn);
         buttonPanel.add(Box.createVerticalStrut(15));
         buttonPanel.add(Box.createVerticalGlue()); // Add space before dangxuatBtn to push it to the bottom
         buttonPanel.add(dangxuatBtn);
