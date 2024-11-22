@@ -11,4 +11,5 @@ public interface PhongDAO {
     Phong getPhong(int maPhong);
     List<Phong> getAllPhong();
     double getGiaPhong(int maPhong);
+    int getMaChuNha(int maPhong);
 }

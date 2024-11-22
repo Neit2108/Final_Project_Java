@@ -27,6 +27,7 @@ public class TenantManagement extends JPanel {
     private JTextField addressField;
     private JTextField searchField;
     private JButton searchBtn;
+    private JButton resetBtn;
     private JTable mainTable;
     private JPanel mainTablePanel;
     private JTextField accountNumberField;
@@ -53,7 +54,7 @@ public class TenantManagement extends JPanel {
 
         // Button Panel
         JPanel buttonPanel = createButtonPanel();
-        buttonPanel.setBounds(10, 410, 300, 50); // Đặt nút dưới panel nhập liệu
+        buttonPanel.setBounds(10, 410, 300, 100); // Đặt nút dưới panel nhập liệu
         add(buttonPanel);
 
         // Main Table Panel
@@ -112,10 +113,12 @@ public class TenantManagement extends JPanel {
         addBtn = new JButton("Thêm");
         editBtn = new JButton("Thay đổi");
         deleteBtn = new JButton("Xóa");
+        resetBtn = new JButton("Làm mới");
 
         panel.add(addBtn);
         panel.add(editBtn);
         panel.add(deleteBtn);
+        panel.add(resetBtn);
 
         return panel;
     }

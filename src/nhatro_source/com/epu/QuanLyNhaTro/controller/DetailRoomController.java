@@ -15,6 +15,7 @@ public class DetailRoomController {
     private final DetailRoom detailRoom;
     private final PhongDAO phongDAO;
     private final HomePage homePage;
+
     public DetailRoomController(DetailRoom detailRoom, HomePage homePage) {
         this.detailRoom = detailRoom;
         this.homePage = homePage;

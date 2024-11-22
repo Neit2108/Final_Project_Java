@@ -73,8 +73,28 @@ public class PhongDAOImpl implements PhongDAO{
         return -1;
     }
 
+    @Override
+    public int getMaChuNha(int maPhong) {
+        int id = -1;
+        String query = "select maChuNha\n" +
+                "from Phong\n" +
+                "join NhaTro on Phong.maNhaTro = NhaTro.maNhaTro\n" +
+                "where maPhong = ?";
+        try(PreparedStatement pstm = connection.prepareStatement(query)){
+            pstm.setInt(1, maPhong);
+            ResultSet rs = pstm.executeQuery();
+            if (rs.next()){
+                id = rs.getInt("maChuNha");
+            }
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        return id;
+    }
+
     public static void main(String[] args) {
         PhongDAO phongDAO = new PhongDAOImpl();
-        System.out.println(phongDAO.getGiaPhong(4));
+        System.out.println(phongDAO.getMaChuNha(11));
     }
 }

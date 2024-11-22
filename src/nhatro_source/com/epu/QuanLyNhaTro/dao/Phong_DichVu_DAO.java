@@ -1,5 +1,6 @@
 package com.epu.QuanLyNhaTro.dao;
 
+import com.epu.QuanLyNhaTro.model.CoSoVatChat;
 import com.epu.QuanLyNhaTro.model.DichVu;
 import com.epu.QuanLyNhaTro.model.Phong_DichVu;
 

@@ -36,7 +36,7 @@ public class HopDongDAOImpl implements HopDongDAO {
             ps.setInt(1, maHopDong);
             ResultSet rs = ps.executeQuery();
             if (rs.next()){
-                return new HopDong(rs.getInt("maHopDong"), rs.getInt("maPhong"), rs.getInt("maKhachThue"), rs.getDouble("tienCoc"), rs.getDate("ngayThue").toLocalDate(), rs.getDate("ngayDiDuKien").toLocalDate(), rs.getTimestamp("ngayTao").toLocalDateTime(), rs.getString("trangThai"));
+                return new HopDong(rs.getInt("maHopDong"), rs.getInt("maPhong"), rs.getInt("maKhachThue"), rs.getDouble("tienCoc"), rs.getDate("ngayThue").toLocalDate(), rs.getInt("thoiHanHopDong"), rs.getTimestamp("ngayTao").toLocalDateTime(), rs.getString("trangThai"));
             }
         }
         catch (Exception e) {
@@ -52,7 +52,7 @@ public class HopDongDAOImpl implements HopDongDAO {
         try(PreparedStatement ps = conn.prepareStatement(query)) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
-                HopDong hd = new HopDong(rs.getInt("maHopDong"), rs.getInt("maPhong"), rs.getInt("maKhachThue"), rs.getDouble("tienCoc"), rs.getDate("ngayThue").toLocalDate(), LocalDate.now(), rs.getTimestamp("ngayTao").toLocalDateTime(), rs.getString("trangThai"));;
+                HopDong hd = new HopDong(rs.getInt("maHopDong"), rs.getInt("maPhong"), rs.getInt("maKhachThue"), rs.getDouble("tienCoc"), rs.getDate("ngayThue").toLocalDate(), rs.getInt("thoiHanHopDong"), rs.getTimestamp("ngayTao").toLocalDateTime(), rs.getString("trangThai"));;
                 hopDongList.add(hd);
             }
         } catch (SQLException e) {

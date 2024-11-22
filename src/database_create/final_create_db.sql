@@ -89,7 +89,8 @@ create table NhaTro(
 	constraint chk_nhatro_soluong check (soLuongPhong > 0),
 	constraint chk_nhatro_trangthai check (trangThai in ( N'Hoạt động', N'Không hoạt động'))
 )
-
+alter table NhaTro drop constraint chk_nhatro_trangthai
+alter table NhaTro add constraint chk_nhatro_trangthai check (trangThai in ( N'Đang hoạt động', N'Không hoạt động'))
 create table Phong(
 	maPhong int identity(1,1) primary key,
 	tenPhong nvarchar(255),
@@ -134,7 +135,7 @@ create table Phong_Khach(
 
 create table HopDong(
 	maHopDong int identity(1,1) primary key,
-	maPhong int not null,
+	maPhong int not null unique,
 	maKhachThue int not null,
 	tienCoc decimal not null,
 	ngayThue date not null,
@@ -148,15 +149,24 @@ create table HopDong(
 	constraint chk_hopdong_thoihan check ( thoiHanHopDong > 0)
 )
 
-create table ChiTietHopDong(
-	maChiTiet int identity(1,1) primary key,
+CREATE TABLE HoaDon (
+    maHoaDon INT IDENTITY(1,1) PRIMARY KEY,
 	maHopDong int not null,
-	maDichVu int not null,
-	maCSVC int not null,
+    ngayTao DATETIME DEFAULT GETDATE() NOT NULL,
+    tongTien DECIMAL(18,2) NOT NULL,
+    trangThai NVARCHAR(255) NOT NULL,
+	constraint chk_hoadon_tongtien check (tongTien >=0),
+	constraint chk_hoadon_trangthai check ( trangThai in (N'Chưa thanh toán', N'Đã thanh toán', N'Quá hạn'))
+);
+alter table HoaDon add constraint fk_hoadon_hopdong foreign key (maHopDong) references HopDong(maHopDong)
+ALTER TABLE HoaDon
+ADD ngayThanhToan DATETIME NULL;
+
+create table ChiTietHoaDon(
+	maChiTiet int identity(1,1) primary key,
+	maHoaDon int not null,
 	ghiChu nvarchar(255),
-	constraint fk_cthd_hopdong foreign key (maHopDong) references HopDong(maHopDong),
-	constraint fk_cthd_dichvu foreign key (maDichVu) references DichVu(maDichVu),
-	constraint fk_cthd_csvc foreign key (maCSVC) references CoSoVatChat(maCSVC)
+	constraint fk_cthd_hopdong foreign key (maHoaDon) references HoaDon(maHoaDon)
 )
 
 create table ChiTiet_DichVu(
@@ -164,7 +174,7 @@ create table ChiTiet_DichVu(
 	maDichVu int not null,
 	ghiChu nvarchar(255),
 	primary key (maChiTiet, maDichVu),
-	constraint fk_ctdv_chitiet foreign key (maChiTiet) references ChiTietHopDong(maChiTiet),
+	constraint fk_ctdv_chitiet foreign key (maChiTiet) references ChiTietHoaDon(maChiTiet),
 	constraint fk_ctdv_dichvu foreign key (maDichVu) references DichVu(maDichVu)
 )
 
@@ -173,19 +183,44 @@ create table ChiTiet_CSVC(
 	maCSVC int not null,
 	ghiChu nvarchar(255),
 	primary key (maChiTiet, maCSVC),
-	constraint fk_ctcsvc_chitiet foreign key (maChiTiet) references ChiTietHopDong(maChiTiet),
+	constraint fk_ctcsvc_chitiet foreign key (maChiTiet) references ChiTietHoaDon(maChiTiet),
 	constraint fk_ctcsvc_csvc foreign key (maCSVC) references CoSoVatChat(maCSVC)
 )
-CREATE TABLE HoaDon (
-    maHoaDon INT IDENTITY(1,1) PRIMARY KEY,
-    maHopDong INT NOT NULL, 
-    ngayTao DATETIME DEFAULT GETDATE() NOT NULL,
-    tongTien DECIMAL(18,2) NOT NULL,
-    trangThai NVARCHAR(255) NOT NULL,
-    CONSTRAINT fk_hoadon_hopdong FOREIGN KEY (maHopDong) REFERENCES HopDong(maHopDong),
-	constraint chk_hoadon_tongtien check (tongTien >=0),
-	constraint chk_hoadon_trangthai check ( trangThai in (N'Chưa thanh toán', N'Đã thanh toán', N'Quá hạn'))
-);
+
+CREATE TABLE TienThuTienIch (
+	maTienThu int identity(1,1),
+    maPhong INT NOT NULL,
+    ngayGhiDien DATETIME DEFAULT GETDATE(),
+    soDienCu decimal(10, 2) NOT NULL,    -- Số điện cũ
+    soDienMoi decimal(10, 2) NOT NULL,   -- Số điện mới
+    soDienDaDung AS (soDienMoi - soDienCu) PERSISTED, -- Số điện đã dùng (tính toán tự động)
+    soNuocCu decimal(10, 2) NOT NULL,    -- Số nước cũ
+    soNuocMoi decimal(10, 2) NOT NULL,   -- Số nước mới
+    soNuocDaDung AS (soNuocMoi - soNuocCu) PERSISTED, -- Số nước đã dùng (tính toán tự động)
+    PRIMARY KEY (maPhong, ngayGhiDien),
+    FOREIGN KEY (maPhong) REFERENCES Phong(maPhong)
+); 
+INSERT INTO TienThuTienIch (maPhong, soDienCu, soDienMoi, soNuocCu, soNuocMoi) VALUES
+(21, 100.00, 150.00, 30.00, 50.00),
+(22, 120.00, 170.00, 40.00, 60.00),
+(23, 110.00, 160.00, 35.00, 55.00),
+(4, 130.00, 180.00, 45.00, 65.00),
+(5, 140.00, 190.00, 50.00, 70.00),
+(6, 150.00, 200.00, 55.00, 75.00),
+(7, 160.00, 210.00, 60.00, 80.00),
+(8, 170.00, 220.00, 65.00, 85.00),
+(9, 180.00, 230.00, 70.00, 90.00),
+(10, 190.00, 240.00, 75.00, 95.00),
+(11, 200.00, 250.00, 80.00, 100.00),
+(12, 210.00, 260.00, 85.00, 105.00),
+(13, 220.00, 270.00, 90.00, 110.00),
+(14, 230.00, 280.00, 95.00, 115.00),
+(15, 240.00, 290.00, 100.00, 120.00),
+(16, 250.00, 300.00, 105.00, 125.00),
+(17, 260.00, 310.00, 110.00, 130.00),
+(18, 270.00, 320.00, 115.00, 135.00),
+(19, 280.00, 330.00, 120.00, 140.00),
+(20, 290.00, 340.00, 125.00, 145.00);
 
 
 create table ThanhToan(
@@ -223,4 +258,51 @@ select maPhong, giaPhong, loaiPhong
 from Phong
 left join KieuPhong on Phong.maKieuPhong = KieuPhong.maKieuPhong
 
-select * from NhaTro_Phong
+SELECT 
+    p.maPhong AS N'Mã phòng',
+    kp.loaiPhong AS N'Loại phòng',
+    csvc.tenCSVC AS N'Tên cơ sở vật chất'
+FROM 
+    Phong p
+JOIN 
+    KieuPhong kp ON p.maKieuPhong = kp.maKieuPhong
+JOIN 
+    KieuPhong_CoSoVatChat kpcsvc ON kp.maKieuPhong = kpcsvc.maKieuPhong
+JOIN 
+    CoSoVatChat csvc ON kpcsvc.maCSVC = csvc.maCSVC;
+
+select csvc.maCSVC from Phong
+join KieuPhong on Phong.maKieuPhong = KieuPhong.maKieuPhong
+join KieuPhong_CoSoVatChat kpcsvc on KieuPhong.maKieuPhong = kpcsvc.maKieuPhong
+join CoSoVatChat csvc on kpcsvc.maCSVC = csvc.maCSVC
+where maPhong = 4
+
+
+--cập nhật trạng thái nếu thanh toán
+CREATE TRIGGER trgThanhToanHoaDon
+ON ThanhToan
+AFTER INSERT
+AS
+BEGIN
+    UPDATE HoaDon
+    SET trangThai = N'Đã thanh toán'
+    WHERE maHoaDon IN (
+        SELECT maHoaDon FROM Inserted
+    )
+      AND trangThai = N'Chưa thanh toán';
+END;
+
+CREATE TRIGGER trgCapNhatHoaDonQuaHan
+ON HoaDon
+AFTER INSERT, UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+    UPDATE HoaDon
+    SET trangThai = N'Quá hạn'
+    WHERE trangThai = N'Chưa thanh toán' 
+      AND DATEDIFF(DAY, ngayTao, GETDATE()) > 30;
+END;
+
+
+select * from TienThuTienIch

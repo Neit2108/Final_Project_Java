@@ -4,6 +4,7 @@ import com.epu.QuanLyNhaTro.dao.KhachThueDAO;
 import com.epu.QuanLyNhaTro.dao.KhachThueDAOImpl;
 import com.epu.QuanLyNhaTro.model.KhachThue;
 import com.epu.QuanLyNhaTro.util.Authenticator;
+import com.epu.QuanLyNhaTro.view.SignInForm;
 import com.epu.QuanLyNhaTro.view.TenantManagement;
 
 
@@ -11,6 +12,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Formatter;
 import java.util.List;
@@ -32,14 +34,28 @@ public class TenantManagerController {
             public void mouseClicked(MouseEvent e) {
                 handleMainTable();
             }
+
         });
 
-
+//        this.tenantManagement.getMainTable().addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mouseClicked(MouseEvent e) {
+//                if (e.getClickCount() == 2) {
+//                    try {
+//                        new SignInForm().setVisible(true);
+//                    } catch (SQLException ex) {
+//                        throw new RuntimeException(ex);
+//                    }
+//
+//                }
+//            }
+//        });
 
         this.tenantManagement.getSearchBtn().addActionListener(this::handleSearchBtn);
         this.tenantManagement.getAddBtn().addActionListener(this::handleAddBtn);
         this.tenantManagement.getEditBtn().addActionListener(this::handleUpdateBtn);
         this.tenantManagement.getDeleteBtn().addActionListener(this::handleDeleteBtn);
+        this.tenantManagement.getResetBtn().addActionListener(this::handleResetBtn);
     }
 
     public void showData(){
@@ -128,9 +144,12 @@ public class TenantManagerController {
             int i = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn thêm khách thuê này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
             if(i == JOptionPane.YES_OPTION){
                 KhachThueDAO khachThueDAO = new KhachThueDAOImpl();
+                System.out.println(1);
                 khachThueDAO.addKhachThue(cccd, name, LocalDate.parse(date), gender, phone, address, account);
+                System.out.println(2);
                 setNull();
                 this.tenantManagement.getTableModel().setRowCount(0);
+                System.out.println(3);
                 this.showData();
                 JOptionPane.showMessageDialog(null, "Thêm khách thuê thành công");
             }
@@ -180,5 +199,9 @@ public class TenantManagerController {
                 JOptionPane.showMessageDialog(null, "Xóa khách thuê thành công");
             }
         }
+    }
+
+    private void handleResetBtn(ActionEvent event) {
+        setNull();
     }
 }

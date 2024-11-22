@@ -17,8 +17,8 @@ public class NewHomePage extends JPanel {
         //hiển thị thông tin phòng
         for (int i = 1; i <= 9; i++) {
             PhongDAO phongDAO = new PhongDAOImpl();
-            Phong phong = phongDAO.getPhong(i + 2);
-            add(createPhongPanel( i + 2, "Phòng " + (i + 2), phong.getMaNhaTro(), String.valueOf(phong.getMaKieuPhong()), phongDAO.getGiaPhong(i + 2), phong.getUrlImage()));
+            Phong phong = phongDAO.getPhong(i + 3);
+            add(createPhongPanel( i + 3, "Phòng " + (i + 3), phong.getMaNhaTro(), String.valueOf(phong.getMaKieuPhong()), phongDAO.getGiaPhong(i + 3), phong.getUrlImage()));
         }
     }
 

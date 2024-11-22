@@ -18,11 +18,8 @@ public class HopDong {
     private int maKhachThue;
     private double tienCoc;
     private LocalDate ngayThue;
-    private LocalDate ngayDiDuKien;
+    private int thoiHanHopDong;
     private LocalDateTime ngayTao;
     private String trangThai;
 
-    public String toString() {
-        return "HopDong(maHopDong=" + this.getMaHopDong() + ", maPhong=" + this.getMaPhong() + ", maKhachThue=" + this.getMaKhachThue() + ", tienCoc=" + this.getTienCoc() + ", ngayThue=" + this.getNgayThue() + ", ngayDiDuKien=" + this.getNgayDiDuKien() + ", ngayTao=" + this.getNgayTao() + ", trangThai=" + this.getTrangThai() + ")";
-    }
 }

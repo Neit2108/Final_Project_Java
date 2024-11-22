@@ -74,6 +74,30 @@ public class KhachThueDAOImpl implements KhachThueDAO {
     }
 
     @Override
+    public KhachThue getKhachThue(int maTaiKhoan) {
+        KhachThue khachThue = new KhachThue();
+        String query = "select * from KhachThue where maKhachThue = ?";
+        try(PreparedStatement pstm = connection.prepareStatement(query)){
+            pstm.setInt(1, maTaiKhoan);
+            ResultSet rs = pstm.executeQuery();
+            if (rs.next()){
+                khachThue.setMaKhach(rs.getInt("maKhachThue"));
+                khachThue.setMaCCCD(rs.getString("maCCCD"));
+                khachThue.setTen(rs.getString("tenKhach"));
+                khachThue.setNgaySinh(rs.getDate("ngaySinh").toLocalDate());
+                khachThue.setGioiTinh(rs.getString("gioiTinh"));
+                khachThue.setSoDienThoai(rs.getString("soDienThoai"));
+                khachThue.setDiaChi(rs.getString("diaChi"));
+                khachThue.setMaTaiKhoan(rs.getInt("maTaiKhoan"));
+            }
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return khachThue;
+    }
+
+    @Override
     public void addKhachThue(String maCCCD, String ten, LocalDate ngaySinh, String gioiTinh, String soDienThoai, String diaChi, int maTaiKhoan) {
         String query = "insert into KhachThue(maCCCD, tenKhach, ngaySinh, gioiTinh, soDienThoai, diaChi, maTaiKhoan) values(?,?,?,?,?,?,?)";
         try(PreparedStatement pstm = connection.prepareStatement(query)){

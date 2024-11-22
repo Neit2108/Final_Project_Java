@@ -1,5 +1,6 @@
 package com.epu.QuanLyNhaTro.dao;
 
+import com.epu.QuanLyNhaTro.model.CoSoVatChat;
 import com.epu.QuanLyNhaTro.model.DichVu;
 import com.epu.QuanLyNhaTro.model.Phong;
 import com.epu.QuanLyNhaTro.model.Phong_DichVu;
@@ -57,4 +58,5 @@ public class Phong_DichVu_DAOImpl implements Phong_DichVu_DAO {
         }
         return trangThaiList;
     }
+
 }

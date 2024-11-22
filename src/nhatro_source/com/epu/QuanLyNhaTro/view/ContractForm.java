@@ -33,6 +33,7 @@ public class ContractForm extends JPanel {
     private JTextField tienDauxeField;
     private JTextField tienThangmayField;
     private JTextField tienVesinhField;
+    private JTextField searchField;
 
     private JButton searchBtn;
     private JTable mainTable;
@@ -86,12 +87,12 @@ public class ContractForm extends JPanel {
         ngaytaoField = new JTextField(25);
         trangthaiField = new JTextField(25);
 
-        tienDienField = new JTextField(25);
-        tienNuocField = new JTextField(25);
-        tienInternetField = new JTextField(25);
-        tienDauxeField = new JTextField(25);
-        tienThangmayField = new JTextField(25);
-        tienVesinhField = new JTextField(25);
+//        tienDienField = new JTextField(25);
+//        tienNuocField = new JTextField(25);
+//        tienInternetField = new JTextField(25);
+//        tienDauxeField = new JTextField(25);
+//        tienThangmayField = new JTextField(25);
+//        tienVesinhField = new JTextField(25);
 
         // Thêm các thành phần vào panel
         panel.add(new JLabel("Mã hợp đồng:"));
@@ -118,23 +119,23 @@ public class ContractForm extends JPanel {
         panel.add(new JLabel("Trạng thái:"));
         panel.add(trangthaiField);
 
-        panel.add(new JLabel("Tiền điện:"));
-        panel.add(tienDienField);
-
-        panel.add(new JLabel("Tiền nước:"));
-        panel.add(tienNuocField);
-
-        panel.add(new JLabel("Tiền Internet:"));
-        panel.add(tienInternetField);
-
-        panel.add(new JLabel("Tiền đậu xe:"));
-        panel.add(tienDauxeField);
-
-        panel.add(new JLabel("Tiền thang máy:"));
-        panel.add(tienThangmayField);
-
-        panel.add(new JLabel("Tiền vệ sinh:"));
-        panel.add(tienVesinhField);
+//        panel.add(new JLabel("Tiền điện:"));
+//        panel.add(tienDienField);
+//
+//        panel.add(new JLabel("Tiền nước:"));
+//        panel.add(tienNuocField);
+//
+//        panel.add(new JLabel("Tiền Internet:"));
+//        panel.add(tienInternetField);
+//
+//        panel.add(new JLabel("Tiền đậu xe:"));
+//        panel.add(tienDauxeField);
+//
+//        panel.add(new JLabel("Tiền thang máy:"));
+//        panel.add(tienThangmayField);
+//
+//        panel.add(new JLabel("Tiền vệ sinh:"));
+//        panel.add(tienVesinhField);
 
         return panel;
     }
@@ -164,10 +165,10 @@ public class ContractForm extends JPanel {
         // Search Field Panel
         JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
         JLabel searchLabel = new JLabel("Tìm kiếm:");
-        trangthaiField = new JTextField(30); // Kéo dài trường tìm kiếm
+        searchField = new JTextField(30); // Kéo dài trường tìm kiếm
         searchBtn = new JButton("Tìm");
         searchPanel.add(searchLabel);
-        searchPanel.add(trangthaiField);
+        searchPanel.add(searchField);
         searchPanel.add(searchBtn);
         panel.add(searchPanel, BorderLayout.NORTH);
 
