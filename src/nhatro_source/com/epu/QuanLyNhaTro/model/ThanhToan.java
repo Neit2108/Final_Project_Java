@@ -14,20 +14,9 @@ import java.time.LocalDateTime;
 @Setter
 public class ThanhToan {
     private int maThanhToan;
-    private int maHopDong;
+    private int maHoaDon;
     private double soTien;
-    private String hinhThucThanhToan;
     private String trangThai;
-    private LocalDate ngayThanhToan;
+    private LocalDateTime ngayThanhToan;
 
-    public String toString(){
-        return "ThanhToan{" +
-                "maThanhToan='" + maThanhToan + '\''
-                + ", maHopDong='" + maHopDong + '\''
-                + ", soTien='" + soTien + '\''
-                + ", hinhThucThanhToan='" + hinhThucThanhToan + '\''
-                + ", trangThai='" + trangThai + '\''
-                + ", ngayThanhToan=" + ngayThanhToan
-                + "}";
-    }
 }

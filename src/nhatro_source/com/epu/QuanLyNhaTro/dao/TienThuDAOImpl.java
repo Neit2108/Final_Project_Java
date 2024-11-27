@@ -42,11 +42,11 @@ public class TienThuDAOImpl implements TienThuDAO {
     }
 
     @Override
-    public TienThuTienIch getTienThu(int maTienThu) {
-        String query = "select * from TienThuTienIch where maTienThu = ?";
+    public TienThuTienIch getTienThu(int maPhong) {
+        String query = "select * from TienThuTienIch where maPhong = ?";
         TienThuTienIch tienThuTienIch = new TienThuTienIch();
         try(PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setInt(1, maTienThu);
+            ps.setInt(1, maPhong);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 tienThuTienIch.setMaTienThu(rs.getInt("maTienThu"));

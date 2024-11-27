@@ -17,6 +17,7 @@ public class HopDong {
     private int maPhong;
     private int maKhachThue;
     private double tienCoc;
+    private int soNguoi;
     private LocalDate ngayThue;
     private int thoiHanHopDong;
     private LocalDateTime ngayTao;

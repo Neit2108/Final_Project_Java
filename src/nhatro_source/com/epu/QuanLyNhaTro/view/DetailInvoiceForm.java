@@ -1,5 +1,6 @@
 package com.epu.QuanLyNhaTro.view;
 
+import com.epu.QuanLyNhaTro.controller.DetailInvoiceController;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,6 +32,8 @@ public class DetailInvoiceForm extends JFrame {
     private JLabel cleanLbl;
     private JTextField totalField;
     private JLabel totalLbl;
+    private JLabel numberOfMemberLbl;  // Added label for "Số người"
+    private JTextField numberOfMemberField;  // Added field for "Số người"
     private JComboBox<String> paymentCombo;
     private JLabel paymentLbl;
     private JPanel paymentBtnPnl;
@@ -54,6 +57,12 @@ public class DetailInvoiceForm extends JFrame {
 
         numberOfRoomLbl = new JLabel("PHÒNG SỐ");
         numberOfRoomLbl.setFont(new Font("Serif", Font.BOLD, 18));
+
+        // Adding "Số người"
+        numberOfMemberLbl = new JLabel("Số người");
+        numberOfMemberLbl.setFont(new Font("Serif", Font.PLAIN, 16));
+        numberOfMemberField = new JTextField(5);  // Smaller size for number of people
+        numberOfMemberField.setHorizontalAlignment(JTextField.CENTER);
 
         elecLbl = new JLabel("Điện");
         waterLbl = new JLabel("Nước");
@@ -101,7 +110,12 @@ public class DetailInvoiceForm extends JFrame {
         layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addComponent(titleLbl)
                 .addComponent(addressLbl)
-                .addComponent(numberOfRoomLbl)
+                .addGroup(layout.createSequentialGroup()
+                        .addComponent(numberOfRoomLbl)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 100, Short.MAX_VALUE) // Space between labels
+                        .addComponent(numberOfMemberLbl)
+                        .addComponent(numberOfMemberField)  // "Số người" aligned to the right
+                )
                 .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                 .addComponent(elecLbl)
@@ -128,7 +142,11 @@ public class DetailInvoiceForm extends JFrame {
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addComponent(titleLbl)
                 .addComponent(addressLbl)
-                .addComponent(numberOfRoomLbl)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(numberOfRoomLbl)
+                        .addComponent(numberOfMemberLbl)
+                        .addComponent(numberOfMemberField) // Align number of people field to the right
+                )
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(elecLbl)
                         .addComponent(elecField))
@@ -159,5 +177,5 @@ public class DetailInvoiceForm extends JFrame {
         DetailInvoiceForm detailInvoiceForm = new DetailInvoiceForm();
         detailInvoiceForm.setVisible(true);
     }
-
 }
+

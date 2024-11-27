@@ -148,6 +148,7 @@ create table HopDong(
 	constraint chk_hopdong_trangthai check ( trangThai in ( N'Còn hiệu lực', N'Hết hiệu lực')),
 	constraint chk_hopdong_thoihan check ( thoiHanHopDong > 0)
 )
+alter table HopDong add soNguoi int not null default 1
 
 CREATE TABLE HoaDon (
     maHoaDon INT IDENTITY(1,1) PRIMARY KEY,
@@ -193,13 +194,14 @@ CREATE TABLE TienThuTienIch (
     ngayGhiDien DATETIME DEFAULT GETDATE(),
     soDienCu decimal(10, 2) NOT NULL,    -- Số điện cũ
     soDienMoi decimal(10, 2) NOT NULL,   -- Số điện mới
-    soDienDaDung AS (soDienMoi - soDienCu) PERSISTED, -- Số điện đã dùng (tính toán tự động)
+    soDienDaDung AS (soDienMoi - soDienCu) PERSISTED, -- Số điện đã dùng 
     soNuocCu decimal(10, 2) NOT NULL,    -- Số nước cũ
     soNuocMoi decimal(10, 2) NOT NULL,   -- Số nước mới
-    soNuocDaDung AS (soNuocMoi - soNuocCu) PERSISTED, -- Số nước đã dùng (tính toán tự động)
+    soNuocDaDung AS (soNuocMoi - soNuocCu) PERSISTED, -- Số nước đã dùng 
     PRIMARY KEY (maPhong, ngayGhiDien),
     FOREIGN KEY (maPhong) REFERENCES Phong(maPhong)
 ); 
+
 INSERT INTO TienThuTienIch (maPhong, soDienCu, soDienMoi, soNuocCu, soNuocMoi) VALUES
 (21, 100.00, 150.00, 30.00, 50.00),
 (22, 120.00, 170.00, 40.00, 60.00),
@@ -222,7 +224,7 @@ INSERT INTO TienThuTienIch (maPhong, soDienCu, soDienMoi, soNuocCu, soNuocMoi) V
 (19, 280.00, 330.00, 120.00, 140.00),
 (20, 290.00, 340.00, 125.00, 145.00);
 
-
+select * from TienThuTienIch
 create table ThanhToan(
 	maThanhToan int identity(1,1) primary key,
 	maHoaDon int not null,
@@ -305,4 +307,4 @@ BEGIN
 END;
 
 
-select * from TienThuTienIch
+select * from Phong

@@ -31,6 +31,9 @@ public class InvoiceFormController {
                     int selectedRow = invoiceForm.getMainTable().getSelectedRow();
                     if(selectedRow != -1) {
                         DetailInvoiceForm detailInvoiceForm = new DetailInvoiceForm();
+                        DetailInvoiceController detailInvoiceController = new DetailInvoiceController(detailInvoiceForm, invoiceForm);
+                        detailInvoiceController.init();
+                        detailInvoiceForm.setVisible(true);
 
                     }
                 }
@@ -46,8 +49,8 @@ public class InvoiceFormController {
             HopDong hopDong = hopDongDAO.getHopDong(hoaDon.getMaHopDong());
             invoiceForm.getTableModel().addRow(new Object[]{
                     hoaDon.getMaHoaDon(),
+                    hopDong.getMaHopDong(),
                     hopDong.getMaPhong(),
-                    hopDong.getMaKhachThue(),
                     hoaDon.getTongTien(),
                     hoaDon.getTrangThai(),
                     hoaDon.getNgayTao(),

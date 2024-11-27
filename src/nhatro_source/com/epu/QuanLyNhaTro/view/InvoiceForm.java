@@ -49,7 +49,7 @@ public class InvoiceForm extends JPanel{
         panel.add(searchPanel, BorderLayout.NORTH);
 
         // Table
-        String[] columnNames = {"Mã hóa đơn", "Mã Phòng", "Mã Khách", "Tổng Tiền", "Trạng thái", "Ngày Tạo", "Ngày thanh toán"};
+        String[] columnNames = {"Mã hóa đơn", "Mã Hợp Đồng", "Mã Phòng", "Tổng Tiền", "Trạng thái", "Ngày Tạo", "Ngày thanh toán"};
 
         this.tableModel = new DefaultTableModel(columnNames, 0){
             @Override

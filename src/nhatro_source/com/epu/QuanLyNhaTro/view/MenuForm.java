@@ -86,11 +86,13 @@ public class MenuForm extends JFrame {
         QuanLyPhongForm qlpf = new QuanLyPhongForm();
         NewHomePage newhome = new NewHomePage();
         ContractForm contractForm = new ContractForm();
+        InvoiceForm invoiceForm = new InvoiceForm();
 
         mainPanel.add(newhome, "HomePage");
         mainPanel.add(tenantManagement, "QuanLyKhachThue");
         mainPanel.add(qlpf, "QuanLyPhong");
         mainPanel.add(contractForm, "HopDong");
+        mainPanel.add(invoiceForm, "HoaDon");
 
         //init controller
         new com.epu.QuanLyNhaTro.controller.MenuFormController(this).init();
