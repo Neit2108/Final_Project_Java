@@ -32,8 +32,8 @@ public class DetailInvoiceForm extends JFrame {
     private JLabel cleanLbl;
     private JTextField totalField;
     private JLabel totalLbl;
-    private JLabel numberOfMemberLbl;  // Added label for "Số người"
-    private JTextField numberOfMemberField;  // Added field for "Số người"
+    private JLabel numberOfMemberLbl;
+    private JTextField numberOfMemberField;
     private JComboBox<String> paymentCombo;
     private JLabel paymentLbl;
     private JPanel paymentBtnPnl;
@@ -42,7 +42,7 @@ public class DetailInvoiceForm extends JFrame {
     private DefaultTableModel tableModel;
 
     public DetailInvoiceForm() {
-        setContentPane(mainPnl);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(800, 600);
 
         mainPnl = new JPanel();
@@ -58,11 +58,9 @@ public class DetailInvoiceForm extends JFrame {
         numberOfRoomLbl = new JLabel("PHÒNG SỐ");
         numberOfRoomLbl.setFont(new Font("Serif", Font.BOLD, 18));
 
-        // Adding "Số người"
         numberOfMemberLbl = new JLabel("Số người");
         numberOfMemberLbl.setFont(new Font("Serif", Font.PLAIN, 16));
-        numberOfMemberField = new JTextField(5);  // Smaller size for number of people
-        numberOfMemberField.setHorizontalAlignment(JTextField.CENTER);
+        numberOfMemberField = new JTextField(5);
 
         elecLbl = new JLabel("Điện");
         waterLbl = new JLabel("Nước");
@@ -102,6 +100,7 @@ public class DetailInvoiceForm extends JFrame {
         paymentBtnPnl.add(exportBtn);
         paymentBtnPnl.add(payBtn);
 
+        detailPnl = new JPanel();
         GroupLayout layout = new GroupLayout(mainPnl);
         mainPnl.setLayout(layout);
         layout.setAutoCreateGaps(true);
@@ -112,9 +111,9 @@ public class DetailInvoiceForm extends JFrame {
                 .addComponent(addressLbl)
                 .addGroup(layout.createSequentialGroup()
                         .addComponent(numberOfRoomLbl)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 100, Short.MAX_VALUE) // Space between labels
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(numberOfMemberLbl)
-                        .addComponent(numberOfMemberField)  // "Số người" aligned to the right
+                        .addComponent(numberOfMemberField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                 )
                 .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -124,18 +123,19 @@ public class DetailInvoiceForm extends JFrame {
                                 .addComponent(vehicleLbl)
                                 .addComponent(cleanLbl))
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                .addComponent(elecField)
-                                .addComponent(waterField)
-                                .addComponent(internetField)
-                                .addComponent(vehicleField)
-                                .addComponent(cleanField)))
+                                .addComponent(elecField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(waterField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(internetField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(vehicleField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cleanField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                )
                 .addComponent(scrollPane)
                 .addGroup(layout.createSequentialGroup()
                         .addComponent(totalLbl)
-                        .addComponent(totalField))
+                        .addComponent(totalField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createSequentialGroup()
                         .addComponent(paymentLbl)
-                        .addComponent(paymentCombo))
+                        .addComponent(paymentCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                 .addComponent(paymentBtnPnl)
         );
 
@@ -145,8 +145,7 @@ public class DetailInvoiceForm extends JFrame {
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(numberOfRoomLbl)
                         .addComponent(numberOfMemberLbl)
-                        .addComponent(numberOfMemberField) // Align number of people field to the right
-                )
+                        .addComponent(numberOfMemberField))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(elecLbl)
                         .addComponent(elecField))
@@ -178,4 +177,3 @@ public class DetailInvoiceForm extends JFrame {
         detailInvoiceForm.setVisible(true);
     }
 }
-
