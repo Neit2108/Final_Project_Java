@@ -10,6 +10,7 @@ import com.epu.QuanLyNhaTro.view.QuanLyPhongForm;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 public class QuanLyPhongController {
     private final QuanLyPhongForm quanLyPhongForm;
@@ -19,11 +20,27 @@ public class QuanLyPhongController {
     }
 
     public void init() {
+        showData();
         quanLyPhongForm.getThemBtn().addActionListener(e -> handleThemBtn());
         quanLyPhongForm.getSuaBtn().addActionListener(e -> handleSuaBtn());
         quanLyPhongForm.getXoaBtn().addActionListener(e -> handleXoaBtn());
         //quanLyPhongForm.getLamMoiBtn().addActionListener(e -> handleLamMoiBtn());
         quanLyPhongForm.getChonAnhBtn().addActionListener(e -> handleChonAnhBtn());
+    }
+
+    private void showData(){
+        PhongDAO phongDAO = new PhongDAOImpl();
+        List<Phong> phongs = phongDAO.getAllPhong();
+        for (int i = 0; i < phongs.size(); i++) {
+            int maPhong = phongs.get(i).getMaPhong();
+            String tenPhong = phongs.get(i).getTenPhong();
+            int maNhaTro = phongs.get(i).getMaNhaTro();
+            KieuPhongDAO kieuPhongDAO = new KieuPhongDAOImpl();
+            String loaiPhong = kieuPhongDAO.getKieuPhong(phongs.get(i).getMaKieuPhong()).getLoaiPhong();
+            String giaPhong = String.valueOf(kieuPhongDAO.getKieuPhong(phongs.get(i).getMaKieuPhong()).getGiaPhong());
+            String anhPhong = phongs.get(i).getUrlImage();
+            quanLyPhongForm.getDanhSachPanel().add(quanLyPhongForm.createPhongPanel(maPhong, tenPhong, maNhaTro, loaiPhong, giaPhong, anhPhong));
+        }
     }
 
     public void handleRoomClick(MouseEvent event, int maPhong) {
@@ -54,6 +71,13 @@ public class QuanLyPhongController {
         }
     }
 
+    public void clearDanhSachPanel() {
+        quanLyPhongForm.getDanhSachPanel().removeAll(); // Xóa tất cả các thành phần con
+        quanLyPhongForm.getDanhSachPanel().revalidate(); // Cập nhật bố cục (layout)
+        quanLyPhongForm.getDanhSachPanel().repaint();    // Vẽ lại giao diện
+    }
+
+
     private void handleThemBtn(){
         PhongDAO phongDAO = new PhongDAOImpl();
         KieuPhongDAO kieuPhongDAO = new KieuPhongDAOImpl();
@@ -61,7 +85,20 @@ public class QuanLyPhongController {
         int maKieuPhong = kieuPhongDAO.getKieuPhong(Integer.parseInt(quanLyPhongForm.getLoaiPhongField().getText())).getMaKieuPhong();
         int maNhaTro = Integer.parseInt(quanLyPhongForm.getMaNhaTroField().getText());
         String urlImage = quanLyPhongForm.getChonAnhBtn().getText();
-        phongDAO.addPhong(tenPhong, maKieuPhong, maNhaTro, urlImage);
+
+        if(tenPhong.isEmpty() || urlImage.isEmpty() || quanLyPhongForm.getLoaiPhongField().getText().isEmpty() || quanLyPhongForm.getMaNhaTroField().getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else {
+            int i = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn thêm phòng này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+            if(i == JOptionPane.YES_OPTION){
+                phongDAO.addPhong(tenPhong, maKieuPhong, maNhaTro, urlImage);
+                JOptionPane.showMessageDialog(null, "Thêm phòng thành công!");
+                clearDanhSachPanel();
+                showData();
+            }
+        }
     }
 
     private void handleSuaBtn(){
@@ -72,12 +109,38 @@ public class QuanLyPhongController {
         int maKieuPhong = kieuPhongDAO.getKieuPhong(Integer.parseInt(quanLyPhongForm.getLoaiPhongField().getText())).getMaKieuPhong();
         int maNhaTro = Integer.parseInt(quanLyPhongForm.getMaNhaTroField().getText());
         String urlImage = quanLyPhongForm.getChonAnhBtn().getText();
-        phongDAO.updatePhong(maPhong, tenPhong, maKieuPhong, maNhaTro, urlImage);
+
+        if(tenPhong.isEmpty() || urlImage.isEmpty() || quanLyPhongForm.getLoaiPhongField().getText().isEmpty() || quanLyPhongForm.getMaNhaTroField().getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else {
+            int i = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn sửa phòng này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+            if(i == JOptionPane.YES_OPTION){
+                phongDAO.updatePhong(maPhong, tenPhong, maKieuPhong, maNhaTro, urlImage);
+                JOptionPane.showMessageDialog(null, "Sửa phòng thành công!");
+                clearDanhSachPanel();
+                showData();
+            }
+        }
     }
 
     private void handleXoaBtn(){
         PhongDAO phongDAO = new PhongDAOImpl();
         int maPhong = Integer.parseInt(quanLyPhongForm.getMaPhongField().getText());
-        phongDAO.deletePhong(maPhong);
+
+        if(maPhong == -1){
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn phòng cần xóa!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else {
+            int i = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa phòng này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+            if (i == JOptionPane.YES_OPTION) {
+                phongDAO.deletePhong(maPhong);
+                JOptionPane.showMessageDialog(null, "Xóa phòng thành công!");
+                clearDanhSachPanel();
+                showData();
+            }
+        }
     }
 }

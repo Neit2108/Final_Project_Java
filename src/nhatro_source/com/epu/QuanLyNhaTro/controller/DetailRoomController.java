@@ -25,7 +25,7 @@ public class DetailRoomController {
         Phong phong = phongDAO.getPhong(maPhong);
         //set ảnh
         detailRoom.getImageLbl().setPreferredSize(new Dimension(200, 200));
-        ImageIcon icon = new ImageIcon("D:\\MyProjects\\final_QuanLyNhaTro\\src\\resources\\icons8-house-100.png");
+        ImageIcon icon = new ImageIcon(phong.getUrlImage());
         Image image = icon.getImage();
         Image newImage = image.getScaledInstance(200, 200, Image.SCALE_SMOOTH);
         icon = new ImageIcon(newImage);

@@ -87,20 +87,6 @@ public class QuanLyPhongForm extends JPanel {
         danhSachPanel.setLayout(new GridLayout(0, 3, 10, 10)); // Hiển thị 3 cột
         danhSachPanel.setBorder(BorderFactory.createTitledBorder("Danh Sách Phòng"));
 
-        // hiển thị thông tin phòng
-        PhongDAO phongDAO = new PhongDAOImpl();
-        List<Phong> phongs = phongDAO.getAllPhong();
-        for (int i = 1; i <= phongs.size() - 3; i++) {
-            int maPhong = phongs.get(i).getMaPhong();
-            String tenPhong = phongs.get(i).getTenPhong();
-            int maNhaTro = phongs.get(i).getMaNhaTro();
-            KieuPhongDAO kieuPhongDAO = new KieuPhongDAOImpl();
-            String loaiPhong = kieuPhongDAO.getKieuPhong(phongs.get(i).getMaKieuPhong()).getLoaiPhong();
-            String giaPhong = String.valueOf(kieuPhongDAO.getKieuPhong(phongs.get(i).getMaKieuPhong()).getGiaPhong());
-            String anhPhong = phongs.get(i).getUrlImage();
-            danhSachPanel.add(createPhongPanel(maPhong, tenPhong, maNhaTro, loaiPhong, giaPhong, anhPhong));
-        }
-
         QuanLyPhongController quanLyPhongController = new QuanLyPhongController(this);
         quanLyPhongController.init();
 
@@ -109,7 +95,7 @@ public class QuanLyPhongForm extends JPanel {
     }
 
     // Hàm tạo khung hiển thị thông tin phòng
-    private JPanel createPhongPanel(int maPhong, String tenPhong, int maNhaTro, String loaiPhong, String giaPhong, String anhPhong) {
+    public JPanel createPhongPanel(int maPhong, String tenPhong, int maNhaTro, String loaiPhong, String giaPhong, String anhPhong) {
         JPanel phongPanel = new JPanel();
         phongPanel.setLayout(new BorderLayout(5, 5));
         phongPanel.setBorder(BorderFactory.createTitledBorder("Mã Phòng: " + maPhong));

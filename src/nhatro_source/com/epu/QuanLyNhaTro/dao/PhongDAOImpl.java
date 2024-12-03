@@ -137,6 +137,7 @@ public class PhongDAOImpl implements PhongDAO{
     public static void main(String[] args) {
         PhongDAO phongDAO = new PhongDAOImpl();
         List<Phong> phongs = phongDAO.getAllPhong();
+        System.out.println(phongs.size());
         for (Phong phong : phongs) {
             System.out.println(phong.getMaPhong());
         }
