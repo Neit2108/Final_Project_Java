@@ -61,6 +61,11 @@ public class HopDongDAOImpl implements HopDongDAO {
         return hopDongList;
     }
 
+    @Override
+    public List<HopDong> getHopDongByMaKhach(int maKhach) {
+        return List.of();
+    }
+
     public static void main(String[] args) {
         HopDongDAO hopDongDAO = new HopDongDAOImpl();
         List<HopDong> hopDongList = hopDongDAO.getAllHopDong();

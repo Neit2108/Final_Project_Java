@@ -149,7 +149,7 @@ create table HopDong(
 	constraint chk_hopdong_thoihan check ( thoiHanHopDong > 0)
 )
 alter table HopDong add soNguoi int not null default 1
-
+alter table HopDong add constraint fk_hopdong_makhach foreign key (maKhachThue) references KhachThue(maKhachThue) on delete	cascade
 CREATE TABLE HoaDon (
     maHoaDon INT IDENTITY(1,1) PRIMARY KEY,
 	maHopDong int not null,
@@ -286,8 +286,16 @@ ON ThanhToan
 AFTER INSERT
 AS
 BEGIN
+    -- Cập nhật trạng thái và ngày thanh toán của hóa đơn
     UPDATE HoaDon
-    SET trangThai = N'Đã thanh toán'
+    SET 
+        trangThai = N'Đã thanh toán',
+        ngayThanhToan = (
+            SELECT TOP 1 ngayThanhToan
+            FROM ThanhToan
+            WHERE ThanhToan.maHoaDon = HoaDon.maHoaDon
+            ORDER BY ngayThanhToan DESC
+        )
     WHERE maHoaDon IN (
         SELECT maHoaDon FROM Inserted
     )
@@ -306,5 +314,4 @@ BEGIN
       AND DATEDIFF(DAY, ngayTao, GETDATE()) > 30;
 END;
 
-
-select * from Phong
+select * from HopDong

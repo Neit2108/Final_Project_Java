@@ -12,7 +12,7 @@ public class ContractFrame extends JFrame {
     private String userRole;  // Role của người dùng (admin/khachthue)
 
     public ContractFrame() {
-        this.userRole = Constant.role; // Lưu vai trò người dùng khi đăng nhập
+        this.userRole = Constant.taiKhoan.getVaiTro() != null ? Constant.taiKhoan.getVaiTro() : "Admin"; // Lưu vai trò người dùng khi đăng nhập
         setTitle("Danh Sách Hợp Đồng");
         setSize(600, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

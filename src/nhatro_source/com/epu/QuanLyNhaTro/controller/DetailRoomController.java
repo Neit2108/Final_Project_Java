@@ -4,30 +4,28 @@ import com.epu.QuanLyNhaTro.dao.*;
 import com.epu.QuanLyNhaTro.model.KieuPhong;
 import com.epu.QuanLyNhaTro.model.Phong;
 import com.epu.QuanLyNhaTro.view.DetailRoom;
-import com.epu.QuanLyNhaTro.view.HomePage;
 
 import javax.swing.*;
 import java.awt.*;
 import java.text.DecimalFormat;
-import java.util.Objects;
 
 public class DetailRoomController {
     private final DetailRoom detailRoom;
     private final PhongDAO phongDAO;
-    private final HomePage homePage;
 
-    public DetailRoomController(DetailRoom detailRoom, HomePage homePage) {
+    public DetailRoomController(DetailRoom detailRoom) {
         this.detailRoom = detailRoom;
-        this.homePage = homePage;
         this.phongDAO = new PhongDAOImpl();
     }
 
+    public void init(){
+    }
 
     public void handelDetailRoom(int maPhong) {
         Phong phong = phongDAO.getPhong(maPhong);
         //set ảnh
         detailRoom.getImageLbl().setPreferredSize(new Dimension(200, 200));
-        ImageIcon icon = new ImageIcon("src/resources/home.png");
+        ImageIcon icon = new ImageIcon("D:\\MyProjects\\final_QuanLyNhaTro\\src\\resources\\icons8-house-100.png");
         Image image = icon.getImage();
         Image newImage = image.getScaledInstance(200, 200, Image.SCALE_SMOOTH);
         icon = new ImageIcon(newImage);
