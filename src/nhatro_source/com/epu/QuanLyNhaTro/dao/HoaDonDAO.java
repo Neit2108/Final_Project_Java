@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface HoaDonDAO {
     List<HoaDon> getAllHoaDon();
+    List<HoaDon> getHoaDonByMaKhach(int maKhach);
 }

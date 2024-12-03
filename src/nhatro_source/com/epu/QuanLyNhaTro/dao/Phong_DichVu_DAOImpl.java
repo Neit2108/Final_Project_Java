@@ -59,4 +59,11 @@ public class Phong_DichVu_DAOImpl implements Phong_DichVu_DAO {
         return trangThaiList;
     }
 
+    public static void main(String[] args) {
+        Phong_DichVu_DAO phong_dichVu_dao = new Phong_DichVu_DAOImpl();
+        List<String> trangThaiList = phong_dichVu_dao.getAllTrangThaiPhong(5);
+        for (String trangThai : trangThaiList) {
+            System.out.println(trangThai);
+        }
+    }
 }

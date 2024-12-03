@@ -6,6 +6,7 @@ import com.epu.QuanLyNhaTro.util.DatabaseConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,6 +46,27 @@ public class HoaDonDAOImpl implements HoaDonDAO {
             }
         }
         catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return hoaDonList;
+    }
+
+    @Override
+    public List<HoaDon> getHoaDonByMaKhach(int maTaiKhoan) {
+        List<HoaDon> hoaDonList = new ArrayList<>();
+        String query = "select * from HoaDon\n" +
+                "join dbo.HopDong HD on HoaDon.maHopDong = HD.maHopDong\n" +
+                "join dbo.KhachThue KT on HD.maKhachThue = KT.maKhachThue\n" +
+                "where maTaiKhoan = ?";
+        try(PreparedStatement ps = conn.prepareStatement(query)){
+            ps.setInt(1, maTaiKhoan);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                HoaDon hd = new HoaDon(rs.getInt("maHoaDon"), rs.getInt("maHopDong"), rs.getDouble("tongTien"), rs.getDate("ngayTao").toLocalDate(), rs.getDate("ngayThanhToan").toLocalDate(), rs.getString("trangThai"));
+                hoaDonList.add(hd);
+            }
+
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return hoaDonList;

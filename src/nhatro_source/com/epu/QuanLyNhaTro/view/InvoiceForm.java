@@ -17,6 +17,20 @@ public class InvoiceForm extends JPanel{
     private DefaultTableModel tableModel;
     private JTextField searchField;
     private JButton searchBtn;
+    private JPanel inputPanel;
+    private JTextField numberField;
+    private JTextField cccdField;
+    private JTextField nameField;
+    private JTextField dateField;
+    private JTextField genderField;
+    private JTextField phoneField;
+    private JTextField addressField;
+    private JTextField accountNumberField;
+    private JButton addBtn;
+    private JButton editBtn;
+    private JButton deleteBtn;
+    private JButton resetBtn;
+
 
     public InvoiceForm() {
         initComponents();
@@ -30,8 +44,74 @@ public class InvoiceForm extends JPanel{
         JPanel mainTablePanel = createMainTablePanel();
         mainTablePanel.setBounds(330, 10, 1000, 700); // Điều chỉnh bảng chi tiết
         add(mainTablePanel);
+
+        JPanel buttonPanel = createButtonPanel();
+        buttonPanel.setBounds(10, 410, 300, 100); // Đặt nút dưới panel nhập liệu
+        add(buttonPanel);
+
+        JPanel inputPanel = createInputPanel();
+        inputPanel.setBounds(10, 50, 300, 350);
+        add(inputPanel);
     }
 
+    private JPanel createButtonPanel() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 10));
+
+        addBtn = new JButton("Thêm");
+        editBtn = new JButton("Thay đổi");
+        deleteBtn = new JButton("Xóa");
+        resetBtn = new JButton("Làm mới");
+
+        panel.add(addBtn);
+        panel.add(editBtn);
+        panel.add(deleteBtn);
+        panel.add(resetBtn);
+
+        return panel;
+    }
+    private JPanel createInputPanel() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(8, 2, 10, 10));
+        panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
+                "Nhập thông tin khách thuê", TitledBorder.CENTER, TitledBorder.TOP));
+
+        numberField = new JTextField(20);
+        cccdField = new JTextField(20);
+        nameField = new JTextField(20);
+        dateField = new JTextField(20);
+        genderField = new JTextField(20);
+        phoneField = new JTextField(20);
+        addressField = new JTextField(20);
+        accountNumberField = new JTextField(20);
+
+        panel.add(new JLabel("Mã khách:"));
+        panel.add(numberField);
+        numberField.setEditable(false);
+
+        panel.add(new JLabel("CCCD:"));
+        panel.add(cccdField);
+
+        panel.add(new JLabel("Tên khách:"));
+        panel.add(nameField);
+
+        panel.add(new JLabel("Ngày sinh:"));
+        panel.add(dateField);
+
+        panel.add(new JLabel("Giới tính:"));
+        panel.add(genderField);
+
+        panel.add(new JLabel("Số điện thoại:"));
+        panel.add(phoneField);
+
+        panel.add(new JLabel("Địa chỉ:"));
+        panel.add(addressField);
+
+        panel.add(new JLabel("Mã tài khoản:"));
+        panel.add(accountNumberField);
+
+        return panel;
+    }
     private JPanel createMainTablePanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());

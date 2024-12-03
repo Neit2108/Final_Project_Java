@@ -21,12 +21,13 @@ public class ThanhToanDAOImpl implements ThanhToanDAO {
 
 
     @Override
-    public void addThanhToan(int maHoaDon, double soTien, String trangThai) {
-        String query = "insert into ThanhToan(maHoaDon, soTien, trangThai) values(?,?,?)";
+    public void addThanhToan(int maHoaDon, double soTien, String hinhThuc, String trangThai) {
+        String query = "insert into ThanhToan(maHoaDon, soTien, hinhThucThanhToan, trangThai) values(?,?,?,?)";
         try(PreparedStatement ps = connection.prepareStatement(query)){
             ps.setInt(1, maHoaDon);
             ps.setDouble(2, soTien);
-            ps.setString(3, trangThai);
+            ps.setString(3, hinhThuc);
+            ps.setString(4, trangThai);
             int i = ps.executeUpdate();
             if(i == 1) {
                 connection.commit();

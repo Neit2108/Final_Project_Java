@@ -1,9 +1,22 @@
 package com.epu.QuanLyNhaTro.view;
 
+import com.epu.QuanLyNhaTro.controller.DetailRoomController;
+import com.epu.QuanLyNhaTro.controller.QuanLyPhongController;
+import com.epu.QuanLyNhaTro.dao.KieuPhongDAO;
+import com.epu.QuanLyNhaTro.dao.KieuPhongDAOImpl;
+import com.epu.QuanLyNhaTro.dao.PhongDAO;
+import com.epu.QuanLyNhaTro.dao.PhongDAOImpl;
+import com.epu.QuanLyNhaTro.model.Phong;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.util.List;
 
+@Getter
+@Setter
 public class QuanLyPhongForm extends JPanel {
 
     private JTextField maPhongField, tenPhongField, giaPhongField, maNhaTroField, loaiPhongField;
@@ -36,7 +49,7 @@ public class QuanLyPhongForm extends JPanel {
         maNhaTroField = createSmallTextField();
         formPanel.add(maNhaTroField);
 
-        formPanel.add(new JLabel("Loại Phòng:"));
+        formPanel.add(new JLabel("Mã Kiểu Phòng:"));
         loaiPhongField = createSmallTextField();
         formPanel.add(loaiPhongField);
 
@@ -74,27 +87,43 @@ public class QuanLyPhongForm extends JPanel {
         danhSachPanel.setLayout(new GridLayout(0, 3, 10, 10)); // Hiển thị 3 cột
         danhSachPanel.setBorder(BorderFactory.createTitledBorder("Danh Sách Phòng"));
 
-        // Dữ liệu mẫu: Khung hiển thị thông tin phòng
-        for (int i = 1; i <= 9; i++) {
-            danhSachPanel.add(createPhongPanel("P00" + i, "Phòng " + i, "Nhà Trọ A", "Loại 1", "1,500,000 VND", "Ảnh Phòng"));
+        // hiển thị thông tin phòng
+        PhongDAO phongDAO = new PhongDAOImpl();
+        List<Phong> phongs = phongDAO.getAllPhong();
+        for (int i = 1; i <= phongs.size() - 3; i++) {
+            int maPhong = phongs.get(i).getMaPhong();
+            String tenPhong = phongs.get(i).getTenPhong();
+            int maNhaTro = phongs.get(i).getMaNhaTro();
+            KieuPhongDAO kieuPhongDAO = new KieuPhongDAOImpl();
+            String loaiPhong = kieuPhongDAO.getKieuPhong(phongs.get(i).getMaKieuPhong()).getLoaiPhong();
+            String giaPhong = String.valueOf(kieuPhongDAO.getKieuPhong(phongs.get(i).getMaKieuPhong()).getGiaPhong());
+            String anhPhong = phongs.get(i).getUrlImage();
+            danhSachPanel.add(createPhongPanel(maPhong, tenPhong, maNhaTro, loaiPhong, giaPhong, anhPhong));
         }
+
+        QuanLyPhongController quanLyPhongController = new QuanLyPhongController(this);
+        quanLyPhongController.init();
 
         JScrollPane danhSachScrollPane = new JScrollPane(danhSachPanel);
         add(danhSachScrollPane, BorderLayout.CENTER);
     }
 
     // Hàm tạo khung hiển thị thông tin phòng
-    private JPanel createPhongPanel(String maPhong, String tenPhong, String maNhaTro, String loaiPhong, String giaPhong, String anhPhong) {
+    private JPanel createPhongPanel(int maPhong, String tenPhong, int maNhaTro, String loaiPhong, String giaPhong, String anhPhong) {
         JPanel phongPanel = new JPanel();
         phongPanel.setLayout(new BorderLayout(5, 5));
         phongPanel.setBorder(BorderFactory.createTitledBorder("Mã Phòng: " + maPhong));
         phongPanel.setPreferredSize(new Dimension(200, 250));
 
         // Ảnh giả lập
-        JLabel imageLabel = new JLabel("Ảnh");
+        JLabel imageLabel = new JLabel();
         imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
         imageLabel.setBorder(new LineBorder(Color.BLACK));
         imageLabel.setPreferredSize(new Dimension(150, 120));
+
+        ImageIcon icon = new ImageIcon("D:\\MyProjects\\final_QuanLyNhaTro\\src\\resources\\house_619153.png");
+        Image img = icon.getImage().getScaledInstance(150, 120, Image.SCALE_SMOOTH);
+        imageLabel.setIcon(new ImageIcon(img));
 
         phongPanel.add(imageLabel, BorderLayout.NORTH);
 
@@ -108,6 +137,12 @@ public class QuanLyPhongForm extends JPanel {
 
         // Nút "Chi Tiết" cân đối
         JButton chiTietBtn = createDetailButton("Chi Tiết");
+        chiTietBtn.addActionListener(e -> {
+            DetailRoom detailRoom = new DetailRoom();
+            DetailRoomController detailRoomController = new DetailRoomController(detailRoom);
+            detailRoomController.handelDetailRoom(maPhong);
+            detailRoom.setVisible(true);
+        });
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.add(chiTietBtn);
 
@@ -115,6 +150,13 @@ public class QuanLyPhongForm extends JPanel {
         infoPanel.add(buttonPanel, BorderLayout.SOUTH);
 
         phongPanel.add(infoPanel, BorderLayout.CENTER);
+
+        phongPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                QuanLyPhongController quanLyPhongController = new QuanLyPhongController(QuanLyPhongForm.this);
+                quanLyPhongController.handleRoomClick(evt, maPhong);
+            }
+        });
 
         return phongPanel;
     }

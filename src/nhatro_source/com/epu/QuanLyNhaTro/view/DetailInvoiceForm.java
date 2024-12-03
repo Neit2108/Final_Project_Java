@@ -42,7 +42,7 @@ public class DetailInvoiceForm extends JFrame {
     private DefaultTableModel tableModel;
 
     public DetailInvoiceForm() {
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setTitle("Chi Tiết Hóa Đơn");
         setSize(800, 600);
 
         mainPnl = new JPanel();
@@ -60,7 +60,7 @@ public class DetailInvoiceForm extends JFrame {
 
         numberOfMemberLbl = new JLabel("Số người");
         numberOfMemberLbl.setFont(new Font("Serif", Font.PLAIN, 16));
-        numberOfMemberField = new JTextField(5);
+        numberOfMemberField = new JTextField(5); numberOfMemberField.setEditable(false);
 
         elecLbl = new JLabel("Điện");
         waterLbl = new JLabel("Nước");
@@ -68,11 +68,11 @@ public class DetailInvoiceForm extends JFrame {
         vehicleLbl = new JLabel("Đỗ xe");
         cleanLbl = new JLabel("Vệ sinh");
 
-        elecField = new JTextField(10);
-        waterField = new JTextField(10);
-        internetField = new JTextField(10);
-        vehicleField = new JTextField(10);
-        cleanField = new JTextField(10);
+        elecField = new JTextField(10); elecField.setEditable(false);
+        waterField = new JTextField(10); waterField.setEditable(false);
+        internetField = new JTextField(10); internetField.setEditable(false);
+        vehicleField = new JTextField(10); vehicleField.setEditable(false);
+        cleanField = new JTextField(10); cleanField.setEditable(false);
 
         String[] columns = {"", "Số mới", "Số cũ", "Số tiêu thụ", "Đơn giá", "Thành tiền"};
         tableModel = new DefaultTableModel(columns, 0) {

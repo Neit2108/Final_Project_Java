@@ -47,8 +47,8 @@ public class DetailRoom extends JFrame {
                 {"Tiền điện", "4000 (số)"},
                 {"Tiền nước", "100000 (người)"},
                 {"Tiền vệ sinh", "10000 (người)"},
-                {"Tiền thang máy", "50000 (người)"},
-                {"Tiền wifi", "50000 (người)"},
+                {"Tiền thang máy", "100000 (phòng)"},
+                {"Tiền wifi", "100000 (phòng)"},
                 {"Tiền giữ xe", "50000 (người)"},
         };
 

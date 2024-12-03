@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PhongDAOImpl implements PhongDAO{
@@ -25,17 +26,46 @@ public class PhongDAOImpl implements PhongDAO{
 
     @Override
     public void addPhong(String tenPhong, int maKieuPhong, int maNhaTro, String urlImage) {
-
+        String query = "INSERT INTO Phong(tenPhong, maKieuPhong, maNhaTro, trangThai, urlImage) VALUES(?, ?, ?, ?, ?)";
+        try (PreparedStatement pstm = connection.prepareStatement(query)) {
+            pstm.setString(1, tenPhong);
+            pstm.setInt(2, maKieuPhong);
+            pstm.setInt(3, maNhaTro);
+            pstm.setString(4, "Chưa thuê");
+            pstm.setString(5, urlImage);
+            pstm.executeUpdate();
+            connection.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void updatePhong(int maPhong, String tenPhong, int maKieuPhong, int maNhaTro, String urlImage) {
-
+        String query = "UPDATE Phong SET tenPhong = ?, maKieuPhong = ?, maNhaTro = ?, urlImage = ? WHERE maPhong = ?";
+        try (PreparedStatement pstm = connection.prepareStatement(query)) {
+            pstm.setString(1, tenPhong);
+            pstm.setInt(2, maKieuPhong);
+            pstm.setInt(3, maNhaTro);
+            pstm.setString(4, urlImage);
+            pstm.setInt(5, maPhong);
+            pstm.executeUpdate();
+            connection.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void deletePhong(int maPhong) {
-
+        String query = "DELETE FROM Phong WHERE maPhong = ?";
+        try (PreparedStatement pstm = connection.prepareStatement(query)) {
+            pstm.setInt(1, maPhong);
+            pstm.executeUpdate();
+            connection.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -55,7 +85,18 @@ public class PhongDAOImpl implements PhongDAO{
 
     @Override
     public List<Phong> getAllPhong() {
-        return List.of();
+        List<Phong> phongs = new ArrayList<>();
+        String query = "SELECT * FROM Phong";
+        try(PreparedStatement ps = connection.prepareStatement(query)){
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                phongs.add(new Phong(rs.getInt("maPhong"), rs.getString("tenPhong"), rs.getInt("maKieuPhong"), rs.getInt("maNhaTro"), rs.getString("urlImage")));
+            }
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        return phongs;
     }
 
     @Override
@@ -95,6 +136,9 @@ public class PhongDAOImpl implements PhongDAO{
 
     public static void main(String[] args) {
         PhongDAO phongDAO = new PhongDAOImpl();
-        System.out.println(phongDAO.getMaChuNha(11));
+        List<Phong> phongs = phongDAO.getAllPhong();
+        for (Phong phong : phongs) {
+            System.out.println(phong.getMaPhong());
+        }
     }
 }

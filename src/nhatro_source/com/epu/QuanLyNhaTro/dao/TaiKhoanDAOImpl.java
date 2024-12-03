@@ -84,13 +84,12 @@ public class TaiKhoanDAOImpl implements TaiKhoanDAO {
     }
 
     @Override
-    public void updateTaiKhoan(String email, String password, String vaiTro) {
-        String query = "update TaiKhoan set password = ?, vaiTro = ? where email = ?";
+    public void updateTaiKhoan(String email, String vaiTro) {
+        String query = "update TaiKhoan set vaiTro = ? where email = ?";
         try {
             PreparedStatement ps = conn.prepareStatement(query);
-            ps.setString(1, password);
-            ps.setString(2, vaiTro);
-            ps.setString(3, email);
+            ps.setString(1, vaiTro);
+            ps.setString(2, email);
             ps.executeUpdate();
             this.conn.commit();
         } catch (SQLException e) {
@@ -114,7 +113,8 @@ public class TaiKhoanDAOImpl implements TaiKhoanDAO {
     public static void main(String[] args) {
         try {
             TaiKhoanDAO taiKhoanDAO = new TaiKhoanDAOImpl();
-            taiKhoanDAO.addTaiKhoan("cabuto993@gmail.com", "123456", "Khách Thuê");
+            //taiKhoanDAO.addTaiKhoan("cabuto993@gmail.com", "123456", "Khách Thuê");
+            taiKhoanDAO.updateTaiKhoan("inozuke2108@gmail.com", "Admin");
     } catch (SQLException e) {
             throw new RuntimeException(e);
         }

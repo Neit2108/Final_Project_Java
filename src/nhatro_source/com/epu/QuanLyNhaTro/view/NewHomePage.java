@@ -1,5 +1,6 @@
 package com.epu.QuanLyNhaTro.view;
 
+import com.epu.QuanLyNhaTro.controller.DetailRoomController;
 import com.epu.QuanLyNhaTro.dao.PhongDAO;
 import com.epu.QuanLyNhaTro.dao.PhongDAOImpl;
 import com.epu.QuanLyNhaTro.model.Phong;
@@ -30,10 +31,14 @@ public class NewHomePage extends JPanel {
         phongPanel.setPreferredSize(new Dimension(200, 250));
 
         // Ảnh giả lập
-        JLabel imageLabel = new JLabel("Ảnh");
+        JLabel imageLabel = new JLabel();
         imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
         imageLabel.setBorder(new LineBorder(Color.BLACK));
         imageLabel.setPreferredSize(new Dimension(150, 120));
+
+        ImageIcon icon = new ImageIcon("D:\\MyProjects\\final_QuanLyNhaTro\\src\\resources\\house_619153.png");
+        Image img = icon.getImage().getScaledInstance(150, 120, Image.SCALE_SMOOTH);
+        imageLabel.setIcon(new ImageIcon(img));
 
         phongPanel.add(imageLabel, BorderLayout.NORTH);
 
@@ -47,6 +52,12 @@ public class NewHomePage extends JPanel {
 
         // Nút "Chi Tiết"
         JButton chiTietBtn = createDetailButton("Chi Tiết");
+        chiTietBtn.addActionListener(e -> {
+            DetailRoom detailRoom = new DetailRoom();
+            DetailRoomController detailRoomController = new DetailRoomController(detailRoom);
+            detailRoomController.handelDetailRoom(maPhong);
+            detailRoom.setVisible(true);
+        });
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.add(chiTietBtn);
 

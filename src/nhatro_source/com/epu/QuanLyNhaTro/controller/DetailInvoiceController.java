@@ -6,6 +6,8 @@ import com.epu.QuanLyNhaTro.model.TienThuTienIch;
 import com.epu.QuanLyNhaTro.view.DetailInvoiceForm;
 import com.epu.QuanLyNhaTro.view.InvoiceForm;
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
 import java.util.List;
 
 public class DetailInvoiceController {
@@ -24,6 +26,7 @@ public class DetailInvoiceController {
         handleInfor(maHopDong, maPhong);
         handleTableUsedService(maHopDong, maPhong);
         handleTotal(maPhong);
+        this.detailInvoiceForm.getPayBtn().addActionListener(e -> handleThanhToanBtn(e, i));
     }
 
     private void handleInfor(int maHopDong, int maPhong){
@@ -75,6 +78,29 @@ public class DetailInvoiceController {
 
                 )
         );
+    }
+
+    private void handleThanhToanBtn(ActionEvent event, int selectedRow){
+        ThanhToanDAO thanhToanDAO = new ThanhToanDAOImpl();
+        String hinhThuc = this.detailInvoiceForm.getPaymentCombo().getSelectedItem().toString();
+        String trangThai = this.invoiceForm.getMainTable().getValueAt(selectedRow, 4).toString();
+        if(trangThai.equalsIgnoreCase("Đã thanh toán")){
+            JOptionPane.showMessageDialog(null, "Hóa đơn đã được thanh toán");
+            return;
+        }
+        if(!hinhThuc.equalsIgnoreCase("Chuyển Khoản")){
+            thanhToanDAO.addThanhToan(
+                    (int) this.invoiceForm.getMainTable().getValueAt(selectedRow, 0),
+                    Double.parseDouble(this.detailInvoiceForm.getTotalField().getText()),
+                    hinhThuc,
+                    "Đã thanh toán"
+            );
+            JOptionPane.showMessageDialog(null, "Thanh toán thành công");
+            this.detailInvoiceForm.dispose();
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "Chức năng chưa được hỗ trợ");
+        }
     }
 }
 

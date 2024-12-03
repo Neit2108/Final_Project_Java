@@ -16,11 +16,10 @@ public class MenuFormController {
     }
 
     public void init(){
-        if(Constant.role.equals("Khách Thuê")){
+        if((Constant.role != null ? Constant.role : "Admin").equalsIgnoreCase("Khách Thuê")){
             this.menuForm.getQuanlyBtn().setVisible(false);
             this.menuForm.getPctBtn().setVisible(false);
             this.menuForm.getNhaBtn().setVisible(false);
-            this.menuForm.getHopdongBtn().setVisible(false);
         }
 
         this.menuForm.getDangxuatBtn().addActionListener(this::handleDangXuatBtn);
