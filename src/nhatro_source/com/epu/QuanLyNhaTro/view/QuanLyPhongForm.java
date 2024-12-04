@@ -32,54 +32,109 @@ public class QuanLyPhongForm extends JPanel {
         leftPanel.setPreferredSize(new Dimension(400, 793));
 
         // Form nhập liệu (formPanel)
-        JPanel formPanel = new JPanel(new GridLayout(6, 2, 10, 10));
-        formPanel.setBorder(BorderFactory.createTitledBorder("Thông Tin Phòng"));
-        formPanel.setPreferredSize(new Dimension(400, 500));
+        // Form nhập liệu (formPanel)
+        JPanel formPanel = new JPanel();
+        formPanel.setPreferredSize(new Dimension(400, 250));
 
-        formPanel.add(new JLabel("Mã Phòng:"));
+        formPanel.setBorder(BorderFactory.createTitledBorder("Thông Tin Phòng"));
+
+// Sử dụng GroupLayout cho formPanel
+        GroupLayout layout = new GroupLayout(formPanel);
+        formPanel.setLayout(layout);
+        formPanel.setPreferredSize(new Dimension(400, 250));
+
+        layout.setAutoCreateGaps(true); // Khoảng cách tự động giữa các thành phần
+        layout.setAutoCreateContainerGaps(true); // Khoảng cách tự động với biên ngoài
+
+// Các label và textfield
+        JLabel maPhongLabel = new JLabel("Mã Phòng:");
+        JLabel tenPhongLabel = new JLabel("Tên Phòng:");
+        JLabel maNhaTroLabel = new JLabel("Mã Nhà Trọ:");
+        JLabel loaiPhongLabel = new JLabel("Mã Kiểu Phòng:");
+        JLabel giaPhongLabel = new JLabel("Giá Phòng:");
+        JLabel anhPhongLabel = new JLabel("Ảnh Phòng:");
+
         maPhongField = createSmallTextField();
         maPhongField.setEditable(false);
-        formPanel.add(maPhongField);
-
-        formPanel.add(new JLabel("Tên Phòng:"));
         tenPhongField = createSmallTextField();
-        formPanel.add(tenPhongField);
-
-        formPanel.add(new JLabel("Mã Nhà Trọ:"));
         maNhaTroField = createSmallTextField();
-        formPanel.add(maNhaTroField);
-
-        formPanel.add(new JLabel("Mã Kiểu Phòng:"));
         loaiPhongField = createSmallTextField();
-        formPanel.add(loaiPhongField);
-
-        formPanel.add(new JLabel("Giá Phòng:"));
         giaPhongField = createSmallTextField();
-        formPanel.add(giaPhongField);
+        chonAnhBtn = createBoldButton("Chọn Ảnh");
 
-        formPanel.add(new JLabel("Ảnh Phòng:"));
-        chonAnhBtn = createButton("Chọn Ảnh");
-        formPanel.add(chonAnhBtn);
+// Thiết lập GroupLayout: căn chỉnh ngang và cách cạnh trái 35px
+        layout.setHorizontalGroup(
+                layout.createSequentialGroup()
+                        .addGap(35) // Cách biên trái 35px
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addComponent(maPhongLabel)
+                                .addComponent(tenPhongLabel)
+                                .addComponent(maNhaTroLabel)
+                                .addComponent(loaiPhongLabel)
+                                .addComponent(giaPhongLabel)
+                                .addComponent(anhPhongLabel))
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addComponent(maPhongField, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(tenPhongField, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(maNhaTroField, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(loaiPhongField, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(giaPhongField, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(chonAnhBtn))
+        );
+
+// Thiết lập GroupLayout: căn chỉnh dọc với khoảng cách 10px
+        layout.setVerticalGroup(
+                layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                .addComponent(maPhongLabel)
+                                .addComponent(maPhongField, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 10, 10) // Khoảng cách 10px giữa các dòng
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                .addComponent(tenPhongLabel)
+                                .addComponent(tenPhongField, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 10, 10)
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                .addComponent(maNhaTroLabel)
+                                .addComponent(maNhaTroField, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 10, 10)
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                .addComponent(loaiPhongLabel)
+                                .addComponent(loaiPhongField, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 10, 10)
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                .addComponent(giaPhongLabel)
+                                .addComponent(giaPhongField, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 10, 10)
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                .addComponent(anhPhongLabel)
+                                .addComponent(chonAnhBtn))
+        );
 
         leftPanel.add(formPanel, BorderLayout.CENTER);
 
         // Panel chức năng (buttonPanel)
         JPanel buttonPanel = new JPanel(new GridLayout(1, 4, 10, 10));
-        buttonPanel.setBorder(BorderFactory.createTitledBorder("Chức Năng"));
-        buttonPanel.setPreferredSize(new Dimension(400, 80));
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(40, 0, 0, 0)); // Cách phía trên 40px
 
-        themBtn = createButton("Thêm");
-        suaBtn = createButton("Sửa");
-        xoaBtn = createButton("Xóa");
-        lamMoiBtn = createButton("Tìm kiếm");
+// Tạo các nút với chữ đậm
+        themBtn = createBoldButton("Thêm");
+        suaBtn = createBoldButton("Sửa");
+        xoaBtn = createBoldButton("Xóa");
+        lamMoiBtn = createBoldButton("Tìm kiếm");
 
+// Thêm nút vào buttonPanel
         buttonPanel.add(themBtn);
         buttonPanel.add(suaBtn);
         buttonPanel.add(xoaBtn);
         buttonPanel.add(lamMoiBtn);
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
+
+// Thêm formPanel và buttonPanel vào leftPanel
+        leftPanel.add(formPanel, BorderLayout.CENTER);
         leftPanel.add(buttonPanel, BorderLayout.SOUTH);
 
+// Thêm leftPanel vào form chính
         add(leftPanel, BorderLayout.WEST);
 
         // Panel bên phải: Danh sách phòng (khung nhỏ)
@@ -155,13 +210,14 @@ public class QuanLyPhongForm extends JPanel {
         return textField;
     }
 
-    // Hàm tạo JButton với kích thước ban đầu
-    private JButton createButton(String text) {
+    // Hàm tạo JButton với chữ đậm
+    private JButton createBoldButton(String text) {
         JButton button = new JButton(text);
-        button.setFont(new Font("Arial", Font.PLAIN, 12));
+        button.setFont(new Font("Arial", Font.BOLD, 12)); // Chữ đậm
         button.setPreferredSize(new Dimension(100, 25));
         return button;
     }
+
 
     // Hàm tạo JButton "Chi Tiết" cân đối
     private JButton createDetailButton(String text) {
