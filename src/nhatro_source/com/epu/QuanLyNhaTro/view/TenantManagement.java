@@ -28,6 +28,8 @@ public class TenantManagement extends JPanel {
     private JTextField searchField;
     private JButton searchBtn;
     private JButton resetBtn;
+    private JButton tenantBtn;
+    private JButton hostBtn;
     private JTable mainTable;
     private JPanel mainTablePanel;
     private JTextField accountNumberField;
@@ -134,9 +136,15 @@ public class TenantManagement extends JPanel {
         JLabel searchLabel = new JLabel("Tìm kiếm:");
         searchField = new JTextField(30); // Kéo dài trường tìm kiếm
         searchBtn = new JButton("Tìm");
+        tenantBtn = new JButton("Khách thuê");
+        hostBtn = new JButton("Chủ nhà");
+        searchLabel.setBounds(10, 10, 60, 30); // Label tìm kiếm
         searchPanel.add(searchLabel);
         searchPanel.add(searchField);
         searchPanel.add(searchBtn);
+        searchPanel.add(Box.createHorizontalStrut(290)); /// tạo khoảng cách chiều rộng ở đoạn add vào panel thay vì cài đặt ở trên, gpt ngu vl dm mất time của bố
+        searchPanel.add(tenantBtn);
+        searchPanel.add(hostBtn);
         panel.add(searchPanel, BorderLayout.NORTH);
 
         // Table

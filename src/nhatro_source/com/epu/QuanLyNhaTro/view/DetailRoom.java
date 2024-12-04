@@ -31,12 +31,15 @@ public class DetailRoom extends JFrame {
     private JLabel serviceLbl7;
     private JLabel serviceLbl8;
     private JScrollPane scrollServiceList;
+    private JButton thuephongBtn;
     private DefaultTableModel tableModel;
     public DetailRoom() {
         setContentPane(MainPnl);
         setTitle("Chi tiết phòng");
         setSize(1000, 600);
         setLocationRelativeTo(null);
+        thuephongBtn = new JButton("Thuê phòng");
+
 
         // Bảng giá
         String[] column = {"", ""};
@@ -106,11 +109,12 @@ public class DetailRoom extends JFrame {
 
 
         // Cài đặt Look and Feel
-//        try {
-//            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+ //       try {
+ //           UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+ //       } catch (Exception e) {
+  //          e.printStackTrace();
+  //      }
+
     }
 
 
