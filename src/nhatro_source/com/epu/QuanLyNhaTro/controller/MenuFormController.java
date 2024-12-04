@@ -26,7 +26,6 @@ public class MenuFormController {
         this.menuForm.getHomePageBtn().addActionListener(this::handleHomePageBtn);
         this.menuForm.getQuanlyBtn().addActionListener(this::handleKhachThueBtn);
         this.menuForm.getPctBtn().addActionListener(this::handleQuanLyPhongBtn);
-        this.menuForm.getNhaBtn().addActionListener(this::handleNhaBtn);
         this.menuForm.getHopdongBtn().addActionListener(this::handleContractBtn);
         this.menuForm.getHoadonBtn().addActionListener(this::handleInvoiceBtn);
         this.menuForm.getNhaBtn().addActionListener(this::handleHouseBtn);
@@ -39,10 +38,6 @@ public class MenuFormController {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private void handleNhaBtn(ActionEvent event){
-        System.out.println(2);
     }
 
     private void handleKhachThueBtn(ActionEvent event){
