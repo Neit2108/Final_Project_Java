@@ -87,12 +87,14 @@ public class MenuForm extends JFrame {
         NewHomePage newhome = new NewHomePage();
         ContractForm contractForm = new ContractForm();
         InvoiceForm invoiceForm = new InvoiceForm();
+        HouseForm houseForm = new HouseForm();
 
         mainPanel.add(newhome, "HomePage");
         mainPanel.add(tenantManagement, "QuanLyKhachThue");
         mainPanel.add(qlpf, "QuanLyPhong");
         mainPanel.add(contractForm, "HopDong");
         mainPanel.add(invoiceForm, "HoaDon");
+        mainPanel.add(houseForm, "Nha");
 
         //init controller
         new com.epu.QuanLyNhaTro.controller.MenuFormController(this).init();

@@ -75,7 +75,7 @@ public class PhongDAOImpl implements PhongDAO{
             pstm.setInt(1, maPhong);
             ResultSet rs = pstm.executeQuery();
             if (rs.next()) {
-                return new Phong(rs.getInt("maPhong"), rs.getString("tenPhong"), rs.getInt("maKieuPhong"), rs.getInt("maNhaTro"), rs.getString("urlImage"));
+                return new Phong(rs.getInt("maPhong"), rs.getString("tenPhong"), rs.getInt("maKieuPhong"), rs.getInt("maNhaTro"), rs.getString("trangThai"), rs.getString("urlImage"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -90,7 +90,7 @@ public class PhongDAOImpl implements PhongDAO{
         try(PreparedStatement ps = connection.prepareStatement(query)){
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
-                phongs.add(new Phong(rs.getInt("maPhong"), rs.getString("tenPhong"), rs.getInt("maKieuPhong"), rs.getInt("maNhaTro"), rs.getString("urlImage")));
+                phongs.add(new Phong(rs.getInt("maPhong"), rs.getString("tenPhong"), rs.getInt("maKieuPhong"), rs.getInt("maNhaTro"), rs.getString("trangThai"), rs.getString("urlImage")));
             }
         }
         catch (SQLException e){

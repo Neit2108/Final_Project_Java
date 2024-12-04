@@ -8,6 +8,7 @@ import com.epu.QuanLyNhaTro.model.Phong;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.util.List;
 
 public class NewHomePage extends JPanel {
 
@@ -16,10 +17,13 @@ public class NewHomePage extends JPanel {
         setBorder(BorderFactory.createTitledBorder("Danh Sách Phòng"));
 
         //hiển thị thông tin phòng
-        for (int i = 1; i <= 9; i++) {
-            PhongDAO phongDAO = new PhongDAOImpl();
-            Phong phong = phongDAO.getPhong(i + 3);
-            add(createPhongPanel( i + 3, "Phòng " + (i + 3), phong.getMaNhaTro(), String.valueOf(phong.getMaKieuPhong()), phongDAO.getGiaPhong(i + 3), phong.getUrlImage()));
+        PhongDAO phongDAO = new PhongDAOImpl();
+        List<Phong> phongs = phongDAO.getAllPhong();
+        for (int i = 0; i <= 8; i++) {
+            if(phongs.get(i).getTrangThai().equalsIgnoreCase("Chưa thuê")){
+                Phong phong = phongs.get(i);
+                add(createPhongPanel(phong.getMaPhong(), phong.getTenPhong(), phong.getMaNhaTro(), String.valueOf(phong.getMaKieuPhong()), phongDAO.getGiaPhong(phong.getMaPhong()), phong.getUrlImage()));
+            }
         }
     }
 

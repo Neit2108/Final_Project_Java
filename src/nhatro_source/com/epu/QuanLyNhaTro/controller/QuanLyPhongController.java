@@ -64,7 +64,8 @@ public class QuanLyPhongController {
         int returnValue = fileChooser.showOpenDialog(null);
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             if (fileChooser.getSelectedFile().getName().toLowerCase().endsWith(".png")) {
-                quanLyPhongForm.getChonAnhBtn().setText(fileChooser.getSelectedFile().getName());
+                String absolutePath = fileChooser.getSelectedFile().getAbsolutePath();
+                quanLyPhongForm.getChonAnhBtn().setText(absolutePath);
             } else {
                 JOptionPane.showMessageDialog(null, "Vui lòng chọn file định dạng PNG!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }

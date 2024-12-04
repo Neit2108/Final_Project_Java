@@ -14,6 +14,7 @@ public class Phong {
     private String tenPhong;
     private int maKieuPhong;
     private int maNhaTro;
+    private String trangThai;
     private String urlImage;
 
     public String toString(){
