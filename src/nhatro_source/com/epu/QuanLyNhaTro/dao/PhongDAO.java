@@ -10,6 +10,7 @@ public interface PhongDAO {
     void deletePhong(int maPhong);
     Phong getPhong(int maPhong);
     List<Phong> getAllPhong();
+    List<Phong> getAllPhongByMaNhaTro(int maNhaTro);
     double getGiaPhong(int maPhong);
     int getMaChuNha(int maPhong);
 }

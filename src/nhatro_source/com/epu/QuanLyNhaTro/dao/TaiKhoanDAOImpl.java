@@ -12,9 +12,15 @@ import java.util.List;
 public class TaiKhoanDAOImpl implements TaiKhoanDAO {
     private final Connection conn;
 
-    public TaiKhoanDAOImpl() throws SQLException {
-        this.conn = DatabaseConnection.getConnection();
-        this.conn.setAutoCommit(false);
+    public TaiKhoanDAOImpl() {
+        try{
+            this.conn = DatabaseConnection.getConnection();
+            this.conn.setAutoCommit(false);
+        }
+        catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+
     }
 
     @Override
@@ -110,13 +116,56 @@ public class TaiKhoanDAOImpl implements TaiKhoanDAO {
         }
     }
 
-    public static void main(String[] args) {
+    @Override
+    public int getMaChuNha(int maTaiKhoan) {
+        String query = "select maChuNha from ChuNha where maTaiKhoan = ?";
         try {
-            TaiKhoanDAO taiKhoanDAO = new TaiKhoanDAOImpl();
-            //taiKhoanDAO.addTaiKhoan("cabuto993@gmail.com", "123456", "Khách Thuê");
-            taiKhoanDAO.updateTaiKhoan("inozuke2108@gmail.com", "Admin");
-    } catch (SQLException e) {
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, maTaiKhoan);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("maChuNha");
+            }
+            return -1;
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public int getMaKhachThue(int maTaiKhoan) {
+        String query = "select maKhachThue from KhachThue where maTaiKhoan = ?";
+        try {
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, maTaiKhoan);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("maKhachThue");
+            }
+            return -1;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public int getMaAdmin(int maTaiKhoan) {
+        String query = "select maAdmin from Admin where maTaiKhoan = ?";
+        try {
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, maTaiKhoan);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("maAdmin");
+            }
+            return -1;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void main(String[] args) {
+        TaiKhoanDAOImpl tk = new TaiKhoanDAOImpl();
+        tk.updateTaiKhoan("ldtien.210804@gmail.com", "Chủ nhà");
     }
 }

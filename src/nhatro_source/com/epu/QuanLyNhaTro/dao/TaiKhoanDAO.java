@@ -10,4 +10,7 @@ public interface TaiKhoanDAO {
     TaiKhoan getTaiKhoan(String email);
     void updateTaiKhoan(String email, String vaiTro);
     void deleteTaiKhoan(String email);
+    int getMaChuNha(int maTaiKhoan);
+    int getMaKhachThue(int maTaiKhoan);
+    int getMaAdmin(int maTaiKhoan);
 }

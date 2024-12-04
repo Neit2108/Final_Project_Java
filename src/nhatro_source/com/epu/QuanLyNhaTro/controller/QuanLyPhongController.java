@@ -1,10 +1,9 @@
 package com.epu.QuanLyNhaTro.controller;
 
-import com.epu.QuanLyNhaTro.dao.KieuPhongDAO;
-import com.epu.QuanLyNhaTro.dao.KieuPhongDAOImpl;
-import com.epu.QuanLyNhaTro.dao.PhongDAO;
-import com.epu.QuanLyNhaTro.dao.PhongDAOImpl;
+import com.epu.QuanLyNhaTro.dao.*;
+import com.epu.QuanLyNhaTro.model.NhaTro;
 import com.epu.QuanLyNhaTro.model.Phong;
+import com.epu.QuanLyNhaTro.util.Constant;
 import com.epu.QuanLyNhaTro.view.QuanLyPhongForm;
 
 import javax.swing.*;
@@ -30,16 +29,37 @@ public class QuanLyPhongController {
 
     private void showData(){
         PhongDAO phongDAO = new PhongDAOImpl();
+        NhaTroDAO nhaTroDAO = new NhaTroDAOImpl();
         List<Phong> phongs = phongDAO.getAllPhong();
-        for (int i = 0; i < phongs.size(); i++) {
-            int maPhong = phongs.get(i).getMaPhong();
-            String tenPhong = phongs.get(i).getTenPhong();
-            int maNhaTro = phongs.get(i).getMaNhaTro();
-            KieuPhongDAO kieuPhongDAO = new KieuPhongDAOImpl();
-            String loaiPhong = kieuPhongDAO.getKieuPhong(phongs.get(i).getMaKieuPhong()).getLoaiPhong();
-            String giaPhong = String.valueOf(kieuPhongDAO.getKieuPhong(phongs.get(i).getMaKieuPhong()).getGiaPhong());
-            String anhPhong = phongs.get(i).getUrlImage();
-            quanLyPhongForm.getDanhSachPanel().add(quanLyPhongForm.createPhongPanel(maPhong, tenPhong, maNhaTro, loaiPhong, giaPhong, anhPhong));
+
+        if((Constant.role != null ? Constant.role : "Admin").equalsIgnoreCase("Admin")){
+            for (int i = 0; i < phongs.size(); i++) {
+                int maPhong = phongs.get(i).getMaPhong();
+                String tenPhong = phongs.get(i).getTenPhong();
+                int maNhaTro = phongs.get(i).getMaNhaTro();
+                KieuPhongDAO kieuPhongDAO = new KieuPhongDAOImpl();
+                String loaiPhong = kieuPhongDAO.getKieuPhong(phongs.get(i).getMaKieuPhong()).getLoaiPhong();
+                String giaPhong = String.valueOf(kieuPhongDAO.getKieuPhong(phongs.get(i).getMaKieuPhong()).getGiaPhong());
+                String anhPhong = phongs.get(i).getUrlImage();
+                quanLyPhongForm.getDanhSachPanel().add(quanLyPhongForm.createPhongPanel(maPhong, tenPhong, maNhaTro, loaiPhong, giaPhong, anhPhong));
+            }
+        }
+        else {
+            TaiKhoanDAO taiKhoanDAO = new TaiKhoanDAOImpl();
+            List<NhaTro> nhaTros = nhaTroDAO.getAllNhaTroByMaChuNha(taiKhoanDAO.getMaChuNha(Constant.taiKhoan.getMaTaiKhoan()));
+            for(NhaTro nhaTro : nhaTros){
+                List<Phong> phongs1 = phongDAO.getAllPhongByMaNhaTro(nhaTro.getMaNhaTro());
+                for (int i = 0; i < phongs1.size(); i++) {
+                    int maPhong = phongs1.get(i).getMaPhong();
+                    String tenPhong = phongs1.get(i).getTenPhong();
+                    int maNhaTro = phongs1.get(i).getMaNhaTro();
+                    KieuPhongDAO kieuPhongDAO = new KieuPhongDAOImpl();
+                    String loaiPhong = kieuPhongDAO.getKieuPhong(phongs1.get(i).getMaKieuPhong()).getLoaiPhong();
+                    String giaPhong = String.valueOf(kieuPhongDAO.getKieuPhong(phongs1.get(i).getMaKieuPhong()).getGiaPhong());
+                    String anhPhong = phongs1.get(i).getUrlImage();
+                    quanLyPhongForm.getDanhSachPanel().add(quanLyPhongForm.createPhongPanel(maPhong, tenPhong, maNhaTro, loaiPhong, giaPhong, anhPhong));
+                }
+            }
         }
     }
 

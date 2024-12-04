@@ -1,9 +1,15 @@
 package com.epu.QuanLyNhaTro.view;
 
+import com.epu.QuanLyNhaTro.controller.HouseFormController;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 
+@Setter
+@Getter
 public class HouseForm extends JPanel {
 
     private JTextField maNhaField, diaChiField, soLuongPhongField;
@@ -96,13 +102,11 @@ public class HouseForm extends JPanel {
 
         // Panel danh sách nhà
         danhSachPanel = new JPanel();
-        danhSachPanel.setLayout(new GridLayout(2, 3, 10, 10)); // 2 hàng x 3 cột
+        danhSachPanel.setLayout(new GridLayout(0, 3, 10, 10)); // 2 hàng x 3 cột
         danhSachPanel.setBorder(BorderFactory.createTitledBorder("Danh Sách Nhà"));
 
-        // Dữ liệu mẫu
-        for (int i = 1; i <= 6; i++) {
-            danhSachPanel.add(createNhaPanel("N00" + i, i % 2 == 0 ? "Đang hoạt động" : "Không hoạt động"));
-        }
+        HouseFormController controller = new HouseFormController(this);
+        controller.init();
 
         JScrollPane danhSachScrollPane = new JScrollPane(danhSachPanel);
         add(danhSachScrollPane, BorderLayout.CENTER);
@@ -136,17 +140,21 @@ public class HouseForm extends JPanel {
 
     // Tạo khung hiển thị thông tin nhà
     // Tạo khung hiển thị thông tin nhà
-    private JPanel createNhaPanel(String maNha, String trangThai) {
+    public JPanel createNhaPanel(String maNha, String trangThai) {
         JPanel nhaPanel = new JPanel();
         nhaPanel.setLayout(new BorderLayout(5, 5));
         nhaPanel.setBorder(BorderFactory.createTitledBorder(""));
         nhaPanel.setPreferredSize(new Dimension(200, 250));
 
         // Ảnh giả lập
-        JLabel imageLabel = new JLabel("Ảnh");
+        JLabel imageLabel = new JLabel();
         imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
         imageLabel.setBorder(new LineBorder(Color.BLACK));
-        imageLabel.setPreferredSize(new Dimension(150, 200));
+        imageLabel.setPreferredSize(new Dimension(150, 120));
+
+        ImageIcon icon = new ImageIcon("D:\\MyProjects\\final_QuanLyNhaTro\\src\\resources\\house_619153.png");
+        Image img = icon.getImage().getScaledInstance(150, 120, Image.SCALE_SMOOTH);
+        imageLabel.setIcon(new ImageIcon(img));
 
         nhaPanel.add(imageLabel, BorderLayout.NORTH);
 

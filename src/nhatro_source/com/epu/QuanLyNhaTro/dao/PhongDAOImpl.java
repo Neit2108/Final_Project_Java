@@ -100,6 +100,23 @@ public class PhongDAOImpl implements PhongDAO{
     }
 
     @Override
+    public List<Phong> getAllPhongByMaNhaTro(int maNhaTro) {
+        String query = "select * from NhaTro_Phong where [Mã nhà trọ] = ?";
+        List<Phong> phongs = new ArrayList<>();
+        try(PreparedStatement pstm = connection.prepareStatement(query)){
+            pstm.setInt(1, maNhaTro);
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()){
+                phongs.add(new Phong(rs.getInt("maPhong"), rs.getString("tenPhong"), rs.getInt("maKieuPhong"), rs.getInt("maNhaTro"), rs.getString("trangThai"), rs.getString("urlImage")));
+            }
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        return phongs;
+    }
+
+    @Override
     public double getGiaPhong(int maPhong) {
         String query = "select * from PhongView where maPhong = ?";
         try (PreparedStatement pstm = connection.prepareStatement(query)) {

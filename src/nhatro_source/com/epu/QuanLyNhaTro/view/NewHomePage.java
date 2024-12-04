@@ -1,8 +1,11 @@
 package com.epu.QuanLyNhaTro.view;
 
 import com.epu.QuanLyNhaTro.controller.DetailRoomController;
+import com.epu.QuanLyNhaTro.dao.KieuPhongDAO;
+import com.epu.QuanLyNhaTro.dao.KieuPhongDAOImpl;
 import com.epu.QuanLyNhaTro.dao.PhongDAO;
 import com.epu.QuanLyNhaTro.dao.PhongDAOImpl;
+import com.epu.QuanLyNhaTro.model.KieuPhong;
 import com.epu.QuanLyNhaTro.model.Phong;
 
 import javax.swing.*;
@@ -20,9 +23,11 @@ public class NewHomePage extends JPanel {
         PhongDAO phongDAO = new PhongDAOImpl();
         List<Phong> phongs = phongDAO.getAllPhong();
         for (int i = 0; i <= 8; i++) {
+            KieuPhongDAO kieuPhongDAO = new KieuPhongDAOImpl();
+            String loaiPhong = kieuPhongDAO.getKieuPhong(phongs.get(i).getMaKieuPhong()).getLoaiPhong();
             if(phongs.get(i).getTrangThai().equalsIgnoreCase("Chưa thuê")){
                 Phong phong = phongs.get(i);
-                add(createPhongPanel(phong.getMaPhong(), phong.getTenPhong(), phong.getMaNhaTro(), String.valueOf(phong.getMaKieuPhong()), phongDAO.getGiaPhong(phong.getMaPhong()), phong.getUrlImage()));
+                add(createPhongPanel(phong.getMaPhong(), phong.getTenPhong(), phong.getMaNhaTro(), loaiPhong, phongDAO.getGiaPhong(phong.getMaPhong()), phong.getUrlImage()));
             }
         }
     }
