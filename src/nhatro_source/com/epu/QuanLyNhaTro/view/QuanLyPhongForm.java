@@ -162,7 +162,7 @@ public class QuanLyPhongForm extends JPanel {
         imageLabel.setBorder(new LineBorder(Color.BLACK));
         imageLabel.setPreferredSize(new Dimension(150, 120));
 
-        ImageIcon icon = new ImageIcon("D:\\MyProjects\\final_QuanLyNhaTro\\src\\resources\\house_619153.png");
+        ImageIcon icon = new ImageIcon("D:\\MyProjects\\final_QuanLyNhaTro\\src\\resources\\roomImage.png");
         Image img = icon.getImage().getScaledInstance(150, 120, Image.SCALE_SMOOTH);
         imageLabel.setIcon(new ImageIcon(img));
 

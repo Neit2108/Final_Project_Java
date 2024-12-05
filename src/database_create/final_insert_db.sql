@@ -397,3 +397,36 @@ SELECT * FROM ChiTiet_DichVu;
 
 -- Kiểm tra bảng ChiTiet_CSVC
 SELECT * FROM ChiTiet_CSVC;
+
+delete from Phong -- xong
+delete from TienThuTienIch -- xong
+delete from HopDong -- xong
+delete from HoaDon -- xong
+delete from ChiTietHoaDon -- xong
+delete from ChuNha -- xong
+delete from NhaTro -- xong
+delete from KhachThue -- xong
+delete from DichVu -- xong
+delete from ChiTiet_CSVC -- xong
+delete from ChiTiet_CSVC -- xomg
+delete from CoSoVatChat -- xong
+delete from Admin -- xong
+delete from TaiKhoan -- xong
+delete from ThanhToan -- xong
+delete from Phong_DichVu -- xong
+delete from Phong_Khach -- xong
+delete from KieuPhong -- xong
+delete from KieuPhong_CoSoVatChat --- xong
+
+DECLARE @sql NVARCHAR(MAX) = '';
+
+-- Tìm các bảng có cột IDENTITY trong cơ sở dữ liệu
+SELECT @sql = @sql + 
+    'DBCC CHECKIDENT (''' + TABLE_SCHEMA + '.' + TABLE_NAME + ''', RESEED, 0);' + CHAR(13)
+FROM INFORMATION_SCHEMA.TABLES
+WHERE OBJECTPROPERTY(OBJECT_ID(TABLE_SCHEMA + '.' + TABLE_NAME), 'TableHasIdentity') = 1;
+
+-- Thực thi lệnh Reseed cho từng bảng
+EXEC sp_executesql @sql;
+
+select * from Admin

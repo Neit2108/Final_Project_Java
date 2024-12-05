@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class ChuNhaDAOImpl implements ChuNhaDAO{
     private final Connection connection;
@@ -20,6 +21,29 @@ public class ChuNhaDAOImpl implements ChuNhaDAO{
             throw new RuntimeException(e);
         }
 
+    }
+
+    @Override
+    public void addChuNha(String maCCCD, String ten, LocalDate ngaySinh, String gioiTinh, String soDienThoai, String diaChi, int maTaiKhoan) {
+        String query = "INSERT INTO ChuNha(maCCCD, tenChuNha, ngaySinh, gioiTinh, soDienThoai, diaChi, maTaiKhoan) VALUES(?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement pstm = connection.prepareStatement(query)) {
+            pstm.setString(1, maCCCD);
+            pstm.setString(2, ten);
+            pstm.setDate(3, java.sql.Date.valueOf(ngaySinh));
+            pstm.setString(4, gioiTinh);
+            pstm.setString(5, soDienThoai);
+            pstm.setString(6, diaChi);
+            pstm.setInt(7, maTaiKhoan);
+            pstm.executeUpdate();
+            connection.commit();
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

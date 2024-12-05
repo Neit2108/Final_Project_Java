@@ -9,7 +9,10 @@ create table TaiKhoan(
 	ngayTao datetime default getdate(),
 	constraint chk_taikhoan_vaitro check (vaiTro in (N'Admin', N'Khách Thuê', N'Chủ Nhà'))
 )
+alter table TaiKhoan add isFirstLogin bit default 1
+select isFirstLogin from TaiKhoan where email = 'inozuke2108@gmail.com'
 --Tài khoản quan hệ 1 - 1 với admin, khách và chủ
+select * from ChuNha
 
 create table Admin(
 	maAdmin int identity(1, 1) primary key,
@@ -101,7 +104,7 @@ create table Phong(
 	urlImage varchar(255) not null,
 	constraint fk_phong_makieuphong foreign key (maKieuPhong) references KieuPhong(maKieuPhong),
 	constraint fk_phong_manhatro foreign key (maNhaTro) references NhaTro(maNhaTro),
-	constraint chk_phong_trangthai check (trangThai in (N'Đã thuê', N'Chưa thuê'))
+	constraint chk_phong_trangthai check (trangThai in (N'Đã thuê', N'Chưa thuê', N'Không hoạt động'))
 )
 
 create table DichVu(

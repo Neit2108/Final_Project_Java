@@ -47,6 +47,8 @@ public class QuanLyPhongController {
         else {
             TaiKhoanDAO taiKhoanDAO = new TaiKhoanDAOImpl();
             List<NhaTro> nhaTros = nhaTroDAO.getAllNhaTroByMaChuNha(taiKhoanDAO.getMaChuNha(Constant.taiKhoan.getMaTaiKhoan()));
+            System.out.println(taiKhoanDAO.getMaChuNha(Constant.taiKhoan.getMaTaiKhoan()));
+            System.out.println(Constant.taiKhoan.getMaTaiKhoan());
             for(NhaTro nhaTro : nhaTros){
                 List<Phong> phongs1 = phongDAO.getAllPhongByMaNhaTro(nhaTro.getMaNhaTro());
                 for (int i = 0; i < phongs1.size(); i++) {
