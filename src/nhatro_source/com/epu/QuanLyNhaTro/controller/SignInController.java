@@ -94,6 +94,10 @@ public class SignInController {
                     SignUpInforForm signUpInforForm = new SignUpInforForm();
                     signUpInforForm.setVisible(true);
                 }
+                else {
+                    signInForm.dispose();
+                    new MenuForm().setVisible(true);
+                }
             }
         }
     }

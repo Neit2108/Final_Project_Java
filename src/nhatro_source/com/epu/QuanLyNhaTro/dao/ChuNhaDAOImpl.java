@@ -8,6 +8,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChuNhaDAOImpl implements ChuNhaDAO{
     private final Connection connection;
@@ -47,7 +49,7 @@ public class ChuNhaDAOImpl implements ChuNhaDAO{
     }
 
     @Override
-    public ChuNha getChuNha(int maChuNha) {
+    public ChuNha getChuNhaByMa(int maChuNha) {
         String query = "SELECT * FROM ChuNha WHERE maChuNha = ?";
         try (PreparedStatement pstm = connection.prepareStatement(query)) {
             pstm.setInt(1, maChuNha);
@@ -61,9 +63,40 @@ public class ChuNhaDAOImpl implements ChuNhaDAO{
         return null;
     }
 
+    @Override
+    public ChuNha getChuNhaByCCCD(String maCCCD) {
+        String query = "SELECT * FROM ChuNha WHERE maCCCD = ?";
+        try (PreparedStatement pstm = connection.prepareStatement(query)) {
+            pstm.setString(1, maCCCD);
+            ResultSet rs = pstm.executeQuery();
+            if (rs.next()) {
+                return new ChuNha(rs.getString("maCCCD"), rs.getString("tenChuNha"), rs.getDate("ngaySinh").toLocalDate(), rs.getString("gioiTinh"), rs.getString("soDienThoai"), rs.getString("diaChi"), rs.getInt("maChuNha"), rs.getInt("maTaiKhoan"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public List<ChuNha> getAllChuNha() {
+        String query = "SELECT * FROM ChuNha";
+        List<ChuNha> chuNhaList = new ArrayList<>();
+        try (PreparedStatement pstm = connection.prepareStatement(query)) {
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                ChuNha chuNha = new ChuNha(rs.getString("maCCCD"), rs.getString("tenChuNha"), rs.getDate("ngaySinh").toLocalDate(), rs.getString("gioiTinh"), rs.getString("soDienThoai"), rs.getString("diaChi"), rs.getInt("maChuNha"), rs.getInt("maTaiKhoan"));
+                chuNhaList.add(chuNha);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return chuNhaList;
+    }
+
 
     public static void main(String[] args) {
         ChuNhaDAO chuNhaDAO = new ChuNhaDAOImpl();
-        System.out.println(chuNhaDAO.getChuNha(3));
+
     }
 }

@@ -10,4 +10,5 @@ public interface HopDongDAO {
     HopDong getHopDong(int maHopDong);
     List<HopDong> getAllHopDong();
     List<HopDong> getHopDongByMaKhach(int maKhach);
+    List<HopDong> getHopDongByMaChuNha(int maChuNha);
 }

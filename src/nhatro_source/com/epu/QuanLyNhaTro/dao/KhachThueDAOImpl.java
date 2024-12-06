@@ -156,4 +156,36 @@ public class KhachThueDAOImpl implements KhachThueDAO {
         }
     }
 
+    @Override
+    public List<KhachThue> getKhachThueByMaChuNha(int maChuNha) {
+        String query = "SELECT DISTINCT KT.*\n" +
+                "FROM ChuNha CN\n" +
+                "JOIN NhaTro NT ON CN.maChuNha = NT.maChuNha\n" +
+                "JOIN Phong P ON NT.maNhaTro = P.maNhaTro\n" +
+                "JOIN HopDong HD ON P.maPhong = HD.maPhong\n" +
+                "JOIN KhachThue KT ON HD.maKhachThue = KT.maKhachThue\n" +
+                "WHERE CN.maChuNha = ?";
+        List<KhachThue> khachThueList = new ArrayList<>();
+        try(PreparedStatement pstm = connection.prepareStatement(query)){
+            pstm.setInt(1, maChuNha);
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()){
+                KhachThue khachThue = new KhachThue();
+                khachThue.setMaKhach(rs.getInt("maKhachThue"));
+                khachThue.setMaCCCD(rs.getString("maCCCD"));
+                khachThue.setTen(rs.getString("tenKhach"));
+                khachThue.setNgaySinh(rs.getDate("ngaySinh").toLocalDate());
+                khachThue.setGioiTinh(rs.getString("gioiTinh"));
+                khachThue.setSoDienThoai(rs.getString("soDienThoai"));
+                khachThue.setDiaChi(rs.getString("diaChi"));
+                khachThue.setMaTaiKhoan(rs.getInt("maTaiKhoan"));
+                khachThueList.add(khachThue);
+            }
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return khachThueList;
+    }
+
 }

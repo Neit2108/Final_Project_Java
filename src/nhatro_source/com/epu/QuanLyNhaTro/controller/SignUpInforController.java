@@ -16,7 +16,7 @@ public class SignUpInforController {
     }
 
     public void init(){
-
+        signUpInforForm.getSubmitBtn().addActionListener(e -> handleSubmitBtn());
     }
 
     private void handleSubmitBtn(){

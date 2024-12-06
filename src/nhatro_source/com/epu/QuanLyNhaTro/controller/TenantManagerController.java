@@ -1,9 +1,10 @@
 package com.epu.QuanLyNhaTro.controller;
 
-import com.epu.QuanLyNhaTro.dao.KhachThueDAO;
-import com.epu.QuanLyNhaTro.dao.KhachThueDAOImpl;
+import com.epu.QuanLyNhaTro.dao.*;
+import com.epu.QuanLyNhaTro.model.ChuNha;
 import com.epu.QuanLyNhaTro.model.KhachThue;
 import com.epu.QuanLyNhaTro.util.Authenticator;
+import com.epu.QuanLyNhaTro.util.Constant;
 import com.epu.QuanLyNhaTro.view.SignInForm;
 import com.epu.QuanLyNhaTro.view.TenantManagement;
 
@@ -27,8 +28,6 @@ public class TenantManagerController {
     }
 
     public void init(){
-        this.showData();
-
         this.tenantManagement.getMainTable().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -36,31 +35,63 @@ public class TenantManagerController {
             }
 
         });
-
-//        this.tenantManagement.getMainTable().addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mouseClicked(MouseEvent e) {
-//                if (e.getClickCount() == 2) {
-//                    try {
-//                        new SignInForm().setVisible(true);
-//                    } catch (SQLException ex) {
-//                        throw new RuntimeException(ex);
-//                    }
-//
-//                }
-//            }
-//        });
-
         this.tenantManagement.getSearchBtn().addActionListener(this::handleSearchBtn);
         this.tenantManagement.getAddBtn().addActionListener(this::handleAddBtn);
         this.tenantManagement.getEditBtn().addActionListener(this::handleUpdateBtn);
         this.tenantManagement.getDeleteBtn().addActionListener(this::handleDeleteBtn);
         this.tenantManagement.getResetBtn().addActionListener(this::handleResetBtn);
+
+        if(Constant.role.equalsIgnoreCase("Chủ nhà")){
+            showDataForChuNha();
+            this.tenantManagement.getHostBtn().setVisible(false);
+            this.tenantManagement.getTenantBtn().setVisible(false);
+        }
+        else {
+            this.tenantManagement.getTenantBtn().addActionListener(e -> {
+                showDataKhachThue();
+            });
+            this.tenantManagement.getHostBtn().addActionListener(e -> {
+                showDataChuNha();
+            });
+        }
+
+
     }
 
-    public void showData(){
+    private void showDataAll(){
+        if (Constant.role.equalsIgnoreCase("Chủ nhà")){
+            showDataForChuNha();
+        }
+        else if (Constant.role.equalsIgnoreCase("Admin")){
+
+        }
+    }
+
+    private void showDataKhachThue(){
         KhachThueDAO khachThueDAO = new KhachThueDAOImpl();
         List<KhachThue> khachThueList = khachThueDAO.getAllKhachThue();
+        this.tenantManagement.getTableModel().setRowCount(0);
+        for(KhachThue x : khachThueList){
+            String[] rows = new String[]{String.valueOf(x.getMaKhach()), x.getMaCCCD(), x.getTen(), String.valueOf(x.getNgaySinh()), x.getGioiTinh(), x.getSoDienThoai(), x.getDiaChi(), String.valueOf(x.getMaTaiKhoan())};
+            this.tenantManagement.getTableModel().addRow(rows);
+        }
+    }
+
+    private void showDataChuNha(){
+        ChuNhaDAO chuNhaDAO = new ChuNhaDAOImpl();
+        List<ChuNha> chuNhaList = chuNhaDAO.getAllChuNha();
+        this.tenantManagement.getTableModel().setRowCount(0);
+        for(ChuNha x : chuNhaList){
+            String[] rows = new String[]{String.valueOf(x.getMaChuNha()), x.getMaCCCD(), x.getTen(), String.valueOf(x.getNgaySinh()), x.getGioiTinh(), x.getSoDienThoai(), x.getDiaChi(), String.valueOf(x.getMaTaiKhoan())};
+            this.tenantManagement.getTableModel().addRow(rows);
+        }
+    }
+
+    private void showDataForChuNha(){
+        // Hien all khach thue nha cua chu nha
+        TaiKhoanDAO taiKhoanDAO = new TaiKhoanDAOImpl();
+        List<KhachThue> khachThueList = new KhachThueDAOImpl().getKhachThueByMaChuNha(taiKhoanDAO.getMaChuNha(Constant.taiKhoan.getMaTaiKhoan()));
+        this.tenantManagement.getTableModel().setRowCount(0);
         for(KhachThue x : khachThueList){
             String[] rows = new String[]{String.valueOf(x.getMaKhach()), x.getMaCCCD(), x.getTen(), String.valueOf(x.getNgaySinh()), x.getGioiTinh(), x.getSoDienThoai(), x.getDiaChi(), String.valueOf(x.getMaTaiKhoan())};
             this.tenantManagement.getTableModel().addRow(rows);
@@ -70,25 +101,32 @@ public class TenantManagerController {
     private void handleSearchBtn(ActionEvent event){
         String search = tenantManagement.getSearchField().getText();
         KhachThueDAO khachThueDAO = new KhachThueDAOImpl();
+        ChuNhaDAO chuNhaDAO = new ChuNhaDAOImpl();
         if(Objects.equals(search, "")){
-            this.showData();
+            this.tenantManagement.getTableModel().setRowCount(0);
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập thông tin cần tìm kiếm");
             return;
         }
         else {
             KhachThue khachThue = khachThueDAO.getKhachThue(search);
-            if (khachThue != null){
+            ChuNha chuNhathue = chuNhaDAO.getChuNhaByCCCD(search);
+            System.out.println(khachThue);
+            System.out.println(chuNhathue);
+            if (khachThue != null) {
                 String[] khach = new String[]{String.valueOf(khachThue.getMaKhach()), khachThue.getMaCCCD(), khachThue.getTen(), String.valueOf(khachThue.getNgaySinh()), khachThue.getGioiTinh(), khachThue.getSoDienThoai(), khachThue.getDiaChi(), khachThue.getSoDienThoai()};
                 this.tenantManagement.getTableModel().setRowCount(0);
                 this.tenantManagement.getTableModel().addRow(khach);
             }
-            else {
+            if(chuNhathue != null){
+                String[] chuNha = new String[]{String.valueOf(chuNhathue.getMaChuNha()), chuNhathue.getMaCCCD(), chuNhathue.getTen(), String.valueOf(chuNhathue.getNgaySinh()), chuNhathue.getGioiTinh(), chuNhathue.getSoDienThoai(), chuNhathue.getDiaChi(), chuNhathue.getSoDienThoai()};
                 this.tenantManagement.getTableModel().setRowCount(0);
-                showData();
-                JOptionPane.showMessageDialog(null, "Không tìm thấy khách thuê");
+                this.tenantManagement.getTableModel().addRow(chuNha);
+            }
+            if(khachThue == null && chuNhathue == null){
+                this.tenantManagement.getTableModel().setRowCount(0);
+                JOptionPane.showMessageDialog(null, "Không tìm thấy thông tin");
             }
         }
-
-
     }
 
     private void handleMainTable(){
@@ -150,7 +188,7 @@ public class TenantManagerController {
                 setNull();
                 this.tenantManagement.getTableModel().setRowCount(0);
                 System.out.println(3);
-                this.showData();
+                this.showDataKhachThue();
                 JOptionPane.showMessageDialog(null, "Thêm khách thuê thành công");
             }
         }
@@ -177,7 +215,7 @@ public class TenantManagerController {
                 khachThueDAO.updateKhachThue(cccd, name, LocalDate.parse(date), gender, phone, address, account);
                 setNull();
                 this.tenantManagement.getTableModel().setRowCount(0);
-                this.showData();
+                this.showDataKhachThue();
                 JOptionPane.showMessageDialog(null, "Thay đổi thông tin thành công");
             }
         }
@@ -195,7 +233,7 @@ public class TenantManagerController {
                 khachThueDAO.deleteKhachThue(cccd);
                 setNull();
                 this.tenantManagement.getTableModel().setRowCount(0);
-                this.showData();
+                this.showDataKhachThue();
                 JOptionPane.showMessageDialog(null, "Xóa khách thuê thành công");
             }
         }

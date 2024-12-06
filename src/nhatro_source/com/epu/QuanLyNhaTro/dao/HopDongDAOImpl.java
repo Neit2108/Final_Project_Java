@@ -63,7 +63,40 @@ public class HopDongDAOImpl implements HopDongDAO {
 
     @Override
     public List<HopDong> getHopDongByMaKhach(int maKhach) {
-        return List.of();
+        String query = "select * from HopDong where maKhachThue = ?";
+        List<HopDong> hopDongList = new ArrayList<>();
+        try(PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, maKhach);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                HopDong hd = new HopDong(rs.getInt("maHopDong"), rs.getInt("maPhong"), rs.getInt("maKhachThue"), rs.getDouble("tienCoc"), rs.getInt("soNguoi"), rs.getDate("ngayThue").toLocalDate(), rs.getInt("thoiHanHopDong"), rs.getTimestamp("ngayTao").toLocalDateTime(), rs.getString("trangThai"));
+                hopDongList.add(hd);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return hopDongList;
+    }
+
+    @Override
+    public List<HopDong> getHopDongByMaChuNha(int maChuNha){
+        String query = "SELECT HD.*\n" +
+                "FROM HopDong HD\n" +
+                "JOIN Phong P ON HD.maPhong = P.maPhong\n" +
+                "JOIN NhaTro NT ON P.maNhaTro = NT.maNhaTro\n" +
+                "WHERE NT.maChuNha = ?";
+        List<HopDong> hopDongList = new ArrayList<>();
+        try(PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, maChuNha);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                HopDong hd = new HopDong(rs.getInt("maHopDong"), rs.getInt("maPhong"), rs.getInt("maKhachThue"), rs.getDouble("tienCoc"), rs.getInt("soNguoi"), rs.getDate("ngayThue").toLocalDate(), rs.getInt("thoiHanHopDong"), rs.getTimestamp("ngayTao").toLocalDateTime(), rs.getString("trangThai"));
+                hopDongList.add(hd);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return hopDongList;
     }
 
     public static void main(String[] args) {

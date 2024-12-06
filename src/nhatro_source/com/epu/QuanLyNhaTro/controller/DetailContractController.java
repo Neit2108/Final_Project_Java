@@ -45,7 +45,7 @@ public class DetailContractController {
         int idChuNha = phongDAO.getMaChuNha(idPhong);
         System.out.println(idChuNha);
         ChuNhaDAO chuNhaDAO = new ChuNhaDAOImpl();
-        ChuNha chuNha = chuNhaDAO.getChuNha(idChuNha);
+        ChuNha chuNha = chuNhaDAO.getChuNhaByMa(idChuNha);
         detailContract.getCccdField_A().setText(chuNha.getMaCCCD());
         detailContract.getNameField_A().setText(chuNha.getTen());
         detailContract.getAddressField_A().setText(chuNha.getDiaChi());
