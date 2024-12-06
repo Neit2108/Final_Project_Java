@@ -133,7 +133,7 @@ public class HouseForm extends JPanel {
     // Tạo JButton mặc định
     private JButton createButton(String text) {
         JButton button = new JButton(text);
-        button.setFont(new Font("Arial", Font.PLAIN, 12)); // Chữ thường
+        button.setFont(new Font("Arial", Font.BOLD, 12)); // Chữ đậm
         button.setPreferredSize(new Dimension(110, 25)); // Tạo nút với kích thước phù hợp
         return button;
     }
@@ -165,10 +165,21 @@ public class HouseForm extends JPanel {
         infoPanel.add(new JLabel("Mã Nhà: " + maNha));
         infoPanel.add(Box.createVerticalStrut(20)); // Khoảng cách 20px
         infoPanel.add(new JLabel("Trạng Thái: " + trangThai));
+        JButton chiTietBtn = createDetailButton("Chi Tiết");
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        buttonPanel.add(chiTietBtn);
+        nhaPanel.add(buttonPanel, BorderLayout.SOUTH);
 
         nhaPanel.add(infoPanel, BorderLayout.CENTER);
 
         return nhaPanel;
+    }
+
+    private JButton createDetailButton(String text) {
+        JButton button = new JButton(text);
+        button.setFont(new Font("Arial", Font.BOLD, 12)); // Font rõ ràng hơn
+        button.setPreferredSize(new Dimension(80, 30)); // Đủ rộng và cao để hiển thị chữ
+        return button;
     }
 
 
