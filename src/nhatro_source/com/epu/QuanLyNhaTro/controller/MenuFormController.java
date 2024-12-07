@@ -29,6 +29,7 @@ public class MenuFormController {
         this.menuForm.getHopdongBtn().addActionListener(this::handleContractBtn);
         this.menuForm.getHoadonBtn().addActionListener(this::handleInvoiceBtn);
         this.menuForm.getNhaBtn().addActionListener(this::handleHouseBtn);
+        this.menuForm.getThongbaoBtn().addActionListener(this::handleNoticeBtn);
     }
 
     private void handleDangXuatBtn(ActionEvent event){
@@ -64,4 +65,7 @@ public class MenuFormController {
         this.menuForm.getCardLayout().show(this.menuForm.getMainPanel(), "Nha");
     }
 
+    private void handleNoticeBtn(ActionEvent event){
+        this.menuForm.getCardLayout().show(this.menuForm.getMainPanel(), "ThongBao");
+    }
 }

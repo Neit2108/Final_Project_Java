@@ -41,7 +41,7 @@ public class TenantManagerController {
         this.tenantManagement.getDeleteBtn().addActionListener(this::handleDeleteBtn);
         this.tenantManagement.getResetBtn().addActionListener(this::handleResetBtn);
 
-        if(Constant.role.equalsIgnoreCase("Chủ nhà")){
+        if((Constant.role != null ? Constant.role : "Admin").equalsIgnoreCase("Chủ nhà")){
             showDataForChuNha();
             this.tenantManagement.getHostBtn().setVisible(false);
             this.tenantManagement.getTenantBtn().setVisible(false);
@@ -56,15 +56,6 @@ public class TenantManagerController {
         }
 
 
-    }
-
-    private void showDataAll(){
-        if (Constant.role.equalsIgnoreCase("Chủ nhà")){
-            showDataForChuNha();
-        }
-        else if (Constant.role.equalsIgnoreCase("Admin")){
-
-        }
     }
 
     private void showDataKhachThue(){
