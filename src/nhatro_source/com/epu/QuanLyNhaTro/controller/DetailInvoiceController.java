@@ -99,7 +99,7 @@ public class DetailInvoiceController {
             int maChuNha = phongDAO.getMaChuNha((int) this.invoiceForm.getMainTable().getValueAt(selectedRow, 2));
             ChuNha chuNha = new ChuNhaDAOImpl().getChuNhaByMa(maChuNha);
             String txt2 = "Yêu cầu thanh toán số tiền : " + this.detailInvoiceForm.getTotalField().getText() + " bằng hình thức : " + hinhThuc
-                    + "cho hóa đơn mã " + this.invoiceForm.getMainTable().getValueAt(selectedRow, 0) +" đã được gửi tới bạn";
+                    + " cho hóa đơn mã " + this.invoiceForm.getMainTable().getValueAt(selectedRow, 0) +" đã được gửi tới bạn";
             thongBaoDAO.addThongBao(Constant.taiKhoan.getMaTaiKhoan(), chuNha.getMaTaiKhoan(), txt2, "Chưa xem", (int)this.invoiceForm.getTableModel().getValueAt(selectedRow, 2), "ThanhToan");
         }
         else {

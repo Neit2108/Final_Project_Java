@@ -82,48 +82,59 @@ public class NoticeFormController {
             String txt = "Nội dung: " + thongBao.getNoiDung() + "\n" +
                     "Ngày nhận: " + thongBao.getNgayTao() + "\n" +
                     "Trạng thái: " + thongBao.getTrangThai() + "\n";
-            int res = JOptionPane.showConfirmDialog(null, txt, "Thông báo", JOptionPane.YES_NO_OPTION);
-            if(res == JOptionPane.YES_OPTION && thongBao.getLoaiThongBao().equalsIgnoreCase("ThuePhong")){
-                TaiKhoanDAO taiKhoanDAO = new TaiKhoanDAOImpl();
-                int maKhach = taiKhoanDAO.getMaKhachThue(thongBao.getMaNguoiGui());
-                InforContractForm inforContractForm = new InforContractForm();
-                inforContractForm.setVisible(true);
-                inforContractForm.getTxtMaKhach().setText(String.valueOf(maKhach));
-                inforContractForm.getTxtMaPhong().setText(String.valueOf(thongBao.getMaPhong()));
-                inforContractForm.getTxtNgayThue().setText(String.valueOf(LocalDate.now().plusDays(1)));
-                inforContractForm.getBtnLuu().addActionListener(e -> {
-                    int thoiHan = Integer.parseInt(inforContractForm.getTxtThoiHan().getText());
-                    int soNguoi = Integer.parseInt(inforContractForm.getTxtSoNguoi().getText());
-                    double tienCoc = Double.parseDouble(inforContractForm.getTxtTienCoc().getText());
-                    HopDongDAO hopDongDAO = new HopDongDAOImpl();
-                    hopDongDAO.addHopDong(thongBao.getMaPhong(), maKhach, tienCoc, LocalDate.now().plusDays(1), thoiHan, "Còn hiệu lực", soNguoi);
-                    thongBaoDAO.updateTrangThaiThongBao(id);
-                    noticeForm.getTableModel().setValueAt(true, row, 4);
-                    JOptionPane.showMessageDialog(null, "Đã thêm hợp đồng thành công và gửi thông báo tới khách thuê");
-                    String txt2 = "Yêu cầu thuê phòng" + new PhongDAOImpl().getPhong(thongBao.getMaPhong()).getTenPhong() + "(Mã phòng : " + thongBao.getMaPhong() + ") của bạn đã được chấp nhận";
-                    thongBaoDAO.addThongBao(Constant.taiKhoan.getMaTaiKhoan(), thongBao.getMaNguoiGui(), txt2, "Chưa xem", thongBao.getMaPhong(), "YeuCauThuePhong");
-                    inforContractForm.dispose();
-                });
-            }
-            else{
-                thongBaoDAO.updateTrangThaiThongBao(id);
-                String txt3 = "Yêu cầu thuê phòng" + new PhongDAOImpl().getPhong(thongBao.getMaPhong()).getTenPhong() + "(Mã phòng : " + thongBao.getMaPhong() + ") của bạn đã bị từ chối";
-                thongBaoDAO.addThongBao(Constant.taiKhoan.getMaTaiKhoan(), thongBao.getMaNguoiGui(), txt3, "Chưa xem", thongBao.getMaPhong(), "YeuCauThuePhong");
-                noticeForm.getTableModel().setValueAt(true, row, 4);
-                JOptionPane.showMessageDialog(null, "Đã từ chối yêu cầu thuê phòng");
-            }
-
-            if(thongBao.getLoaiThongBao().equalsIgnoreCase("ThanhToan")){
-                int i = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xác nhận hóa đơn này đã được thanh toán ?", "Xác nhận", JOptionPane.YES_NO_OPTION);
-                TaiKhoanDAO taiKhoanDAO = new TaiKhoanDAOImpl();
-                int maKhach = taiKhoanDAO.getMaKhachThue(thongBao.getMaNguoiGui());
-
-                if(i == JOptionPane.YES_OPTION){
-                    thongBaoDAO.updateTrangThaiThongBao(id);
-                    noticeForm.getTableModel().setValueAt(true, row, 4);
-                    JOptionPane.showMessageDialog(null, "Xác nhận hóa đơn đã được thanh toán");
+            //int res = JOptionPane.showConfirmDialog(null, txt, "Thông báo", JOptionPane.YES_NO_OPTION);
+            if((thongBao.getLoaiThongBao() != null ? thongBao.getLoaiThongBao() : "ThuePhong").equalsIgnoreCase("ThuePhong")){
+                int res = JOptionPane.showConfirmDialog(null, txt, "Thông báo", JOptionPane.YES_NO_OPTION);
+                if (res == JOptionPane.YES_OPTION) {
+                    TaiKhoanDAO taiKhoanDAO = new TaiKhoanDAOImpl();
+                    int maKhach = taiKhoanDAO.getMaKhachThue(thongBao.getMaNguoiGui());
+                    InforContractForm inforContractForm = new InforContractForm();
+                    inforContractForm.setVisible(true);
+                    inforContractForm.getTxtMaKhach().setText(String.valueOf(maKhach));
+                    inforContractForm.getTxtMaPhong().setText(String.valueOf(thongBao.getMaPhong()));
+                    inforContractForm.getTxtNgayThue().setText(String.valueOf(LocalDate.now().plusDays(1)));
+                    inforContractForm.getBtnLuu().addActionListener(e -> {
+                        int thoiHan = Integer.parseInt(inforContractForm.getTxtThoiHan().getText());
+                        int soNguoi = Integer.parseInt(inforContractForm.getTxtSoNguoi().getText());
+                        double tienCoc = Double.parseDouble(inforContractForm.getTxtTienCoc().getText());
+                        HopDongDAO hopDongDAO = new HopDongDAOImpl();
+                        hopDongDAO.addHopDong(thongBao.getMaPhong(), maKhach, tienCoc, LocalDate.now().plusDays(1), thoiHan, "Còn hiệu lực", soNguoi);
+                        thongBaoDAO.updateTrangThaiThongBao(id);
+                        noticeForm.getTableModel().setValueAt(true, row, 4);
+                        JOptionPane.showMessageDialog(null, "Đã thêm hợp đồng thành công và gửi thông báo tới khách thuê");
+                        String txt2 = "Yêu cầu thuê phòng" + new PhongDAOImpl().getPhong(thongBao.getMaPhong()).getTenPhong() + "(Mã phòng : " + thongBao.getMaPhong() + ") của bạn đã được chấp nhận";
+                        thongBaoDAO.addThongBao(Constant.taiKhoan.getMaTaiKhoan(), thongBao.getMaNguoiGui(), txt2, "Chưa xem", thongBao.getMaPhong(), "YeuCauThuePhong");
+                        inforContractForm.dispose();
+                    });
                 }
-
+                else {
+                    thongBaoDAO.updateTrangThaiThongBao(id);
+                    String txt3 = "Yêu cầu thuê phòng" + new PhongDAOImpl().getPhong(thongBao.getMaPhong()).getTenPhong() + "(Mã phòng : " + thongBao.getMaPhong() + ") của bạn đã bị từ chối";
+                    thongBaoDAO.addThongBao(Constant.taiKhoan.getMaTaiKhoan(), thongBao.getMaNguoiGui(), txt3, "Chưa xem", thongBao.getMaPhong(), "YeuCauThuePhong");
+                    noticeForm.getTableModel().setValueAt(true, row, 4);
+                    JOptionPane.showMessageDialog(null, "Đã từ chối yêu cầu thuê phòng");
+                }
+            }
+            if((thongBao.getLoaiThongBao() != null ? thongBao.getLoaiThongBao() : "ThanhToan").equalsIgnoreCase("ThanhToan")){
+                int res = JOptionPane.showConfirmDialog(null, txt, "Thông báo", JOptionPane.YES_NO_OPTION);
+                if(res == JOptionPane.YES_OPTION || res == JOptionPane.NO_OPTION){
+                    thongBaoDAO.updateTrangThaiThongBao(id);
+                    noticeForm.getTableModel().setValueAt(true, row, 4);
+                }
+//                if (res == JOptionPane.YES_OPTION) {
+//                    int i = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xác nhận hóa đơn này đã được thanh toán ?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+//                    TaiKhoanDAO taiKhoanDAO = new TaiKhoanDAOImpl();
+//                    int maKhach = taiKhoanDAO.getMaKhachThue(thongBao.getMaNguoiGui());
+//                    if(i == JOptionPane.YES_OPTION){
+//                        thongBaoDAO.updateTrangThaiThongBao(id);
+//                        noticeForm.getTableModel().setValueAt(true, row, 4);
+//                        JOptionPane.showMessageDialog(null, "Xác nhận hóa đơn đã được thanh toán");
+//                    }
+//                }
+//                else {
+//                    thongBaoDAO.updateTrangThaiThongBao(id);
+//                    noticeForm.getTableModel().setValueAt(true, row, 4);
+//                }
             }
         }
 

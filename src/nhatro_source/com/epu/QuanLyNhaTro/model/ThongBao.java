@@ -27,6 +27,7 @@ public class ThongBao {
                 ", noiDung='" + noiDung + '\'' +
                 ", trangThai='" + trangThai + '\'' +
                 ", ngayTao=" + ngayTao +
+                ", loaiThongBao='" + loaiThongBao + '\'' +
                 '}';
     }
 }

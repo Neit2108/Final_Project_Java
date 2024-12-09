@@ -99,6 +99,7 @@ public class ThongBaoDAOImpl implements ThongBaoDAO{
                 thongBao.setTrangThai(resultSet.getString("trangThai"));
                 thongBao.setNgayTao(resultSet.getDate("ngayTao").toLocalDate());
                 thongBao.setMaPhong(resultSet.getInt("maPhong"));
+                thongBao.setLoaiThongBao(resultSet.getString("loaiThongBao"));
                 return thongBao;
             }
         } catch (SQLException e) {
