@@ -10,9 +10,63 @@ create table TaiKhoan(
 	constraint chk_taikhoan_vaitro check (vaiTro in (N'Admin', N'Khách Thuê', N'Chủ Nhà'))
 )
 alter table TaiKhoan add isFirstLogin bit default 1
-select isFirstLogin from TaiKhoan where email = 'inozuke2108@gmail.com'
+select * from ChuNha where maTaiKhoan = 2
 --Tài khoản quan hệ 1 - 1 với admin, khách và chủ
-select * from ChuNha
+select * from Admin 
+select * from HoaDon
+select * from ChuNha where maTaiKhoan = 2
+select * from HopDong where maKhachThue = 1
+
+SELECT HD.*
+FROM HopDong HD
+JOIN Phong P ON HD.maPhong = P.maPhong
+JOIN NhaTro NT ON P.maNhaTro = NT.maNhaTro
+WHERE NT.maChuNha = 10;
+
+
+select * from NhaTro_Phong where [Mã nhà trọ] = 1
+
+select * from Phong where maNhaTro = 2
+join NhaTro on Phong.maNhaTro = NhaTro.maNhaTro
+where maChuNha = 10
+
+
+
+select * from Phong, KhachThue
+
+insert into Phong(tenPhong, maKieuPhong, maNhaTro, trangThai, urlImage)
+values (N'Phòng 5A', 4, 1, N'Chưa thuê', 'D:\MyProjects\final_QuanLyNhaTro\src\resources\home2.png'),
+(N'Phòng 5B', 2, 1, N'Chưa thuê', 'D:\MyProjects\final_QuanLyNhaTro\src\resources\home2.png'),
+(N'Phòng 5C', 3, 1, N'Chưa thuê', 'D:\MyProjects\final_QuanLyNhaTro\src\resources\home2.png'),
+(N'Phòng 5D', 1, 1, N'Chưa thuê', 'D:\MyProjects\final_QuanLyNhaTro\src\resources\home2.png'),
+(N'Phòng 6A', 4, 2, N'Chưa thuê', 'D:\MyProjects\final_QuanLyNhaTro\src\resources\home2.png'),
+(N'Phòng 6C', 1, 2, N'Chưa thuê', 'D:\MyProjects\final_QuanLyNhaTro\src\resources\home2.png'),
+(N'Phòng 6B', 3, 2, N'Chưa thuê', 'D:\MyProjects\final_QuanLyNhaTro\src\resources\home2.png'),
+(N'Phòng 6D', 2, 2, N'Chưa thuê', 'D:\MyProjects\final_QuanLyNhaTro\src\resources\home2.png')
+
+insert into HopDong(maPhong, maKhachThue, tienCoc, ngayThue, thoiHanHopDong, trangThai, soNguoi)
+values (21, 4, 2500000, GETDATE(), 6, N'Còn hiệu lực', 3),
+(22, 6, 1500000, GETDATE(), 6, N'Còn hiệu lực', 1),
+(23, 1, 500000, GETDATE(), 6, N'Còn hiệu lực', 2),
+(24, 3, 3500000, GETDATE(), 6, N'Còn hiệu lực', 4),
+(25, 2, 2000000, GETDATE(), 6, N'Còn hiệu lực', 1),
+(26, 4, 1000000, GETDATE(), 6, N'Còn hiệu lực', 1),
+(27, 7, 500000, GETDATE(), 6, N'Còn hiệu lực', 2),
+(28, 5, 1200000, GETDATE(), 6, N'Còn hiệu lực', 3)
+
+select * from HoaDon 
+left join HopDong hd on HoaDon.maHopDong = hd.maHopDong
+left join KhachThue kt on kt.maKhachThue = hd.maKhachThue
+where maTaiKhoan = 1
+
+SELECT DISTINCT KT.*
+FROM ChuNha CN
+JOIN NhaTro NT ON CN.maChuNha = NT.maChuNha
+JOIN Phong P ON NT.maNhaTro = P.maNhaTro
+JOIN HopDong HD ON P.maPhong = HD.maPhong
+JOIN KhachThue KT ON HD.maKhachThue = KT.maKhachThue
+WHERE CN.maChuNha = 10;
+
 
 create table Admin(
 	maAdmin int identity(1, 1) primary key,
@@ -205,10 +259,11 @@ CREATE TABLE TienThuTienIch (
     FOREIGN KEY (maPhong) REFERENCES Phong(maPhong)
 ); 
 
+select * from Phong
 INSERT INTO TienThuTienIch (maPhong, soDienCu, soDienMoi, soNuocCu, soNuocMoi) VALUES
-(21, 100.00, 150.00, 30.00, 50.00),
-(22, 120.00, 170.00, 40.00, 60.00),
-(23, 110.00, 160.00, 35.00, 55.00),
+(1, 100.00, 150.00, 30.00, 50.00),
+(2, 120.00, 170.00, 40.00, 60.00),
+(3, 110.00, 160.00, 35.00, 55.00),
 (4, 130.00, 180.00, 45.00, 65.00),
 (5, 140.00, 190.00, 50.00, 70.00),
 (6, 150.00, 200.00, 55.00, 75.00),
@@ -249,6 +304,8 @@ from ChuNha cn
 join NhaTro nt on cn.maChuNha = nt.maChuNha
 
 select * from ChuNha_NhaTro where [Mã chủ nhà] = 1;
+
+
 
 --xem Nhà trọ này có những phòng nào
 create view NhaTro_Phong as
@@ -318,3 +375,45 @@ BEGIN
 END;
 
 select * from HopDong
+
+CREATE TRIGGER trg_UpdateRole
+ON TaiKhoan
+AFTER UPDATE
+AS
+BEGIN
+    -- Chỉ xử lý khi vai trò thay đổi
+    IF UPDATE(vaiTro)
+    BEGIN
+        DECLARE @maTaiKhoan INT, @vaiTro NVARCHAR(50);
+
+        -- Lấy mã tài khoản và vai trò mới từ bản ghi vừa cập nhật
+        SELECT @maTaiKhoan = INSERTED.maTaiKhoan, 
+               @vaiTro = INSERTED.vaiTro
+        FROM INSERTED;
+
+        -- Nếu vai trò mới là 'Chủ Nhà'
+        IF @vaiTro = N'Chủ Nhà'
+        BEGIN
+            -- Chuyển thông tin từ KhachThue sang ChuNha
+            INSERT INTO ChuNha (maCCCD, tenChuNha, ngaySinh, gioiTinh, soDienThoai, diaChi, maTaiKhoan)
+            SELECT maCCCD, tenKhach, ngaySinh, gioiTinh, soDienThoai, diaChi, maTaiKhoan
+            FROM KhachThue
+            WHERE maTaiKhoan = @maTaiKhoan;
+
+            -- Xóa thông tin từ bảng KhachThue
+            DELETE FROM KhachThue WHERE maTaiKhoan = @maTaiKhoan;
+        END
+        -- Nếu vai trò mới là 'Khách Thuê'
+        ELSE IF @vaiTro = N'Khách Thuê'
+        BEGIN
+            -- Chuyển thông tin từ ChuNha sang KhachThue
+            INSERT INTO KhachThue (maCCCD, tenKhach, ngaySinh, gioiTinh, soDienThoai, diaChi, maTaiKhoan)
+            SELECT maCCCD, tenChuNha, ngaySinh, gioiTinh, soDienThoai, diaChi, maTaiKhoan
+            FROM ChuNha
+            WHERE maTaiKhoan = @maTaiKhoan;
+
+            -- Xóa thông tin từ bảng ChuNha
+            DELETE FROM ChuNha WHERE maTaiKhoan = @maTaiKhoan;
+        END
+    END
+END;

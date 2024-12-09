@@ -50,9 +50,11 @@ public class QuanLyPhongController {
             System.out.println(taiKhoanDAO.getMaChuNha(Constant.taiKhoan.getMaTaiKhoan()));
             System.out.println(Constant.taiKhoan.getMaTaiKhoan());
             for(NhaTro nhaTro : nhaTros){
+                System.out.println(nhaTro.getMaNhaTro());
                 List<Phong> phongs1 = phongDAO.getAllPhongByMaNhaTro(nhaTro.getMaNhaTro());
                 for (int i = 0; i < phongs1.size(); i++) {
                     int maPhong = phongs1.get(i).getMaPhong();
+                    System.out.println(maPhong);
                     String tenPhong = phongs1.get(i).getTenPhong();
                     int maNhaTro = phongs1.get(i).getMaNhaTro();
                     KieuPhongDAO kieuPhongDAO = new KieuPhongDAOImpl();

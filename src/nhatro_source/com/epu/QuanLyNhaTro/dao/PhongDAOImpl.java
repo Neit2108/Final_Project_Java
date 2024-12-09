@@ -101,7 +101,8 @@ public class PhongDAOImpl implements PhongDAO{
 
     @Override
     public List<Phong> getAllPhongByMaNhaTro(int maNhaTro) {
-        String query = "select * from NhaTro_Phong where [Mã nhà trọ] = ?";
+        String query = "select * from Phong" +
+                " where maNhaTro = ?";
         List<Phong> phongs = new ArrayList<>();
         try(PreparedStatement pstm = connection.prepareStatement(query)){
             pstm.setInt(1, maNhaTro);

@@ -88,6 +88,7 @@ public class MenuForm extends JFrame {
         ContractForm contractForm = new ContractForm();
         InvoiceForm invoiceForm = new InvoiceForm();
         HouseForm houseForm = new HouseForm();
+        NoticeForm noticeForm = new NoticeForm();
 
         mainPanel.add(newhome, "HomePage");
         mainPanel.add(tenantManagement, "QuanLyKhachThue");
@@ -95,7 +96,7 @@ public class MenuForm extends JFrame {
         mainPanel.add(contractForm, "HopDong");
         mainPanel.add(invoiceForm, "HoaDon");
         mainPanel.add(houseForm, "Nha");
-
+        mainPanel.add(noticeForm, "ThongBao");
         //init controller
         new com.epu.QuanLyNhaTro.controller.MenuFormController(this).init();
 

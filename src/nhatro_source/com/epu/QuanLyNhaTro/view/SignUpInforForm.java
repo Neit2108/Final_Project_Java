@@ -1,5 +1,6 @@
 package com.epu.QuanLyNhaTro.view;
 
+import com.epu.QuanLyNhaTro.controller.SignUpInforController;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -54,10 +55,6 @@ public class SignUpInforForm extends JFrame {
         addressField = new JTextField();
 
         submitBtn = new JButton("Submit");
-        submitBtn.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Thông tin đã được lưu!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-            dispose(); // Đóng form sau khi nhập xong
-        });
 
         // Thêm các thành phần vào panel
         mainPnl.add(cccdLbl);
@@ -75,6 +72,8 @@ public class SignUpInforForm extends JFrame {
         mainPnl.add(new JLabel()); // Placeholder
         mainPnl.add(submitBtn);
 
+        SignUpInforController signUpInforFormController = new SignUpInforController(this);
+        signUpInforFormController.init();
         // Thêm panel vào JFrame
         add(mainPnl);
     }

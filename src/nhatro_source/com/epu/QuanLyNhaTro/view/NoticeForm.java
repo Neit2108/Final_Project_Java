@@ -26,8 +26,13 @@ public class NoticeForm extends JPanel {
 
         // Tạo bảng và model dữ liệu
         String[] columnNames = {"STT", "Nội dung", "Seen"};
-        DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
+        DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0){
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         JTable table = new JTable(tableModel);
+        table.getTableHeader().setReorderingAllowed(false);
 
         // Thiết lập chiều cao hàng
         table.setRowHeight(25);

@@ -62,7 +62,9 @@ public class HoaDonDAOImpl implements HoaDonDAO {
             ps.setInt(1, maTaiKhoan);
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
-                HoaDon hd = new HoaDon(rs.getInt("maHoaDon"), rs.getInt("maHopDong"), rs.getDouble("tongTien"), rs.getDate("ngayTao").toLocalDate(), rs.getDate("ngayThanhToan").toLocalDate(), rs.getString("trangThai"));
+                Date ngayThanhToanDate = rs.getDate("ngayThanhToan");
+                LocalDate ngayThanhToan = (ngayThanhToanDate == null) ? null : ((java.sql.Date) ngayThanhToanDate).toLocalDate();
+                HoaDon hd = new HoaDon(rs.getInt("maHoaDon"), rs.getInt("maHopDong"), rs.getDouble("tongTien"), (rs.getDate("ngayTao").toLocalDate() != null) ? rs.getDate("ngayTao").toLocalDate() : null, ngayThanhToan , rs.getString("trangThai"));
                 hoaDonList.add(hd);
             }
 
