@@ -44,6 +44,29 @@ public class MenuForm extends JFrame {
         menuLabel.setFont(new Font("Arial", Font.BOLD, 20));
         menuLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        // Create a circular label with an image
+        JLabel circularLabel = new JLabel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2d.setColor(getBackground());
+                g2d.fillOval(0, 0, getWidth(), getHeight());
+                super.paintComponent(g);
+            }
+        };
+        circularLabel.setPreferredSize(new Dimension(40, 40));
+        circularLabel.setMaximumSize(new Dimension(40, 40));
+        circularLabel.setOpaque(false);
+        circularLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        circularLabel.setVerticalAlignment(SwingConstants.CENTER);
+
+        // Set image icon
+        ImageIcon userIcon = new ImageIcon("src/resources/user_icon.png");
+        Image scaledImage = userIcon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+        circularLabel.setIcon(new ImageIcon(scaledImage));
+
+
         // Left panel with buttons
         buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
@@ -66,7 +89,15 @@ public class MenuForm extends JFrame {
         buttonPanel.add(hoadonBtn);
         buttonPanel.add(Box.createVerticalStrut(15));
         buttonPanel.add(thongbaoBtn);
-        buttonPanel.add(Box.createVerticalStrut(15));
+        buttonPanel.add(Box.createVerticalStrut(85));
+        JPanel circularPanel = new JPanel();
+        circularPanel.setLayout(new BoxLayout(circularPanel, BoxLayout.X_AXIS));
+        circularPanel.add(Box.createHorizontalGlue()); // Spacer for centering
+        circularPanel.add(circularLabel);
+        circularPanel.add(Box.createHorizontalGlue()); // Spacer for centering
+        circularPanel.setOpaque(false); // Transparent background
+
+        buttonPanel.add(circularPanel);
         buttonPanel.add(Box.createVerticalGlue()); // Add space before dangxuatBtn to push it to the bottom
         buttonPanel.add(dangxuatBtn);
 
