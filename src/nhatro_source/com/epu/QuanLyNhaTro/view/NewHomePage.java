@@ -1,11 +1,9 @@
 package com.epu.QuanLyNhaTro.view;
 
 import com.epu.QuanLyNhaTro.controller.DetailRoomController;
-import com.epu.QuanLyNhaTro.dao.KieuPhongDAO;
-import com.epu.QuanLyNhaTro.dao.KieuPhongDAOImpl;
-import com.epu.QuanLyNhaTro.dao.PhongDAO;
-import com.epu.QuanLyNhaTro.dao.PhongDAOImpl;
+import com.epu.QuanLyNhaTro.dao.*;
 import com.epu.QuanLyNhaTro.model.KieuPhong;
+import com.epu.QuanLyNhaTro.model.NhaTro;
 import com.epu.QuanLyNhaTro.model.Phong;
 
 import javax.swing.*;
@@ -21,15 +19,33 @@ public class NewHomePage extends JPanel {
 
         //hiển thị thông tin phòng
         PhongDAO phongDAO = new PhongDAOImpl();
-        List<Phong> phongs = phongDAO.getAllPhong();
-        for (int i = 0; i <= 8; i++) {
-            KieuPhongDAO kieuPhongDAO = new KieuPhongDAOImpl();
-            String loaiPhong = kieuPhongDAO.getKieuPhong(phongs.get(i).getMaKieuPhong()).getLoaiPhong();
-            if(phongs.get(i).getTrangThai().equalsIgnoreCase("Chưa thuê")){
-                Phong phong = phongs.get(i);
-                add(createPhongPanel(phong.getMaPhong(), phong.getTenPhong(), phong.getMaNhaTro(), loaiPhong, phongDAO.getGiaPhong(phong.getMaPhong()), phong.getUrlImage()));
+        NhaTroDAO nhaTroDAO = new NhaTroDAOImpl();
+        List<NhaTro> nhaTroList = nhaTroDAO.getAllNhaTroByMaChuNha(10);
+        int j = 0;
+        for(NhaTro x : nhaTroList){
+            List<Phong> phongs = phongDAO.getAllPhongByMaNhaTro(x.getMaNhaTro());
+            for (int i = 0; i < phongs.size(); i++) {
+                if(j == 9){
+                    break;
+                }
+                KieuPhongDAO kieuPhongDAO = new KieuPhongDAOImpl();
+                String loaiPhong = kieuPhongDAO.getKieuPhong(phongs.get(i).getMaKieuPhong()).getLoaiPhong();
+                if(phongs.get(i).getTrangThai().equalsIgnoreCase("Chưa thuê")){
+                    j++;
+                    Phong phong = phongs.get(i);
+                    add(createPhongPanel(phong.getMaPhong(), phong.getTenPhong(), phong.getMaNhaTro(), loaiPhong, phongDAO.getGiaPhong(phong.getMaPhong()), phong.getUrlImage()));
+                }
             }
         }
+//        List<Phong> phongs = phongDAO.getAllPhong();
+//        for (int i = 0; i <= 8; i++) {
+//            KieuPhongDAO kieuPhongDAO = new KieuPhongDAOImpl();
+//            String loaiPhong = kieuPhongDAO.getKieuPhong(phongs.get(i).getMaKieuPhong()).getLoaiPhong();
+//            if(phongs.get(i).getTrangThai().equalsIgnoreCase("Chưa thuê")){
+//                Phong phong = phongs.get(i);
+//                add(createPhongPanel(phong.getMaPhong(), phong.getTenPhong(), phong.getMaNhaTro(), loaiPhong, phongDAO.getGiaPhong(phong.getMaPhong()), phong.getUrlImage()));
+//            }
+//        }
     }
 
     // Hàm tạo khung hiển thị thông tin phòng
@@ -62,11 +78,10 @@ public class NewHomePage extends JPanel {
         // Nút "Chi Tiết"
         JButton chiTietBtn = createDetailButton("Chi Tiết");
         chiTietBtn.addActionListener(e -> {
-            DetailRoom detailRoom = new DetailRoom();
-            DetailRoomController detailRoomController = new DetailRoomController(detailRoom);
-            detailRoomController.handelDetailRoom(maPhong);
+            DetailRoom detailRoom = new DetailRoom(maPhong);
             detailRoom.setVisible(true);
         });
+
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.add(chiTietBtn);
 

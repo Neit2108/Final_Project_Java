@@ -23,19 +23,34 @@ JOIN Phong P ON HD.maPhong = P.maPhong
 JOIN NhaTro NT ON P.maNhaTro = NT.maNhaTro
 WHERE NT.maChuNha = 10;
 
+select * from ThongBao where maNguoiNhan = 10
 
 select * from NhaTro_Phong where [Mã nhà trọ] = 1
 
-select * from Phong where maNhaTro = 2
+select * from Phong
 join NhaTro on Phong.maNhaTro = NhaTro.maNhaTro
-where maChuNha = 10
+where maChuNha = 10 and Phong.trangThai = N'Chưa thuê'
+
+select * from Phong where maPhong = 23
 
 
-
-select * from Phong, KhachThue
+select * from KieuPhong, KhachThue
 
 insert into Phong(tenPhong, maKieuPhong, maNhaTro, trangThai, urlImage)
-values (N'Phòng 5A', 4, 1, N'Chưa thuê', 'D:\MyProjects\final_QuanLyNhaTro\src\resources\home2.png'),
+values 
+(N'Phòng 13B', 13, 2, N'Chưa thuê', 'D:\MyProjects\final_QuanLyNhaTro\src\resources\home2.png'),
+(N'Phòng 11C', 11, 2, N'Chưa thuê', 'D:\MyProjects\final_QuanLyNhaTro\src\resources\home2.png'),
+(N'Phòng 14D', 14, 1, N'Chưa thuê', 'D:\MyProjects\final_QuanLyNhaTro\src\resources\home2.png'),
+(N'Phòng 20A', 20, 2, N'Chưa thuê', 'D:\MyProjects\final_QuanLyNhaTro\src\resources\home2.png'),
+(N'Phòng 19B', 19, 2, N'Chưa thuê', 'D:\MyProjects\final_QuanLyNhaTro\src\resources\home2.png'),
+(N'Phòng 9C', 9, 1, N'Chưa thuê', 'D:\MyProjects\final_QuanLyNhaTro\src\resources\home2.png'),
+(N'Phòng 7D', 7, 1, N'Chưa thuê', 'D:\MyProjects\final_QuanLyNhaTro\src\resources\home2.png'),
+(N'Phòng 6A', 6, 1, N'Chưa thuê', 'D:\MyProjects\final_QuanLyNhaTro\src\resources\home2.png'),
+(N'Phòng 8B', 8, 2, N'Chưa thuê', 'D:\MyProjects\final_QuanLyNhaTro\src\resources\home2.png')
+
+
+(N'Phòng 7A', 2, 2, N'Chưa thuê', 'D:\MyProjects\final_QuanLyNhaTro\src\resources\home2.png'),
+(N'Phòng 5A', 4, 1, N'Chưa thuê', 'D:\MyProjects\final_QuanLyNhaTro\src\resources\home2.png'),
 (N'Phòng 5B', 2, 1, N'Chưa thuê', 'D:\MyProjects\final_QuanLyNhaTro\src\resources\home2.png'),
 (N'Phòng 5C', 3, 1, N'Chưa thuê', 'D:\MyProjects\final_QuanLyNhaTro\src\resources\home2.png'),
 (N'Phòng 5D', 1, 1, N'Chưa thuê', 'D:\MyProjects\final_QuanLyNhaTro\src\resources\home2.png'),
@@ -54,10 +69,11 @@ values (21, 4, 2500000, GETDATE(), 6, N'Còn hiệu lực', 3),
 (27, 7, 500000, GETDATE(), 6, N'Còn hiệu lực', 2),
 (28, 5, 1200000, GETDATE(), 6, N'Còn hiệu lực', 3)
 
-select * from HoaDon 
-left join HopDong hd on HoaDon.maHopDong = hd.maHopDong
-left join KhachThue kt on kt.maKhachThue = hd.maKhachThue
-where maTaiKhoan = 1
+SELECT * FROM NhaTro WHERE maChuNha = 10
+select * from HoaDon
+join HopDong hd on HoaDon.maHopDong = hd.maHopDong
+join Phong p on p.maPhong = hd.maPhong
+where p.maNhaTro = 2 or p.maNhaTro = 1
 
 SELECT DISTINCT KT.*
 FROM ChuNha CN
@@ -207,6 +223,7 @@ create table HopDong(
 )
 alter table HopDong add soNguoi int not null default 1
 alter table HopDong add constraint fk_hopdong_makhach foreign key (maKhachThue) references KhachThue(maKhachThue) on delete	cascade
+select * from HoaDon
 CREATE TABLE HoaDon (
     maHoaDon INT IDENTITY(1,1) PRIMARY KEY,
 	maHopDong int not null,
@@ -214,7 +231,7 @@ CREATE TABLE HoaDon (
     tongTien DECIMAL(18,2) NOT NULL,
     trangThai NVARCHAR(255) NOT NULL,
 	constraint chk_hoadon_tongtien check (tongTien >=0),
-	constraint chk_hoadon_trangthai check ( trangThai in (N'Chưa thanh toán', N'Đã thanh toán', N'Quá hạn'))
+	constraint chk_hoadon_trangthai check ( trangThai in (N'Chưa thanh toán', N'Đã thanh toán', N'Quá hạn', N'Chờ xác nhận'))
 );
 alter table HoaDon add constraint fk_hoadon_hopdong foreign key (maHopDong) references HopDong(maHopDong)
 ALTER TABLE HoaDon
@@ -259,8 +276,29 @@ CREATE TABLE TienThuTienIch (
     FOREIGN KEY (maPhong) REFERENCES Phong(maPhong)
 ); 
 
+create table ThongBao(
+	id int identity(1,1) primary key,
+	maNguoiGui int not null,
+	maNguoiNhan int not null,
+	noiDung nvarchar(255) not null,
+	trangThai nvarchar(50) not null default N'Chưa xem',
+	ngayTao datetime default getdate(),
+	constraint chk_trangthai_thongbao check ( trangThai in ( N'Đã xem', N'Chưa xem')),
+	constraint fk_nguoigui_thongbao foreign key (maNguoiGui) references TaiKhoan(maTaiKhoan),
+	constraint fk_nguoinhan_thongbao foreign key (maNguoiNhan) references TaiKhoan(maTaiKhoan)
+)
+alter table ThongBao add constraint fk_maphong_thongbao foreign key (maPhong) references Phong(maPhong)
+alter table ThongBao add loaiThongBao nvarchar(255)
 select * from Phong
 INSERT INTO TienThuTienIch (maPhong, soDienCu, soDienMoi, soNuocCu, soNuocMoi) VALUES
+(21, 100.00, 150.00, 30.00, 50.00),
+(22, 120.00, 170.00, 40.00, 60.00),
+(23, 110.00, 160.00, 35.00, 55.00),
+(24, 130.00, 180.00, 45.00, 65.00),
+(25, 140.00, 190.00, 50.00, 70.00),
+(26, 150.00, 200.00, 55.00, 75.00),
+(27, 160.00, 210.00, 60.00, 80.00),
+(28, 170.00, 220.00, 65.00, 85.00),
 (1, 100.00, 150.00, 30.00, 50.00),
 (2, 120.00, 170.00, 40.00, 60.00),
 (3, 110.00, 160.00, 35.00, 55.00),
@@ -417,3 +455,319 @@ BEGIN
         END
     END
 END;
+
+-- Cập nhật trạng thái của phòng thành 'Đã thuê' cho những phòng đã có hợp đồng
+UPDATE Phong
+SET trangThai = N'Đã thuê'
+WHERE maPhong IN (
+    SELECT DISTINCT maPhong
+    FROM HopDong
+    WHERE trangThai = N'Còn hiệu lực'  -- Điều kiện hợp đồng còn hiệu lực
+);
+
+select * from Phong
+BEGIN TRANSACTION;
+
+-- Thêm hợp đồng vào bảng HopDong
+INSERT INTO HopDong (maPhong, maKhachThue, tienCoc, ngayThue, thoiHanHopDong, trangThai)
+VALUES (@maPhong, @maKhachThue, @tienCoc, @ngayThue, @thoiHanHopDong, N'Còn hiệu lực');
+
+-- Cập nhật trạng thái của phòng thành 'Đã thuê'
+UPDATE Phong
+SET trangThai = N'Đã thuê'
+WHERE maPhong = @maPhong;
+
+COMMIT TRANSACTION;
+
+
+
+select * from HoaDon where maHoaDon = 22;
+UPDATE HoaDon
+SET tongTien = (
+    -- Tiền phòng (lấy từ KieuPhong qua maPhong từ Phong thông qua HopDong)
+    (SELECT top 1 k.giaPhong
+     FROM Phong p
+     JOIN KieuPhong k ON p.maKieuPhong = k.maKieuPhong
+     WHERE p.maPhong = (SELECT top 1 maPhong FROM HopDong WHERE maHopDong = HopDong.maHopDong))
+	 +
+	 200000
+    + 
+    -- Tiền tiện ích (tính từ TienThuTienIch)
+    (SELECT top 1
+        ((tp.soDienDaDung) * 4000) + -- Tiền điện
+        ((tp.soNuocDaDung) * 30000)  -- Tiền nước
+     FROM TienThuTienIch tp
+     WHERE tp.maPhong = (SELECT top 1 maPhong FROM HopDong WHERE maHopDong = HopDong.maHopDong))
+)
+WHERE maHopDong IN (SELECT maHopDong FROM HopDong);
+
+DECLARE @donGiaDien DECIMAL = 4000; -- Đơn giá điện
+DECLARE @donGiaNuoc DECIMAL = 30000; -- Đơn giá nước
+DECLARE @giaTienCuaNguoi DECIMAL = 100000;
+
+UPDATE HoaDon 
+SET tongTien = (
+    -- Tiền phòng
+    (SELECT k.giaPhong
+     FROM Phong p
+     JOIN KieuPhong k ON p.maKieuPhong = k.maKieuPhong
+     WHERE p.maPhong = (SELECT maPhong FROM HopDong WHERE maHopDong = HoaDon.maHopDong))
+	 + 100000 +
+    -- Tiền theo số người (lấy từ bảng HopDong)
+    (SELECT hd.soNguoi * @giaTienCuaNguoi
+     FROM HopDong hd
+     WHERE hd.maHopDong = HoaDon.maHopDong)
+    + 
+    -- Tiền tiện ích (tính từ TienThuTienIch)
+    (SELECT 
+        SUM((tp.soDienDaDung) * @donGiaDien) + -- Tiền điện
+        SUM((tp.soNuocDaDung) * @donGiaNuoc)  -- Tiền nước
+     FROM TienThuTienIch tp
+     WHERE tp.maPhong = (SELECT maPhong FROM HopDong WHERE maHopDong = HoaDon.maHopDong))
+)
+WHERE HoaDon.maHopDong IN (SELECT maHopDong FROM HopDong);
+
+ -- Cập nhật tổng tiền trong bảng HoaDon
+CREATE TRIGGER trg_UpdateTongTien_TienThuTienIch
+ON TienThuTienIch
+AFTER INSERT, UPDATE
+AS
+BEGIN
+    DECLARE @donGiaDien DECIMAL = 4000;  
+    DECLARE @donGiaNuoc DECIMAL = 30000; 
+
+   
+    UPDATE h
+    SET h.tongTien = (
+        (SELECT k.giaPhong
+         FROM Phong p
+         JOIN KieuPhong k ON p.maKieuPhong = k.maKieuPhong
+         WHERE p.maPhong = hd.maPhong)
+
+        +
+        (SELECT 
+            SUM((tp.soDienDaDung) * @donGiaDien) + 
+            SUM((tp.soNuocDaDung) * @donGiaNuoc)
+         FROM TienThuTienIch tp
+         WHERE tp.maPhong = hd.maPhong)
+
+        +
+        (hd.soNguoi * 100000)
+    )
+    FROM HoaDon h
+    JOIN HopDong hd ON h.maHopDong = hd.maHopDong
+    JOIN Inserted i ON i.maPhong = hd.maPhong;
+END;
+
+select * from TienThuTienIch
+select * from HoaDon
+
+ALTER PROCEDURE sp_TaoHoaDonTuDong
+    @ngayGoc DATE = NULL, 
+    @maChuNha INT -- Thêm tham số cho chủ nhà
+AS
+BEGIN
+    DECLARE @donGiaDien DECIMAL(10, 2) = 4000;  
+    DECLARE @donGiaNuoc DECIMAL(10, 2) = 30000;
+    DECLARE @maHoaDon INT; -- Mã hóa đơn
+    DECLARE @maChiTiet INT; -- Mã chi tiết hóa đơn
+    DECLARE @maHopDong INT; -- Mã hợp đồng
+
+    SET @ngayGoc = ISNULL(@ngayGoc, GETDATE());
+
+    -- Bảng tạm để lưu mã hóa đơn và mã hợp đồng
+    DECLARE @HoaDonTable TABLE (maHoaDon INT, maHopDong INT);
+
+    -- Tạo hóa đơn và lưu vào bảng HoaDon, lấy mã hóa đơn và mã hợp đồng
+    INSERT INTO HoaDon (maHopDong, tongTien, trangThai)
+    OUTPUT INSERTED.maHoaDon, INSERTED.maHopDong INTO @HoaDonTable
+    SELECT 
+        hd.maHopDong,
+        (
+            ISNULL((SELECT k.giaPhong
+                    FROM Phong p
+                    JOIN KieuPhong k ON p.maKieuPhong = k.maKieuPhong
+                    WHERE p.maPhong = hd.maPhong), 0)
+            
+            +
+            
+            ISNULL((SELECT SUM(tp.soDienDaDung * @donGiaDien) + SUM(tp.soNuocDaDung * @donGiaNuoc)
+                    FROM TienThuTienIch tp
+                    WHERE tp.maPhong = hd.maPhong
+                    AND MONTH(tp.ngayGhiDien) = MONTH(@ngayGoc)
+                    AND YEAR(tp.ngayGhiDien) = YEAR(@ngayGoc)), 0)
+            
+            +
+            
+            (hd.soNguoi * 100000)
+        ) AS tongTien,
+        N'Chưa thanh toán' AS trangThai
+    FROM HopDong hd
+    WHERE hd.trangThai = N'Còn hiệu lực'
+      AND EXISTS ( -- Kiểm tra xem hợp đồng có thuộc chủ nhà hay không
+          SELECT 1
+          FROM Phong p
+          JOIN NhaTro n ON p.maNhaTro = n.maNhaTro
+          WHERE n.maChuNha = @maChuNha -- Kiểm tra chủ nhà
+            AND hd.maPhong = p.maPhong
+      )
+      AND NOT EXISTS (
+          SELECT 1 
+          FROM HoaDon h
+          WHERE h.maHopDong = hd.maHopDong
+            AND MONTH(h.ngayTao) = MONTH(@ngayGoc)
+            AND YEAR(h.ngayTao) = YEAR(@ngayGoc)
+      );
+
+    -- Lặp qua từng hóa đơn trong bảng @HoaDonTable và tạo chi tiết hóa đơn cho mỗi hóa đơn
+    DECLARE @loop_maHoaDon INT, @loop_maHopDong INT;
+    DECLARE cur CURSOR FOR
+        SELECT maHoaDon, maHopDong
+        FROM @HoaDonTable;
+    
+    OPEN cur;
+    FETCH NEXT FROM cur INTO @loop_maHoaDon, @loop_maHopDong;
+    
+    WHILE @@FETCH_STATUS = 0
+    BEGIN
+        -- Tạo chi tiết hóa đơn cho mỗi hóa đơn
+        INSERT INTO ChiTietHoaDon (maHoaDon, ghiChu)
+        VALUES (@loop_maHoaDon, N'Chi tiết hóa đơn cho hợp đồng ' + CAST(@loop_maHoaDon AS NVARCHAR));
+
+        -- Tạo chi tiết dịch vụ cho mỗi hóa đơn
+        INSERT INTO ChiTiet_DichVu (maChiTiet, maDichVu, ghiChu)
+        SELECT 
+            @loop_maHoaDon, -- MaHoaDon cho chi tiết dịch vụ
+            pd.maDichVu,
+            N'Dịch vụ cho hợp đồng ' + CAST(@loop_maHopDong AS NVARCHAR)
+        FROM HopDong hd
+        JOIN Phong_DichVu pd ON hd.maPhong = pd.maPhong
+        WHERE hd.trangThai = N'Còn hiệu lực'
+          AND hd.maHopDong = @loop_maHopDong
+          AND EXISTS ( -- Kiểm tra chủ nhà
+              SELECT 1
+              FROM Phong p
+              JOIN NhaTro n ON p.maNhaTro = n.maNhaTro
+              WHERE n.maChuNha = @maChuNha
+                AND hd.maPhong = p.maPhong
+          );
+
+        -- Tạo chi tiết cơ sở vật chất cho mỗi hóa đơn
+        INSERT INTO ChiTiet_CSVC (maChiTiet, maCSVC, ghiChu)
+        SELECT 
+            @loop_maHoaDon, -- MaHoaDon cho chi tiết cơ sở vật chất
+            kpc.maCSVC,
+            N'Cơ sở vật chất cho hợp đồng ' + CAST(@loop_maHopDong AS NVARCHAR)
+        FROM HopDong hd
+        JOIN Phong p ON hd.maPhong = p.maPhong
+        JOIN KieuPhong k ON p.maKieuPhong = k.maKieuPhong
+        JOIN KieuPhong_CoSoVatChat kpc ON k.maKieuPhong = kpc.maKieuPhong
+        WHERE hd.trangThai = N'Còn hiệu lực'
+          AND hd.maHopDong = @loop_maHopDong
+          AND EXISTS ( -- Kiểm tra chủ nhà
+              SELECT 1
+              FROM Phong p
+              JOIN NhaTro n ON p.maNhaTro = n.maNhaTro
+              WHERE n.maChuNha = @maChuNha
+                AND hd.maPhong = p.maPhong
+          );
+
+        FETCH NEXT FROM cur INTO @loop_maHoaDon, @loop_maHopDong;
+    END;
+    
+    CLOSE cur;
+    DEALLOCATE cur;
+END;
+
+
+
+select * from HoaDon where MONTH(ngayTao) = DATEADD(MONTH, 1, GETDATE()) and YEAR(ngayTao) = YEAR(getdate())
+select * from HopDong
+join NhaTro_Phong on NhaTro_Phong.[Mã phòng] = HopDong.maPhong
+where NhaTro_Phong.[Mã nhà trọ] = 1 or NhaTro_Phong.[Mã nhà trọ] = 2
+declare @ngayGoc date
+declare @maChuNha int = 10;
+EXEC sp_TaoHoaDonTuDong @ngayGoc, @maChuNha;
+delete  from HoaDon
+delete  from ChiTietHoaDon
+delete  from ChiTiet_CSVC
+delete  from ChiTiet_DichVu
+select * from ThanhToan 
+select * from HopDong
+select * from HoaDon
+select * from ThanhToan
+select * from ChiTiet_CSVC
+select * from ChiTiet_DichVu
+select * from ChiTietHoaDon
+DBCC CHECKIDENT ('ChiTietHoaDon', RESEED, 0);
+select * from HoaDon where MONTH(ngayTao) = '01' and YEAR(ngayTao) = '2025'
+select * from ChiTietHoaDon
+select * from ChiTiet_CSVC
+select * from ChiTiet_DichVu
+select * from Phong_DichVu
+select * from KieuPhong_CoSoVatChat
+
+alter PROCEDURE sp_ThemTienDienNuocTuDong
+    @maChuNha INT -- Thêm tham số cho chủ nhà
+AS
+BEGIN
+    DECLARE @ngayHienTai DATE = GETDATE();
+    DECLARE @thangTruoc DATE = DATEADD(MONTH, -1, @ngayHienTai);
+
+    INSERT INTO TienThuTienIch (maPhong, ngayGhiDien, soDienCu, soDienMoi, soNuocCu, soNuocMoi)
+    SELECT 
+        p.maPhong,
+        DATEADD(DAY, -DAY(@ngayHienTai) + 1, @ngayHienTai), 
+        COALESCE(MAX(tt.soDienMoi), 0), 
+        COALESCE(MAX(tt.soDienMoi), 0) + 50, 
+        COALESCE(MAX(tt.soNuocMoi), 0), 
+        COALESCE(MAX(tt.soNuocMoi), 0) + 10
+    FROM Phong p
+    LEFT JOIN TienThuTienIch tt ON p.maPhong = tt.maPhong
+    WHERE (MONTH(tt.ngayGhiDien) = MONTH(@thangTruoc)
+      AND YEAR(tt.ngayGhiDien) = YEAR(@thangTruoc)) 
+      OR tt.ngayGhiDien IS NULL
+      AND EXISTS ( -- Kiểm tra chủ nhà
+          SELECT 1
+          FROM HopDong hd
+          WHERE hd.maPhong = p.maPhong
+            AND EXISTS (
+                SELECT 1
+                FROM NhaTro n
+                WHERE n.maChuNha = @maChuNha
+                  AND n.maNhaTro = p.maNhaTro
+            )
+      )
+    GROUP BY p.maPhong;
+END;
+
+
+select * from ChiTietHoaDon
+delete from TienThuTienIch
+select * from TienThuTienIch
+declare @maChuNha int = 10
+EXEC sp_ThemTienDienNuocTuDong @maChuNha;
+select * from Phong
+
+CREATE PROCEDURE sp_KiemTraHoaDonThang (@thang DATE)
+AS
+BEGIN
+    -- Kiểm tra xem đã có hóa đơn cho tháng này chưa
+    IF EXISTS (
+        SELECT 1
+        FROM HoaDon h
+        WHERE MONTH(h.ngayTao) = MONTH(@thang)
+          AND YEAR(h.ngayTao) = YEAR(@thang)
+    )
+    BEGIN
+        -- Nếu đã có, trả về 1 (hoa đơn đã tạo)
+        SELECT 1 AS HoaDonDaTao;
+    END
+    ELSE
+    BEGIN
+        -- Nếu chưa có, trả về 0 (hoa đơn chưa tạo)
+        SELECT 0 AS HoaDonDaTao;
+    END
+END;
+
+exec sp_KiemTraHoaDonThang '2025-01-01'

@@ -179,9 +179,7 @@ public class QuanLyPhongForm extends JPanel {
         // Nút "Chi Tiết" cân đối
         JButton chiTietBtn = createDetailButton("Chi Tiết");
         chiTietBtn.addActionListener(e -> {
-            DetailRoom detailRoom = new DetailRoom();
-            DetailRoomController detailRoomController = new DetailRoomController(detailRoom);
-            detailRoomController.handelDetailRoom(maPhong);
+            DetailRoom detailRoom = new DetailRoom(maPhong);
             detailRoom.setVisible(true);
         });
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));

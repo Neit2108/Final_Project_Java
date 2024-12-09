@@ -25,8 +25,29 @@ public class HopDongDAOImpl implements HopDongDAO {
     }
 
     @Override
-    public void addHopDong(int maHopDong, int maPhong, int maKhachThue, double tienCoc, LocalDate ngayThue, LocalDate ngayDiDuKien, LocalDate ngayTao, String trangThai) {
+    public void addHopDong(int maPhong, int maKhachThue, double tienCoc, LocalDate ngayThue, int thoiHanHopDong, String trangThai, int soNguoi) {
+        String query = "insert into HopDong(maPhong, maKhachThue, tienCoc, soNguoi, ngayThue, thoiHanHopDong, trangThai) values(?,?,?,?,?,?,?)";
+        try(PreparedStatement ps = this.conn.prepareStatement(query)) {
+            ps.setInt(1, maPhong);
+            ps.setInt(2, maKhachThue);
+            ps.setDouble(3, tienCoc);
+            ps.setInt(4, soNguoi);
+            ps.setDate(5, java.sql.Date.valueOf(ngayThue));
+            ps.setInt(6, thoiHanHopDong);
+            ps.setString(7, trangThai);
 
+            ps.executeUpdate();
+            this.conn.commit();
+        }
+        catch (Exception e) {
+            try {
+                this.conn.rollback();
+            }
+            catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            throw new RuntimeException("Lỗi khi thêm hợp đồng : " + e.getMessage(), e);
+        }
     }
 
     @Override

@@ -52,7 +52,7 @@ public class ContractForm extends JPanel {
         // Menu Button
         JButton menuBtn = new JButton("Menu");
         menuBtn.setBounds(10, 10, 100, 30);
-        add(menuBtn);
+        //add(menuBtn);
 
         // Input Panel
         JPanel inputPanel = createInputPanel();

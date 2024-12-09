@@ -47,7 +47,7 @@ public class TenantManagement extends JPanel {
         // Menu Button
         JButton menuBtn = new JButton("Menu");
         menuBtn.setBounds(10, 10, 100, 30);
-        add(menuBtn);
+        //add(menuBtn);
 
         // Input Panel
         JPanel inputPanel = createInputPanel();
@@ -69,7 +69,7 @@ public class TenantManagement extends JPanel {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(8, 2, 10, 10));
         panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
-                "Nhập thông tin khách thuê", TitledBorder.CENTER, TitledBorder.TOP));
+                "Thông tin khách thuê", TitledBorder.CENTER, TitledBorder.TOP));
 
         numberField = new JTextField(20);
         cccdField = new JTextField(20);
@@ -112,12 +112,13 @@ public class TenantManagement extends JPanel {
         JPanel panel = new JPanel();
         panel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 10));
 
-        addBtn = new JButton("Thêm");
+//        addBtn = new JButton("Thêm");
+//        addBtn.setEnabled(false);
         editBtn = new JButton("Thay đổi");
         deleteBtn = new JButton("Xóa");
         resetBtn = new JButton("Làm mới");
 
-        panel.add(addBtn);
+        //panel.add(addBtn);
         panel.add(editBtn);
         panel.add(deleteBtn);
         panel.add(resetBtn);
