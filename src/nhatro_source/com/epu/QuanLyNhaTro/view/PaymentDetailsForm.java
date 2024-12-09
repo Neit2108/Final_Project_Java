@@ -17,7 +17,7 @@ public class PaymentDetailsForm {
         imagePanel.setBounds(100, 70, 400, 200); // Cách trên 70px, rộng 400px, cao 200px
         frame.add(imagePanel);
 
-        // Label giả lập hình ảnh (thay bằng hình ảnh thật nếu cần)
+        // Label giả lập hình ảnh
         JLabel imageLabel = new JLabel("Hình ảnh", SwingConstants.CENTER);
         imageLabel.setForeground(Color.DARK_GRAY);
         imageLabel.setFont(new Font("Arial", Font.BOLD, 20));
@@ -72,7 +72,7 @@ public class PaymentDetailsForm {
         frame.add(confirmButton);
 
         // Hiển thị frame
-        frame.setLocationRelativeTo(null); // Căn giữa màn hình
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 }
