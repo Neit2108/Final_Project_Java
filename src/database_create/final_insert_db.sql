@@ -132,7 +132,7 @@ INSERT INTO Phong(tenPhong, maKieuPhong, maNhaTro, urlImage, trangThai) VALUES
 (N'Phòng 4D', 4, 4, 'D:\MyProjects\final_QuanLyNhaTro\src\resources\home2.png', N'Chưa thuê');
 
 select * from KhachThue
-
+select * from HopDong
 INSERT INTO HopDong(maPhong, maKhachThue, tienCoc, ngayThue, thoiHanHopDong, trangThai) VALUES
 (4, 5, 3000000, N'2024-05-01', 6, N'Còn hiệu lực'),
 (5, 1, 1000000, N'2024-06-01', 6, N'Còn hiệu lực'),
@@ -150,6 +150,7 @@ INSERT INTO HopDong(maPhong, maKhachThue, tienCoc, ngayThue, thoiHanHopDong, tra
 (17, 3, 11000000, N'2025-06-01', 12, N'Còn hiệu lực'),
 (18, 4, 12000000, N'2025-07-01', 12, N'Còn hiệu lực'),
 (19, 5, 13000000, N'2025-08-01', 12, N'Còn hiệu lực');
+
 DBCC CHECKIDENT ('HopDong', RESEED, 1);
 
 delete from HopDong
@@ -254,9 +255,22 @@ INSERT INTO KieuPhong_CoSoVatChat (maCSVC, maKieuPhong, ghiChu) VALUES (5, 20, N
 
 
 -- Thêm 20 hóa đơn
-select * from HopDong
+select * from NhaTro where maChuNha = 10
+select * from Phong where maNhaTro = 1 or maNhaTro = 2;
+select * from HopDong 
 INSERT INTO HoaDon (maHopDong, tongTien, trangThai)
 VALUES 
+(17, 1000000, N'Chưa thanh toán'),
+(19, 2000000, N'Chưa thanh toán'),
+(18, 1500000, N'Chưa thanh toán'),
+(21, 1750000, N'Chưa thanh toán'),
+(20, 2100000, N'Chưa thanh toán'),
+(24, 3000000, N'Chưa thanh toán'),
+(22, 2500000, N'Chưa thanh toán'),
+(23, 1800000, N'Chưa thanh toán')
+
+
+
 (2, 1000000, N'Chưa thanh toán'),
 (3, 2000000, N'Chưa thanh toán'),
 (4, 1500000, N'Chưa thanh toán'),

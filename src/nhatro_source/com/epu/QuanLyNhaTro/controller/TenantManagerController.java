@@ -54,8 +54,6 @@ public class TenantManagerController {
                 showDataChuNha();
             });
         }
-
-
     }
 
     private void showDataKhachThue(){
@@ -203,10 +201,28 @@ public class TenantManagerController {
             int i = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn cập nhật thông tin khách thuê này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
             if (i == JOptionPane.YES_OPTION) {
                 KhachThueDAO khachThueDAO = new KhachThueDAOImpl();
-                khachThueDAO.updateKhachThue(cccd, name, LocalDate.parse(date), gender, phone, address, account);
-                setNull();
-                this.tenantManagement.getTableModel().setRowCount(0);
-                this.showDataKhachThue();
+                if(khachThueDAO.getKhachThue(cccd) == null){
+                    //JOptionPane.showMessageDialog(null, "Không tìm thấy khách thuê");
+                    return;
+                }
+                else {
+                    khachThueDAO.updateKhachThue(cccd, name, LocalDate.parse(date), gender, phone, address, account);
+                    this.tenantManagement.getTableModel().setRowCount(0);
+                    showDataKhachThue();
+                    setNull();
+                }
+
+                ChuNhaDAO chuNhaDAO = new ChuNhaDAOImpl();
+                if(chuNhaDAO.getChuNhaByCCCD(cccd) == null){
+                    //JOptionPane.showMessageDialog(null, "Không tìm thấy chủ nhà");
+                    return;
+                }
+                else {
+                    chuNhaDAO.updateChuNha(cccd, name, LocalDate.parse(date), gender, phone, address, account);
+                    setNull();
+                    this.tenantManagement.getTableModel().setRowCount(0);
+                    showDataChuNha();
+                }
                 JOptionPane.showMessageDialog(null, "Thay đổi thông tin thành công");
             }
         }

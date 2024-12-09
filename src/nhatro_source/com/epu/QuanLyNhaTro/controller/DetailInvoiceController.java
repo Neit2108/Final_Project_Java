@@ -1,8 +1,10 @@
 package com.epu.QuanLyNhaTro.controller;
 
 import com.epu.QuanLyNhaTro.dao.*;
+import com.epu.QuanLyNhaTro.model.ChuNha;
 import com.epu.QuanLyNhaTro.model.HopDong;
 import com.epu.QuanLyNhaTro.model.TienThuTienIch;
+import com.epu.QuanLyNhaTro.util.Constant;
 import com.epu.QuanLyNhaTro.view.DetailInvoiceForm;
 import com.epu.QuanLyNhaTro.view.InvoiceForm;
 
@@ -69,14 +71,14 @@ public class DetailInvoiceController {
         double giaPhong = phongDAO.getGiaPhong(maPhong);
         this.detailInvoiceForm.getTotalField().setText(
                 String.valueOf(
-                                Double.parseDouble(this.detailInvoiceForm.getInternetField().getText()) +
-                                Double.parseDouble(String.valueOf(Double.parseDouble(this.detailInvoiceForm.getVehicleField().getText()) * Integer.parseInt(this.detailInvoiceForm.getNumberOfMemberField().getText()))) +
-                                Double.parseDouble(String.valueOf(Double.parseDouble(this.detailInvoiceForm.getCleanField().getText()) * Integer.parseInt(this.detailInvoiceForm.getNumberOfMemberField().getText()))) +
-                                (double) this.detailInvoiceForm.getTableModel().getValueAt(0, 5) +
-                                (double) this.detailInvoiceForm.getTableModel().getValueAt(1, 5) +
-                                giaPhong
+                        this.invoiceForm.getMainTable().getValueAt(this.invoiceForm.getMainTable().getSelectedRow(), 3))
+//                                Double.parseDouble(this.detailInvoiceForm.getInternetField().getText()) +
+//                                Double.parseDouble(String.valueOf(Double.parseDouble(this.detailInvoiceForm.getVehicleField().getText()) * Integer.parseInt(this.detailInvoiceForm.getNumberOfMemberField().getText()))) +
+//                                Double.parseDouble(String.valueOf(Double.parseDouble(this.detailInvoiceForm.getCleanField().getText()) * Integer.parseInt(this.detailInvoiceForm.getNumberOfMemberField().getText()))) +
+//                                (double) this.detailInvoiceForm.getTableModel().getValueAt(0, 5) +
+//                                (double) this.detailInvoiceForm.getTableModel().getValueAt(1, 5) +
+//                                giaPhong
 
-                )
         );
     }
 
@@ -89,14 +91,16 @@ public class DetailInvoiceController {
             return;
         }
         if(!hinhThuc.equalsIgnoreCase("Chuyển Khoản")){
-            thanhToanDAO.addThanhToan(
-                    (int) this.invoiceForm.getMainTable().getValueAt(selectedRow, 0),
-                    Double.parseDouble(this.detailInvoiceForm.getTotalField().getText()),
-                    hinhThuc,
-                    "Đã thanh toán"
-            );
-            JOptionPane.showMessageDialog(null, "Thanh toán thành công");
-            this.detailInvoiceForm.dispose();
+            String txt = "Đã gửi yêu cầu thanh toán số tiền : " + this.detailInvoiceForm.getTotalField().getText() + " bằng hình thức : " + hinhThuc
+                    + " cho chủ nhà";
+            JOptionPane.showMessageDialog(null, txt);
+            ThongBaoDAO thongBaoDAO = new ThongBaoDAOImpl();
+            PhongDAO phongDAO = new PhongDAOImpl();
+            int maChuNha = phongDAO.getMaChuNha((int) this.invoiceForm.getMainTable().getValueAt(selectedRow, 2));
+            ChuNha chuNha = new ChuNhaDAOImpl().getChuNhaByMa(maChuNha);
+            String txt2 = "Yêu cầu thanh toán số tiền : " + this.detailInvoiceForm.getTotalField().getText() + " bằng hình thức : " + hinhThuc
+                    + "cho hóa đơn mã " + this.invoiceForm.getMainTable().getValueAt(selectedRow, 0) +" đã được gửi tới bạn";
+            thongBaoDAO.addThongBao(Constant.taiKhoan.getMaTaiKhoan(), chuNha.getMaTaiKhoan(), txt2, "Chưa xem", (int)this.invoiceForm.getTableModel().getValueAt(selectedRow, 2), "ThanhToan");
         }
         else {
             JOptionPane.showMessageDialog(null, "Chức năng chưa được hỗ trợ");

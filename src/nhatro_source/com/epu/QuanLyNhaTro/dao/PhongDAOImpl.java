@@ -152,6 +152,19 @@ public class PhongDAOImpl implements PhongDAO{
         return id;
     }
 
+    @Override
+    public void updateTrangThaiPhong(int maPhong, String trangThai) {
+        String query = "UPDATE Phong SET trangThai = ? WHERE maPhong = ?";
+        try (PreparedStatement pstm = connection.prepareStatement(query)) {
+            pstm.setString(1, trangThai);
+            pstm.setInt(2, maPhong);
+            pstm.executeUpdate();
+            connection.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
         PhongDAO phongDAO = new PhongDAOImpl();
         List<Phong> phongs = phongDAO.getAllPhong();

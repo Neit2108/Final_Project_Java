@@ -1,12 +1,16 @@
 package com.epu.QuanLyNhaTro.controller;
 
 import com.epu.QuanLyNhaTro.dao.*;
+import com.epu.QuanLyNhaTro.model.ChuNha;
+import com.epu.QuanLyNhaTro.model.KhachThue;
 import com.epu.QuanLyNhaTro.model.KieuPhong;
 import com.epu.QuanLyNhaTro.model.Phong;
+import com.epu.QuanLyNhaTro.util.Constant;
 import com.epu.QuanLyNhaTro.view.DetailRoom;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.text.DecimalFormat;
 
 public class DetailRoomController {
@@ -18,7 +22,12 @@ public class DetailRoomController {
         this.phongDAO = new PhongDAOImpl();
     }
 
-    public void init(){
+    public void init(int maPhong){
+        if(!(Constant.role.equalsIgnoreCase("Khách thuê"))){
+            detailRoom.getThuephongBtn().setVisible(false);
+        }
+        detailRoom.getThuephongBtn().addActionListener(e -> handleThuePhongBtn(maPhong));
+        handelDetailRoom(maPhong);
     }
 
     public void handelDetailRoom(int maPhong) {
@@ -45,8 +54,27 @@ public class DetailRoomController {
         DecimalFormat df = new DecimalFormat("#.##");
         detailRoom.getTable1().setValueAt(df.format(area) + " (m2)", 1, 1);
         detailRoom.getTable1().setValueAt(df.format(price) + " (tháng)", 2, 1);
-
         detailRoom.setVisible(true);
+    }
+
+    private void handleThuePhongBtn(int maPhong) {
+        Phong phong = phongDAO.getPhong(maPhong);
+        if(phong.getTrangThai().equalsIgnoreCase("Đã thuê")) {
+            JOptionPane.showMessageDialog(detailRoom, "Phòng đã được thuê", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            int result = JOptionPane.showConfirmDialog(detailRoom, "Bạn có chắc chắn muốn thuê phòng này không?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+            if(result == JOptionPane.YES_OPTION) {
+                KhachThueDAO khachThueDAO = new KhachThueDAOImpl();
+                KhachThue khachThue = khachThueDAO.getKhachThue(Constant.taiKhoan.getMaTaiKhoan());
+                String txt = "Khách hàng " + khachThue.getTen() + " đã gửi yêu cầu thuê phòng " + phong.getTenPhong() + " (Mã phòng : " + phong.getMaPhong() + " ) cho bạn";
+                int maChuNha = phongDAO.getMaChuNha(maPhong);
+                ChuNhaDAO chuNhaDAO = new ChuNhaDAOImpl();
+                ChuNha chuNha = chuNhaDAO.getChuNhaByMa(maChuNha);
+                ThongBaoDAO thongBaoDAO = new ThongBaoDAOImpl();
+                thongBaoDAO.addThongBao(Constant.taiKhoan.getMaTaiKhoan(), chuNha.getMaTaiKhoan(), txt, "Chưa xem", maPhong, "ThuePhong");
+                JOptionPane.showMessageDialog(detailRoom, "Yêu cầu thuê phòng đã được gửi đến chủ nhà", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
 
     }
 }

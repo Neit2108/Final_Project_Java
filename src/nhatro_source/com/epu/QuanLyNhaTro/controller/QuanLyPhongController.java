@@ -13,6 +13,8 @@ import java.util.List;
 
 public class QuanLyPhongController {
     private final QuanLyPhongForm quanLyPhongForm;
+    private String absolutePath = "";
+
 
     public QuanLyPhongController(QuanLyPhongForm quanLyPhongForm) {
         this.quanLyPhongForm = quanLyPhongForm;
@@ -88,8 +90,8 @@ public class QuanLyPhongController {
         int returnValue = fileChooser.showOpenDialog(null);
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             if (fileChooser.getSelectedFile().getName().toLowerCase().endsWith(".png")) {
-                String absolutePath = fileChooser.getSelectedFile().getAbsolutePath();
-                quanLyPhongForm.getChonAnhBtn().setText(absolutePath);
+                absolutePath = fileChooser.getSelectedFile().getAbsolutePath();
+                quanLyPhongForm.getChonAnhBtn().setText(fileChooser.getSelectedFile().getName());
             } else {
                 JOptionPane.showMessageDialog(null, "Vui lòng chọn file định dạng PNG!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
@@ -109,7 +111,7 @@ public class QuanLyPhongController {
         String tenPhong = quanLyPhongForm.getTenPhongField().getText();
         int maKieuPhong = kieuPhongDAO.getKieuPhong(Integer.parseInt(quanLyPhongForm.getLoaiPhongField().getText())).getMaKieuPhong();
         int maNhaTro = Integer.parseInt(quanLyPhongForm.getMaNhaTroField().getText());
-        String urlImage = quanLyPhongForm.getChonAnhBtn().getText();
+        String urlImage = absolutePath;
 
         if(tenPhong.isEmpty() || urlImage.isEmpty() || quanLyPhongForm.getLoaiPhongField().getText().isEmpty() || quanLyPhongForm.getMaNhaTroField().getText().isEmpty()){
             JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin!", "Lỗi", JOptionPane.ERROR_MESSAGE);

@@ -10,4 +10,5 @@ public interface ChuNhaDAO {
     ChuNha getChuNhaByMa(int maChuNha);
     ChuNha getChuNhaByCCCD(String maCCCD);
     List<ChuNha> getAllChuNha();
+    void updateChuNha(String maCCCD, String ten, LocalDate ngaySinh, String gioiTinh, String soDienThoai, String diaChi, int maTaiKhoan);
 }

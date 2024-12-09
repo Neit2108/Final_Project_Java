@@ -30,6 +30,7 @@ public class InvoiceForm extends JPanel{
     private JButton editBtn;
     private JButton deleteBtn;
     private JButton resetBtn;
+    private JButton autoAddBtn;
 
 
     public InvoiceForm() {
@@ -62,11 +63,13 @@ public class InvoiceForm extends JPanel{
         editBtn = new JButton("Thay đổi");
         deleteBtn = new JButton("Xóa");
         resetBtn = new JButton("Làm mới");
+        autoAddBtn = new JButton("Tự động thêm");
 
-        panel.add(addBtn);
+        //panel.add(addBtn);
         panel.add(editBtn);
         panel.add(deleteBtn);
         panel.add(resetBtn);
+        panel.add(autoAddBtn);
 
         return panel;
     }
@@ -74,7 +77,7 @@ public class InvoiceForm extends JPanel{
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(8, 2, 10, 10));
         panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
-                "Nhập thông tin khách thuê", TitledBorder.CENTER, TitledBorder.TOP));
+                "Thông tin hóa đơn", TitledBorder.CENTER, TitledBorder.TOP));
 
         numberField = new JTextField(20);
         cccdField = new JTextField(20);

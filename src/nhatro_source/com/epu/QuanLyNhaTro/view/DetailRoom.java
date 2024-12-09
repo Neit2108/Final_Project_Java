@@ -1,5 +1,7 @@
 package com.epu.QuanLyNhaTro.view;
 
+import com.epu.QuanLyNhaTro.controller.DetailRoomController;
+import com.sun.tools.javac.Main;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,13 +35,12 @@ public class DetailRoom extends JFrame {
     private JScrollPane scrollServiceList;
     private JButton thuephongBtn;
     private DefaultTableModel tableModel;
-    public DetailRoom() {
+
+    public DetailRoom(int maPhong) {
         setContentPane(MainPnl);
         setTitle("Chi tiết phòng");
         setSize(1000, 600);
         setLocationRelativeTo(null);
-        thuephongBtn = new JButton("Thuê phòng");
-
 
         // Bảng giá
         String[] column = {"", ""};
@@ -107,20 +108,14 @@ public class DetailRoom extends JFrame {
         detailServiceList.setBackground(new Color(245, 245, 245));
         serviceList.setPreferredSize(new Dimension(600, 400));
 
-
-        // Cài đặt Look and Feel
- //       try {
- //           UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
- //       } catch (Exception e) {
-  //          e.printStackTrace();
-  //      }
-
+        DetailRoomController detailRoomController = new DetailRoomController(this);
+        detailRoomController.init(maPhong);
     }
 
-
-
     public static void main(String[] args) {
-
-        new DetailRoom().setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            DetailRoom detailRoom = new DetailRoom(1);
+            detailRoom.setVisible(true);
+        });
     }
 }
