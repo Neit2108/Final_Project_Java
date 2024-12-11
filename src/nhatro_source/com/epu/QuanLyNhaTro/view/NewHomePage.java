@@ -25,7 +25,7 @@ public class NewHomePage extends JPanel {
         for(NhaTro x : nhaTroList){
             List<Phong> phongs = phongDAO.getAllPhongByMaNhaTro(x.getMaNhaTro());
             for (int i = 0; i < phongs.size(); i++) {
-                if(j == 9){
+                if(j == 8){
                     break;
                 }
                 KieuPhongDAO kieuPhongDAO = new KieuPhongDAOImpl();

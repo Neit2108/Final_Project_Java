@@ -3,6 +3,7 @@ package com.epu.QuanLyNhaTro.controller;
 import com.epu.QuanLyNhaTro.dao.*;
 import com.epu.QuanLyNhaTro.model.ChuNha;
 import com.epu.QuanLyNhaTro.model.KhachThue;
+import com.epu.QuanLyNhaTro.model.TaiKhoan;
 import com.epu.QuanLyNhaTro.util.Authenticator;
 import com.epu.QuanLyNhaTro.util.Constant;
 import com.epu.QuanLyNhaTro.view.SignInForm;
@@ -54,6 +55,7 @@ public class TenantManagerController {
                 showDataChuNha();
             });
         }
+        addRightClick();
     }
 
     private void showDataKhachThue(){
@@ -249,4 +251,50 @@ public class TenantManagerController {
     private void handleResetBtn(ActionEvent event) {
         setNull();
     }
+
+    private void addRightClick(){
+        JPopupMenu rightClickMenu = new JPopupMenu();
+        JMenuItem changeRoleItem = new JMenuItem("Đổi vai trò");
+
+        changeRoleItem.addActionListener(e -> {
+            int selectedRow = tenantManagement.getMainTable().getSelectedRow();
+            if (selectedRow != -1) {
+                String cccd = tenantManagement.getMainTable().getValueAt(selectedRow, 1).toString();
+                KhachThue khachThue = new KhachThueDAOImpl().getKhachThue(cccd);
+                ChuNha chuNha = new ChuNhaDAOImpl().getChuNhaByCCCD(cccd);
+
+                if(khachThue != null){
+                    TaiKhoan tk = new TaiKhoanDAOImpl().getTaiKhoan(khachThue.getMaTaiKhoan());
+                    new TaiKhoanDAOImpl().updateTaiKhoan(tk.getEmail(), "Chủ nhà");
+                }
+                else if(chuNha != null){
+                    TaiKhoan tk = new TaiKhoanDAOImpl().getTaiKhoan(chuNha.getMaTaiKhoan());
+                    new TaiKhoanDAOImpl().updateTaiKhoan(tk.getEmail(), "Khách thuê");
+                }
+            }
+        });
+
+        rightClickMenu.add(changeRoleItem);
+
+        tenantManagement.getMainTable().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (e.isPopupTrigger()) {
+                    int row = tenantManagement.getMainTable().rowAtPoint(e.getPoint());
+                    tenantManagement.getMainTable().setRowSelectionInterval(row, row);
+                    rightClickMenu.show(e.getComponent(), e.getX(), e.getY());
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if (e.isPopupTrigger()) {
+                    int row = tenantManagement.getMainTable().rowAtPoint(e.getPoint());
+                    tenantManagement.getMainTable().setRowSelectionInterval(row, row);
+                    rightClickMenu.show(e.getComponent(), e.getX(), e.getY());
+                }
+            }
+        });
+    }
+
 }

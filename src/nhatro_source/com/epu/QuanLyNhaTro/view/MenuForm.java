@@ -20,9 +20,9 @@ public class MenuForm extends JFrame {
     private JPanel buttonPanel;
     private JPanel mainPanel;
     private CardLayout cardLayout;
+    private JLabel circularLabel;
 
     public MenuForm() {
-        // Initialize buttons with updated labels and custom rounded styles
         homePageBtn = createRoundedButton("Trang chủ");
         pctBtn = createRoundedButton("Quản lý phòng");
         nhaBtn = createRoundedButton("Nhà");
@@ -32,20 +32,16 @@ public class MenuForm extends JFrame {
         thongbaoBtn = createRoundedButton("Thông báo");
         dangxuatBtn = createRoundedButton("Đăng Xuất");
 
-        // set cỡ riêng cho nút Dang Xuat
         dangxuatBtn.setPreferredSize(new Dimension(75, 30));
         dangxuatBtn.setMaximumSize(new Dimension(75, 30));
 
-        // Adjust font size for the "Đăng Xuất" button to fit the smaller size
         dangxuatBtn.setFont(new Font("Arial", Font.BOLD, 10));
 
-        // Create label for the menu title and center it
         JLabel menuLabel = new JLabel("Menu", SwingConstants.CENTER);
         menuLabel.setFont(new Font("Arial", Font.BOLD, 20));
         menuLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Create a circular label with an image
-        JLabel circularLabel = new JLabel() {
+        circularLabel = new JLabel() {
             @Override
             protected void paintComponent(Graphics g) {
                 Graphics2D g2d = (Graphics2D) g;
@@ -61,21 +57,18 @@ public class MenuForm extends JFrame {
         circularLabel.setHorizontalAlignment(SwingConstants.CENTER);
         circularLabel.setVerticalAlignment(SwingConstants.CENTER);
 
-        // Set image icon
         ImageIcon userIcon = new ImageIcon("src/resources/user_icon.png");
         Image scaledImage = userIcon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
         circularLabel.setIcon(new ImageIcon(scaledImage));
 
 
-        // Left panel with buttons
         buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Add padding around the panel
-        buttonPanel.setBackground(new Color(240, 248, 255)); // Light blue background for harmony
+        buttonPanel.setBackground(new Color(240, 248, 255));
 
-        // Add label and buttons to the panel with adjusted spacing
         buttonPanel.add(menuLabel);
-        buttonPanel.add(Box.createVerticalStrut(25)); // Space below the label
+        buttonPanel.add(Box.createVerticalStrut(25));
         buttonPanel.add(homePageBtn);
         buttonPanel.add(Box.createVerticalStrut(15));
         buttonPanel.add(pctBtn);
@@ -92,25 +85,33 @@ public class MenuForm extends JFrame {
         buttonPanel.add(Box.createVerticalStrut(85));
         JPanel circularPanel = new JPanel();
         circularPanel.setLayout(new BoxLayout(circularPanel, BoxLayout.X_AXIS));
-        circularPanel.add(Box.createHorizontalGlue()); // Spacer for centering
+        circularPanel.add(Box.createHorizontalGlue());
         circularPanel.add(circularLabel);
-        circularPanel.add(Box.createHorizontalGlue()); // Spacer for centering
-        circularPanel.setOpaque(false); // Transparent background
+        circularPanel.add(Box.createHorizontalGlue());
+        circularPanel.setOpaque(false);
 
-        buttonPanel.add(circularPanel);
-        buttonPanel.add(Box.createVerticalGlue()); // Add space before dangxuatBtn to push it to the bottom
-        buttonPanel.add(dangxuatBtn);
+        buttonPanel.add(Box.createVerticalGlue()); // Đẩy phần tử ở trên lên
+        JPanel userPanel = new JPanel();
+        userPanel.setLayout(new BoxLayout(userPanel, BoxLayout.Y_AXIS));
+        userPanel.setOpaque(false);
 
-        // Main panel to hold the empty area on the right
+        circularLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        userPanel.add(circularLabel);
+        userPanel.add(Box.createVerticalStrut(10)); // Khoảng cách giữa icon và nút
+
+        dangxuatBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        userPanel.add(dangxuatBtn);
+
+        buttonPanel.add(userPanel);
+
+
         mainPanel = new JPanel();
         mainPanel.setBackground(Color.WHITE);
 
-        // Set layout for the frame
         setLayout(new BorderLayout());
         add(buttonPanel, BorderLayout.WEST);
         add(mainPanel, BorderLayout.CENTER);
 
-        //Xu ly mainPanel
         cardLayout = new CardLayout();
         mainPanel.setLayout(cardLayout);
         TenantManagement tenantManagement = new TenantManagement();
@@ -131,17 +132,14 @@ public class MenuForm extends JFrame {
         //init controller
         new com.epu.QuanLyNhaTro.controller.MenuFormController(this).init();
 
-        // Frame settings
+
         setTitle("Menu Form");
-//        setSize(800, 600);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-        // Larger frame size for better spacing
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null); // Center the frame
+        setLocationRelativeTo(null);
     }
 
-    // Helper method to create a rounded button with color styling
     private JButton createRoundedButton(String text) {
         JButton button = new JButton(text) {
             @Override

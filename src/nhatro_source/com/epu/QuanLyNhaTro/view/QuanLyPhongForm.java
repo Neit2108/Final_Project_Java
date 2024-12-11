@@ -22,6 +22,7 @@ public class QuanLyPhongForm extends JPanel {
     private JTextField maPhongField, tenPhongField, giaPhongField, maNhaTroField, loaiPhongField;
     private JButton themBtn, suaBtn, xoaBtn, lamMoiBtn, chonAnhBtn;
     private JPanel danhSachPanel;
+    private JLabel maPhongLabel, tenPhongLabel, maNhaTroLabel, loaiPhongLabel, giaPhongLabel, anhPhongLabel;
 
     public QuanLyPhongForm() {
         setSize(1346, 793);
@@ -47,12 +48,12 @@ public class QuanLyPhongForm extends JPanel {
         layout.setAutoCreateContainerGaps(true); // Khoảng cách tự động với biên ngoài
 
 // Các label và textfield
-        JLabel maPhongLabel = new JLabel("Mã Phòng:");
-        JLabel tenPhongLabel = new JLabel("Tên Phòng:");
-        JLabel maNhaTroLabel = new JLabel("Mã Nhà Trọ:");
-        JLabel loaiPhongLabel = new JLabel("Mã Kiểu Phòng:");
-        JLabel giaPhongLabel = new JLabel("Giá Phòng:");
-        JLabel anhPhongLabel = new JLabel("Ảnh Phòng:");
+        maPhongLabel = new JLabel("Mã Phòng:");
+        tenPhongLabel = new JLabel("Tên Phòng:");
+        maNhaTroLabel = new JLabel("Mã Nhà Trọ:");
+        loaiPhongLabel = new JLabel("Mã Kiểu Phòng:");
+        giaPhongLabel = new JLabel("Giá Phòng:");
+        anhPhongLabel = new JLabel("Ảnh Phòng:");
 
         maPhongField = createSmallTextField();
         maPhongField.setEditable(false);
@@ -60,6 +61,7 @@ public class QuanLyPhongForm extends JPanel {
         maNhaTroField = createSmallTextField();
         loaiPhongField = createSmallTextField();
         giaPhongField = createSmallTextField();
+        giaPhongField.setEditable(false);
         chonAnhBtn = createBoldButton("Chọn Ảnh");
 
 // Thiết lập GroupLayout: căn chỉnh ngang và cách cạnh trái 35px

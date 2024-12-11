@@ -1,6 +1,7 @@
 package com.epu.QuanLyNhaTro.controller;
 
 import com.epu.QuanLyNhaTro.dao.*;
+import com.epu.QuanLyNhaTro.model.KieuPhong;
 import com.epu.QuanLyNhaTro.model.NhaTro;
 import com.epu.QuanLyNhaTro.model.Phong;
 import com.epu.QuanLyNhaTro.util.Constant;
@@ -21,12 +22,25 @@ public class QuanLyPhongController {
     }
 
     public void init() {
+        if(Constant.role.equalsIgnoreCase("Khách thuê")){
+            quanLyPhongForm.getThemBtn().setVisible(false);
+            quanLyPhongForm.getSuaBtn().setVisible(false);
+            quanLyPhongForm.getXoaBtn().setVisible(false);
+            quanLyPhongForm.getMaPhongField().setEditable(false);
+            quanLyPhongForm.getGiaPhongField().setEditable(false);
+            quanLyPhongForm.getMaNhaTroField().setEditable(false);
+            quanLyPhongForm.getLoaiPhongField().setEditable(false);
+            quanLyPhongForm.getTenPhongField().setEditable(false);
+            quanLyPhongForm.getChonAnhBtn().setVisible(false);
+            quanLyPhongForm.getAnhPhongLabel().setVisible(false);
+        }
         showData();
         quanLyPhongForm.getThemBtn().addActionListener(e -> handleThemBtn());
         quanLyPhongForm.getSuaBtn().addActionListener(e -> handleSuaBtn());
         quanLyPhongForm.getXoaBtn().addActionListener(e -> handleXoaBtn());
         //quanLyPhongForm.getLamMoiBtn().addActionListener(e -> handleLamMoiBtn());
         quanLyPhongForm.getChonAnhBtn().addActionListener(e -> handleChonAnhBtn());
+        quanLyPhongForm.getLamMoiBtn().addActionListener(e -> handleSearchBtn());
     }
 
     private void showData(){
@@ -46,7 +60,7 @@ public class QuanLyPhongController {
                 quanLyPhongForm.getDanhSachPanel().add(quanLyPhongForm.createPhongPanel(maPhong, tenPhong, maNhaTro, loaiPhong, giaPhong, anhPhong));
             }
         }
-        else {
+        else if(Constant.role.equalsIgnoreCase("Chủ nhà")){
             TaiKhoanDAO taiKhoanDAO = new TaiKhoanDAOImpl();
             List<NhaTro> nhaTros = nhaTroDAO.getAllNhaTroByMaChuNha(taiKhoanDAO.getMaChuNha(Constant.taiKhoan.getMaTaiKhoan()));
             System.out.println(taiKhoanDAO.getMaChuNha(Constant.taiKhoan.getMaTaiKhoan()));
@@ -65,6 +79,19 @@ public class QuanLyPhongController {
                     String anhPhong = phongs1.get(i).getUrlImage();
                     quanLyPhongForm.getDanhSachPanel().add(quanLyPhongForm.createPhongPanel(maPhong, tenPhong, maNhaTro, loaiPhong, giaPhong, anhPhong));
                 }
+            }
+        } else if (Constant.role.equalsIgnoreCase("Khách thuê")) {
+            int maKhach = new TaiKhoanDAOImpl().getMaKhachThue(Constant.taiKhoan.getMaTaiKhoan());
+            List<Phong> phongs1 = phongDAO.getAllPhongByMaKhach(maKhach);
+            for (int i = 0; i < phongs1.size(); i++) {
+                int maPhong = phongs1.get(i).getMaPhong();
+                String tenPhong = phongs1.get(i).getTenPhong();
+                int maNhaTro = phongs1.get(i).getMaNhaTro();
+                KieuPhongDAO kieuPhongDAO = new KieuPhongDAOImpl();
+                String loaiPhong = kieuPhongDAO.getKieuPhong(phongs1.get(i).getMaKieuPhong()).getLoaiPhong();
+                String giaPhong = String.valueOf(kieuPhongDAO.getKieuPhong(phongs1.get(i).getMaKieuPhong()).getGiaPhong());
+                String anhPhong = phongs1.get(i).getUrlImage();
+                quanLyPhongForm.getDanhSachPanel().add(quanLyPhongForm.createPhongPanel(maPhong, tenPhong, maNhaTro, loaiPhong, giaPhong, anhPhong));
             }
         }
     }
@@ -168,6 +195,17 @@ public class QuanLyPhongController {
                 clearDanhSachPanel();
                 showData();
             }
+        }
+    }
+
+    private void handleSearchBtn(){
+        int maNhaTro =Integer.parseInt(this.quanLyPhongForm.getMaNhaTroField().getText());
+        List<Phong> phongs = new PhongDAOImpl().getAllPhongByMaNhaTro(maNhaTro);
+        System.out.println(phongs.get(0).getMaPhong());
+        this.quanLyPhongForm.getDanhSachPanel().removeAll();
+        for(Phong x : phongs){
+            KieuPhong kp = new KieuPhongDAOImpl().getKieuPhong(x.getMaKieuPhong());
+            quanLyPhongForm.getDanhSachPanel().add(quanLyPhongForm.createPhongPanel(x.getMaPhong(), x.getTenPhong(), x.getMaNhaTro(), kp.getLoaiPhong(), String.valueOf(kp.getGiaPhong()), x.getUrlImage()));
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.epu.QuanLyNhaTro.view;
 
 import com.epu.QuanLyNhaTro.controller.TenantManagerController;
+import com.epu.QuanLyNhaTro.dao.TaiKhoanDAOImpl;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,6 +9,8 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 @Getter
 @Setter
@@ -167,6 +170,7 @@ public class TenantManagement extends JPanel {
 
         return panel;
     }
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {

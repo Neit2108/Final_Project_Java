@@ -6,6 +6,7 @@ import com.epu.QuanLyNhaTro.util.Constant;
 import com.epu.QuanLyNhaTro.view.DetailInvoiceForm;
 import com.epu.QuanLyNhaTro.view.InforContractForm;
 import com.epu.QuanLyNhaTro.view.NoticeForm;
+import com.epu.QuanLyNhaTro.view.PaymentDetailsForm;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;
@@ -99,6 +100,7 @@ public class NoticeFormController {
                         double tienCoc = Double.parseDouble(inforContractForm.getTxtTienCoc().getText());
                         HopDongDAO hopDongDAO = new HopDongDAOImpl();
                         hopDongDAO.addHopDong(thongBao.getMaPhong(), maKhach, tienCoc, LocalDate.now().plusDays(1), thoiHan, "Còn hiệu lực", soNguoi);
+                        new PhongDAOImpl().updateTrangThaiPhong(thongBao.getMaPhong());
                         thongBaoDAO.updateTrangThaiThongBao(id);
                         noticeForm.getTableModel().setValueAt(true, row, 4);
                         JOptionPane.showMessageDialog(null, "Đã thêm hợp đồng thành công và gửi thông báo tới khách thuê");
@@ -121,20 +123,6 @@ public class NoticeFormController {
                     thongBaoDAO.updateTrangThaiThongBao(id);
                     noticeForm.getTableModel().setValueAt(true, row, 4);
                 }
-//                if (res == JOptionPane.YES_OPTION) {
-//                    int i = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xác nhận hóa đơn này đã được thanh toán ?", "Xác nhận", JOptionPane.YES_NO_OPTION);
-//                    TaiKhoanDAO taiKhoanDAO = new TaiKhoanDAOImpl();
-//                    int maKhach = taiKhoanDAO.getMaKhachThue(thongBao.getMaNguoiGui());
-//                    if(i == JOptionPane.YES_OPTION){
-//                        thongBaoDAO.updateTrangThaiThongBao(id);
-//                        noticeForm.getTableModel().setValueAt(true, row, 4);
-//                        JOptionPane.showMessageDialog(null, "Xác nhận hóa đơn đã được thanh toán");
-//                    }
-//                }
-//                else {
-//                    thongBaoDAO.updateTrangThaiThongBao(id);
-//                    noticeForm.getTableModel().setValueAt(true, row, 4);
-//                }
             }
         }
 
@@ -157,6 +145,7 @@ public class NoticeFormController {
                     noticeForm.getTableModel().setValueAt(true, row, 4);
                     thongBaoDAO.updateTrangThaiThongBao(id);
                     //Hien len form thanh toan
+
                 }
             }
 

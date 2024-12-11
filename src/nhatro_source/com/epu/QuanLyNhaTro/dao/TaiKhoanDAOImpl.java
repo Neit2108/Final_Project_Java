@@ -68,6 +68,28 @@ public class TaiKhoanDAOImpl implements TaiKhoanDAO {
     }
 
     @Override
+    public TaiKhoan getTaiKhoan(int maTaiKhoan) {
+        String query = "select * from TaiKhoan where maTaiKhoan = ?";
+        try {
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, maTaiKhoan);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                TaiKhoan tk = new TaiKhoan();
+                tk.setMaTaiKhoan(rs.getInt("maTaiKhoan"));
+                tk.setEmail(rs.getString("email"));
+                tk.setPassword(rs.getString("password"));
+                tk.setVaiTro(rs.getString("vaiTro"));
+                tk.setNgayTao(rs.getTimestamp("ngayTao").toLocalDateTime());
+                return tk;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    @Override
     public TaiKhoan getTaiKhoan(String email) {
         String query = "select * from TaiKhoan where email = ?";
         try {
@@ -159,6 +181,33 @@ public class TaiKhoanDAOImpl implements TaiKhoanDAO {
                 return rs.getInt("maAdmin");
             }
             return -1;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public boolean checkLogin(String email) {
+        String query = "select isFirstLogin from TaiKhoan where email = ?";
+        try(PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query)){
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                boolean isFirstLogin = rs.getBoolean("isFirstLogin");
+                return isFirstLogin;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
+
+    @Override
+    public void updateLogin(String email) {
+        String query = "update TaiKhoan set isFirstLogin = 0 where email = ?";
+        try(PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query)){
+            ps.setString(1, email);
+            ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

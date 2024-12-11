@@ -10,6 +10,7 @@ public interface AdminDAO {
     void addAdmin(String maCCCD, String ten, LocalDate ngaySinh, String gioiTinh, String soDienThoai, String diaChi, int maTaiKhoan);
     List<Admin> getAllAdmin();
     Admin getAdmin(String maCCCD);
+    Admin getAdminByMa(int maAdmin);
     void updateAdmin(String maCCCD, String ten, LocalDate ngaySinh, String gioiTinh, String soDienThoai, String diaChi, int maAdmin, int maTaiKhoan);
     void deleteAdmin(String maCCCD);
 }

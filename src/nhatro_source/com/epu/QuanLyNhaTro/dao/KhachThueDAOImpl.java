@@ -143,6 +143,27 @@ public class KhachThueDAOImpl implements KhachThueDAO {
     }
 
     @Override
+    public void updateKhachThueByMa(int maKhachThue, String maCCCD, String ten, LocalDate ngaySinh, String gioiTinh, String soDienThoai, String diaChi, int maTaiKhoan) {
+        String query = "update KhachThue set maCCCD = ?, tenKhach = ?, ngaySinh = ?, gioiTinh = ?, soDienThoai = ?, diaChi = ?, maTaiKhoan = ? where maKhachThue = ?";
+        try(PreparedStatement ps = connection.prepareStatement(query)){
+            ps.setString(1, maCCCD);
+            ps.setString(2, ten);
+            ps.setDate(3, Date.valueOf(ngaySinh));
+            ps.setString(4, gioiTinh);
+            ps.setString(5, soDienThoai);
+            ps.setString(6, diaChi);
+            ps.setInt(7, maTaiKhoan);
+            ps.setInt(8, maKhachThue);
+            ps.executeUpdate();
+            connection.commit();
+        }
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Chỉnh sửa không thành công", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public void deleteKhachThue(String maCCCD) {
         String query = "delete from KhachThue where maCCCD = ?";
         try(PreparedStatement pstm = connection.prepareStatement(query)){

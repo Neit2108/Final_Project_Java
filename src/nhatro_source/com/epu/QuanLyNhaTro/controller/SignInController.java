@@ -32,33 +32,6 @@ public class SignInController {
         this.signInForm.getSignUpBtn().addActionListener(this::handleSignUp);
     }
 
-    private boolean checkLogin(String email){
-        String query = "select isFirstLogin from TaiKhoan where email = ?";
-        try(PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query)){
-            ps.setString(1, email);
-            ResultSet rs = ps.executeQuery();
-            if(rs.next()){
-                boolean isFirstLogin = rs.getBoolean("isFirstLogin");
-                if(isFirstLogin){
-                    updateLogin(email);
-                }
-                return isFirstLogin;
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return false;
-    }
-
-    private void updateLogin(String email){
-        String query = "update TaiKhoan set isFirstLogin = 0 where email = ?";
-        try(PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query)){
-            ps.setString(1, email);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     private void handleSignIn(ActionEvent e) {
         String email = signInForm.getEmailField().getText();
@@ -89,7 +62,7 @@ public class SignInController {
                 Constant.taiKhoan = tk;
                 Constant.role = tk.getVaiTro();
                 JOptionPane.showMessageDialog(null, "Đăng nhập thành công", "Thành công", JOptionPane.INFORMATION_MESSAGE);
-                if (checkLogin(email)) {
+                if (taiKhoanDAO.checkLogin(email)) {
                     signInForm.dispose();
                     SignUpInforForm signUpInforForm = new SignUpInforForm();
                     signUpInforForm.setVisible(true);

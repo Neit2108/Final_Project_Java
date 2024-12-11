@@ -1,11 +1,13 @@
 package com.epu.QuanLyNhaTro.controller;
 
 import com.epu.QuanLyNhaTro.util.Constant;
+import com.epu.QuanLyNhaTro.view.AccountInfoFrame;
 import com.epu.QuanLyNhaTro.view.MenuForm;
 import com.epu.QuanLyNhaTro.view.SignInForm;
 import com.epu.QuanLyNhaTro.view.TenantManagement;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 
 public class MenuFormController {
@@ -17,9 +19,8 @@ public class MenuFormController {
 
     public void init(){
         if((Constant.role != null ? Constant.role : "Admin").equalsIgnoreCase("Khách Thuê")){
-            this.menuForm.getQuanlyBtn().setVisible(false);
-            this.menuForm.getPctBtn().setVisible(false);
             this.menuForm.getNhaBtn().setVisible(false);
+            this.menuForm.getQuanlyBtn().setVisible(false);
         }
 
         this.menuForm.getDangxuatBtn().addActionListener(this::handleDangXuatBtn);
@@ -30,6 +31,11 @@ public class MenuFormController {
         this.menuForm.getHoadonBtn().addActionListener(this::handleInvoiceBtn);
         this.menuForm.getNhaBtn().addActionListener(this::handleHouseBtn);
         this.menuForm.getThongbaoBtn().addActionListener(this::handleNoticeBtn);
+        this.menuForm.getCircularLabel().addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                handleUserLbl(evt);
+            }
+        });
     }
 
     private void handleDangXuatBtn(ActionEvent event){
@@ -67,5 +73,9 @@ public class MenuFormController {
 
     private void handleNoticeBtn(ActionEvent event){
         this.menuForm.getCardLayout().show(this.menuForm.getMainPanel(), "ThongBao");
+    }
+
+    private void handleUserLbl(MouseEvent event){
+        new AccountInfoFrame().setVisible(true);
     }
 }

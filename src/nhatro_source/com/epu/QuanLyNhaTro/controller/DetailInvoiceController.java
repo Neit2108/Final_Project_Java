@@ -3,10 +3,12 @@ package com.epu.QuanLyNhaTro.controller;
 import com.epu.QuanLyNhaTro.dao.*;
 import com.epu.QuanLyNhaTro.model.ChuNha;
 import com.epu.QuanLyNhaTro.model.HopDong;
+import com.epu.QuanLyNhaTro.model.KhachThue;
 import com.epu.QuanLyNhaTro.model.TienThuTienIch;
 import com.epu.QuanLyNhaTro.util.Constant;
 import com.epu.QuanLyNhaTro.view.DetailInvoiceForm;
 import com.epu.QuanLyNhaTro.view.InvoiceForm;
+import com.epu.QuanLyNhaTro.view.PaymentDetailsForm;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -103,9 +105,17 @@ public class DetailInvoiceController {
             thongBaoDAO.addThongBao(Constant.taiKhoan.getMaTaiKhoan(), chuNha.getMaTaiKhoan(), txt2, "Chưa xem", (int)this.invoiceForm.getTableModel().getValueAt(selectedRow, 2), "ThanhToan");
         }
         else {
-            JOptionPane.showMessageDialog(null, "Chức năng chưa được hỗ trợ");
+            int maHoaDon = (int) this.invoiceForm.getMainTable().getValueAt(selectedRow, 0);
+            PaymentDetailsForm paymentDetailsForm = new PaymentDetailsForm(maHoaDon);
+            PhongDAO phongDAO = new PhongDAOImpl();
+            int maChuNha = phongDAO.getMaChuNha((int) this.invoiceForm.getMainTable().getValueAt(selectedRow, 2));
+            ChuNha chuNha = new ChuNhaDAOImpl().getChuNhaByMa(maChuNha);
+            paymentDetailsForm.getRecipientValue().setText(chuNha.getTen());
+            paymentDetailsForm.getAmountValue().setText(this.detailInvoiceForm.getTotalField().getText());
         }
     }
+
+
 }
 
 

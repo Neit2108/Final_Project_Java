@@ -162,4 +162,33 @@ public class HoaDonDAOImpl implements HoaDonDAO {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public void updateTrangThai(int maHoaDon) {
+        String sql = "UPDATE HoaDon SET trangThai = N'Chờ xác nhận' WHERE maHoaDon = ?";
+        try(PreparedStatement ps = conn.prepareStatement(sql)){
+            ps.setInt(1, maHoaDon);
+            ps.executeUpdate();
+            conn.commit();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public HoaDon getHoaDon(int maHoaDon) {
+        String query = "SELECT * FROM HoaDon WHERE maHoaDon = ?";
+        try(PreparedStatement ps = conn.prepareStatement(query)){
+            ps.setInt(1, maHoaDon);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                Date ngayThanhToanDate = rs.getDate("ngayThanhToan");
+                LocalDate ngayThanhToan = (ngayThanhToanDate == null) ? null : ((java.sql.Date) ngayThanhToanDate).toLocalDate();
+                return new HoaDon(rs.getInt("maHoaDon"), rs.getInt("maHopDong"), rs.getDouble("tongTien"), (rs.getDate("ngayTao").toLocalDate() != null) ? rs.getDate("ngayTao").toLocalDate() : null, ngayThanhToan , rs.getString("trangThai"));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
 }

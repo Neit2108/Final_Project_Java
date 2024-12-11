@@ -28,7 +28,7 @@ public class SignUpInforForm extends JFrame {
     public SignUpInforForm() {
         // Thiết lập JFrame
         setTitle("Sign Up Information");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        //setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(400, 500);
         setLocationRelativeTo(null);
 

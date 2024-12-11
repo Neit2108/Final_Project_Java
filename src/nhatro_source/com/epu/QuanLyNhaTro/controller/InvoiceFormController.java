@@ -31,6 +31,21 @@ public class InvoiceFormController {
     }
 
     public void init(){
+        if(Constant.role.equalsIgnoreCase("Khách thuê")){
+            invoiceForm.getAutoAddBtn().setVisible(false);
+            invoiceForm.getDeleteBtn().setVisible(false);
+            invoiceForm.getAddBtn().setVisible(false);
+            invoiceForm.getEditBtn().setVisible(false);
+
+            invoiceForm.getAccountNumberField().setEditable(false);
+            invoiceForm.getCccdField().setEditable(false);
+            invoiceForm.getNameField().setEditable(false);
+            invoiceForm.getDateField().setEditable(false);
+            invoiceForm.getGenderField().setEditable(false);
+            invoiceForm.getPhoneField().setEditable(false);
+            invoiceForm.getAddressField().setEditable(false);
+
+        }
         showData();
         this.invoiceForm.getMainTable().addMouseListener(new MouseAdapter() {
             @Override

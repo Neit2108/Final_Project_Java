@@ -18,5 +18,4 @@ public class ThanhToan {
     private double soTien;
     private String trangThai;
     private LocalDateTime ngayThanhToan;
-
 }

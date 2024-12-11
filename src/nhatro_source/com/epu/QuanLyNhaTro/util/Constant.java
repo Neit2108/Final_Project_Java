@@ -1,5 +1,7 @@
 package com.epu.QuanLyNhaTro.util;
 
+import com.epu.QuanLyNhaTro.model.TaiKhoan;
+
 public class Constant {
     //Database
     public final static String url = "jdbc:sqlserver://localhost:1433;databaseName=final_QuanLyNhaTro;encrypt=true;trustServerCertificate=true";
@@ -8,9 +10,11 @@ public class Constant {
 
     //Mail
     public final static String senderMail = "";
-    public final static String senderPass = "cncawmbjswiyagwf";
+    public final static String senderPass = "";
 
     //Role
-    public static String role = "Admin";
+
+    public static TaiKhoan taiKhoan;
+    public static String role;
 
 }

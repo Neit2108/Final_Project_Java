@@ -1,52 +1,76 @@
 package com.epu.QuanLyNhaTro.view;
 
+import com.epu.QuanLyNhaTro.dao.*;
+import com.epu.QuanLyNhaTro.model.ChuNha;
+import com.epu.QuanLyNhaTro.util.Constant;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.swing.*;
 import java.awt.*;
 
-public class PaymentDetailsForm {
-    public static void main(String[] args) {
+@Setter
+@Getter
+public class PaymentDetailsForm extends JFrame {
+    private JPanel imagePanel;
+    private JLabel imageLabel;
+    private JLabel amountLabel;
+    private JLabel amountValue;
+    private JLabel recipientLabel;
+    private JLabel recipientValue;
+    private JButton confirmButton;
+
+    public PaymentDetailsForm(int maHoaDon) {
         // Tạo frame chính
         JFrame frame = new JFrame("Chi tiết Thanh Toán");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 700);
+
+        // Thiết lập màu nền cho frame
+        Color backgroundColor = new Color(240, 240, 240); // Màu xám nhạt
+        frame.getContentPane().setBackground(backgroundColor); // Đặt màu nền của frame
         frame.setLayout(null);
 
         // Panel chứa hình ảnh
-        JPanel imagePanel = new JPanel();
-        imagePanel.setBackground(Color.LIGHT_GRAY);
+        imagePanel = new JPanel();
+        imagePanel.setBackground(backgroundColor); // Đồng bộ màu nền với frame
         imagePanel.setBounds(100, 70, 400, 200); // Cách trên 70px, rộng 400px, cao 200px
         frame.add(imagePanel);
 
         // Label giả lập hình ảnh
-        JLabel imageLabel = new JLabel("Hình ảnh", SwingConstants.CENTER);
-        imageLabel.setForeground(Color.DARK_GRAY);
+        imageLabel = new JLabel("", SwingConstants.CENTER);
+        imageLabel.setForeground(Color.WHITE);
         imageLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        ImageIcon icon = new ImageIcon("D:\\MyProjects\\final_QuanLyNhaTro\\src\\resources\\qr_code.png");
+        Image image = icon.getImage();
+        Image newImage = image.getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+        icon = new ImageIcon(newImage);
+        imageLabel.setIcon(icon);
         imagePanel.add(imageLabel);
 
         // Label Số tiền
-        JLabel amountLabel = new JLabel("Số tiền:");
+        amountLabel = new JLabel("Số tiền:");
         amountLabel.setBounds(100, 300, 100, 40);
         amountLabel.setFont(new Font("Arial", Font.PLAIN, 18));
         frame.add(amountLabel);
 
-        JLabel amountValue = new JLabel("............................");
+        amountValue = new JLabel("............................");
         amountValue.setBounds(250, 300, 250, 40);
         amountValue.setFont(new Font("Arial", Font.PLAIN, 18));
         frame.add(amountValue);
 
         // Label Người nhận
-        JLabel recipientLabel = new JLabel("Người nhận:");
+        recipientLabel = new JLabel("Người nhận:");
         recipientLabel.setBounds(100, 360, 120, 40);
         recipientLabel.setFont(new Font("Arial", Font.PLAIN, 18));
         frame.add(recipientLabel);
 
-        JLabel recipientValue = new JLabel("............................");
+        recipientValue = new JLabel("............................");
         recipientValue.setBounds(250, 360, 250, 40);
         recipientValue.setFont(new Font("Arial", Font.PLAIN, 18));
         frame.add(recipientValue);
 
         // Button Xác nhận
-        JButton confirmButton = new JButton("Xác nhận") {
+        confirmButton = new JButton("Xác nhận") {
             @Override
             protected void paintComponent(Graphics g) {
                 if (!isOpaque()) {
@@ -69,11 +93,24 @@ public class PaymentDetailsForm {
         confirmButton.setContentAreaFilled(false);
         confirmButton.setBorderPainted(false);
         confirmButton.setFocusPainted(false);
+        confirmButton.addActionListener(e -> {
+            new HoaDonDAOImpl().updateTrangThai(maHoaDon);
+            JOptionPane.showMessageDialog(null, "Thanh toán thành công số tiền " + amountValue.getText());
+            String txt = "Hóa đơn mã " + maHoaDon + " đã được thanh toán bằng hình thức chuyển khoản";
+
+            new ThanhToanDAOImpl().addThanhToan(maHoaDon, Double.parseDouble(amountValue.getText()), "Chuyển khoản", "Đã thanh toán");
+            int maHopDong = new HoaDonDAOImpl().getHoaDon(maHoaDon).getMaHopDong();
+            int maPhong = new HopDongDAOImpl().getHopDong(maHopDong).getMaPhong();
+            int maChuNha = new PhongDAOImpl().getMaChuNha(maPhong);
+            ChuNha chuNha = new ChuNhaDAOImpl().getChuNhaByMa(maChuNha);
+            new ThongBaoDAOImpl().addThongBao(Constant.taiKhoan.getMaTaiKhoan(), chuNha.getMaTaiKhoan(), txt, "Chưa xem", maPhong, "ThanhToan");
+            frame.dispose();
+        });
         frame.add(confirmButton);
 
         // Hiển thị frame
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
-}
 
+}

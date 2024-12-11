@@ -1,6 +1,12 @@
 ﻿create database final_QuanLyNhaTro
 use final_QuanLyNhaTro
 
+select * from TaiKhoan
+delete from ThongBao where maNguoiGui = 26 or maNguoiNhan = 26
+delete from TaiKhoan where maTaiKhoan = 26
+delete from KhachThue where maTaiKhoan = 26
+
+select * from Phong
 create table TaiKhoan(
 	maTaiKhoan int identity(1,1) unique,
 	email varchar(255) primary key,
@@ -12,10 +18,19 @@ create table TaiKhoan(
 alter table TaiKhoan add isFirstLogin bit default 1
 select * from ChuNha where maTaiKhoan = 2
 --Tài khoản quan hệ 1 - 1 với admin, khách và chủ
-select * from Admin 
+select * from TaiKhoan 
 select * from HoaDon
 select * from ChuNha where maTaiKhoan = 2
 select * from HopDong where maKhachThue = 1
+select * from KhachThue where maTaiKhoan = 25
+select * from TaiKhoan
+delete from TaiKhoan where maTaiKhoan = 24
+select * from ThongBao
+select * from Phong where maPhong = 38
+select * from Phong p
+join HopDong hd on hd.maPhong = p.maPhong
+join KhachThue kt on kt.maKhachThue = hd.maKhachThue
+where kt.maKhachThue = 1
 
 SELECT HD.*
 FROM HopDong HD
@@ -237,6 +252,8 @@ alter table HoaDon add constraint fk_hoadon_hopdong foreign key (maHopDong) refe
 ALTER TABLE HoaDon
 ADD ngayThanhToan DATETIME NULL;
 
+select * from ThongBao 
+
 create table ChiTietHoaDon(
 	maChiTiet int identity(1,1) primary key,
 	maHoaDon int not null,
@@ -289,7 +306,7 @@ create table ThongBao(
 )
 alter table ThongBao add constraint fk_maphong_thongbao foreign key (maPhong) references Phong(maPhong)
 alter table ThongBao add loaiThongBao nvarchar(255)
-select * from Phong
+select * from ThongBao
 INSERT INTO TienThuTienIch (maPhong, soDienCu, soDienMoi, soNuocCu, soNuocMoi) VALUES
 (21, 100.00, 150.00, 30.00, 50.00),
 (22, 120.00, 170.00, 40.00, 60.00),
@@ -771,3 +788,22 @@ BEGIN
 END;
 
 exec sp_KiemTraHoaDonThang '2025-01-01'
+
+drop TRIGGER after_insert_hopdong
+ON HopDong
+FOR INSERT
+AS
+BEGIN
+    -- Cập nhật trạng thái phòng thành 'Đã thuê' khi hợp đồng mới được thêm
+    UPDATE Phong
+    SET trangThai = 'Đã thuê'
+    FROM Phong p
+    INNER JOIN inserted i ON p.maPhong = i.maPhong;
+
+	UPDATE Phong
+    SET trangThai = 'Đã thuê'
+    WHERE maPhong IN (SELECT DISTINCT maPhong FROM HopDong);
+END;
+
+select * from Phong where maPhong = 35
+select * from HopDong where maPhong = 35

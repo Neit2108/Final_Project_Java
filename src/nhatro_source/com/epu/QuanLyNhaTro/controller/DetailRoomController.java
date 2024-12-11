@@ -26,6 +26,10 @@ public class DetailRoomController {
         if(!(Constant.role.equalsIgnoreCase("Khách thuê"))){
             detailRoom.getThuephongBtn().setVisible(false);
         }
+        Phong phong = phongDAO.getPhong(maPhong);
+        if(phong.getTrangThai().equalsIgnoreCase("Đã thuê")) {
+            detailRoom.getThuephongBtn().setVisible(false);
+        }
         detailRoom.getThuephongBtn().addActionListener(e -> handleThuePhongBtn(maPhong));
         handelDetailRoom(maPhong);
     }
@@ -65,8 +69,8 @@ public class DetailRoomController {
             int result = JOptionPane.showConfirmDialog(detailRoom, "Bạn có chắc chắn muốn thuê phòng này không?", "Xác nhận", JOptionPane.YES_NO_OPTION);
             if(result == JOptionPane.YES_OPTION) {
                 KhachThueDAO khachThueDAO = new KhachThueDAOImpl();
-                KhachThue khachThue = khachThueDAO.getKhachThue(Constant.taiKhoan.getMaTaiKhoan());
-                String txt = "Khách hàng " + khachThue.getTen() + " đã gửi yêu cầu thuê phòng " + phong.getTenPhong() + " (Mã phòng : " + phong.getMaPhong() + " ) cho bạn";
+                KhachThue khachThue = khachThueDAO.getKhachThue(new TaiKhoanDAOImpl().getMaKhachThue(Constant.taiKhoan.getMaTaiKhoan()));
+                String txt = "Khách hàng " + (khachThue.getTen() == null ? "Lê Anh Khoa" : khachThue.getTen()) + " đã gửi yêu cầu thuê phòng " + phong.getTenPhong() + " (Mã phòng : " + phong.getMaPhong() + " ) cho bạn";
                 int maChuNha = phongDAO.getMaChuNha(maPhong);
                 ChuNhaDAO chuNhaDAO = new ChuNhaDAOImpl();
                 ChuNha chuNha = chuNhaDAO.getChuNhaByMa(maChuNha);

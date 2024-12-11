@@ -13,4 +13,6 @@ public interface HoaDonDAO {
     boolean isCreatedHoaDon(Date date);
     void autoCreateHoaDon(int maChuNha, Date date);
     void deleteHoaDon(int maHoaDon);
+    void updateTrangThai(int maHoaDon);
+    HoaDon getHoaDon(int maHoaDon);
 }

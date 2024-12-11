@@ -165,6 +165,39 @@ public class PhongDAOImpl implements PhongDAO{
         }
     }
 
+    @Override
+    public List<Phong> getAllPhongByMaKhach(int maKhach) {
+        String query = "select * from Phong p\n" +
+                "join HopDong hd on hd.maPhong = p.maPhong\n" +
+                "join KhachThue kt on kt.maKhachThue = hd.maKhachThue\n" +
+                "where kt.maKhachThue = ?";
+        List<Phong> phongs = new ArrayList<>();
+        try(PreparedStatement ps = connection.prepareStatement(query)){
+            ps.setInt(1, maKhach);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                phongs.add(new Phong(rs.getInt("maPhong"), rs.getString("tenPhong"), rs.getInt("maKieuPhong"), rs.getInt("maNhaTro"), rs.getString("trangThai"), rs.getString("urlImage")));
+            }
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        return phongs;
+    }
+
+    @Override
+    public void updateTrangThaiPhong(int maPhong) {
+        String query = "UPDATE Phong SET trangThai = N'Đã thuê' WHERE maPhong = ?";
+        try(PreparedStatement ps = connection.prepareStatement(query)){
+            ps.setInt(1, maPhong);
+            ps.executeUpdate();
+            connection.commit();
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
         PhongDAO phongDAO = new PhongDAOImpl();
         List<Phong> phongs = phongDAO.getAllPhong();

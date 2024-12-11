@@ -1,6 +1,7 @@
 package com.epu.QuanLyNhaTro.controller;
 
 import com.epu.QuanLyNhaTro.dao.*;
+import com.epu.QuanLyNhaTro.util.Authenticator;
 import com.epu.QuanLyNhaTro.util.Constant;
 import com.epu.QuanLyNhaTro.view.MenuForm;
 import com.epu.QuanLyNhaTro.view.SignUpInforForm;
@@ -23,6 +24,7 @@ public class SignUpInforController {
         String cccd = signUpInforForm.getCccdField().getText();
         String name = signUpInforForm.getNameField().getText();
         String birthday = signUpInforForm.getBirthdayField().getText();
+        birthday = Authenticator.normalizeDate(birthday);
         String gender = signUpInforForm.getGenderField().getText();
         String phoneNumber = signUpInforForm.getPhoneNumberField().getText();
         String address = signUpInforForm.getAddressField().getText();
@@ -40,6 +42,8 @@ public class SignUpInforController {
             KhachThueDAO khachThueDAO = new KhachThueDAOImpl();
             khachThueDAO.addKhachThue(cccd, name, LocalDate.parse(birthday), gender, phoneNumber, address, Constant.taiKhoan.getMaTaiKhoan());
         }
+
+        new TaiKhoanDAOImpl().updateLogin(Constant.taiKhoan.getEmail());
         JOptionPane.showMessageDialog(null, "Thông tin đã được lưu!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         signUpInforForm.dispose();
         new MenuForm().setVisible(true);

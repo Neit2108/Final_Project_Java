@@ -11,6 +11,7 @@ public interface KhachThueDAO {
     KhachThue getKhachThue(int maTaiKhoan);
     void addKhachThue(String maCCCD, String ten, LocalDate ngaySinh, String gioiTinh, String soDienThoai, String diaChi, int maTaiKhoan);
     void updateKhachThue(String maCCCD, String ten, LocalDate ngaySinh, String gioiTinh, String soDienThoai, String diaChi, int maTaiKhoan);
+    void updateKhachThueByMa(int maKhachThue, String maCCCD, String ten, LocalDate ngaySinh, String gioiTinh, String soDienThoai, String diaChi, int maTaiKhoan);
     void deleteKhachThue(String maCCCD);
     List<KhachThue> getKhachThueByMaChuNha(int maChuNha);
 }

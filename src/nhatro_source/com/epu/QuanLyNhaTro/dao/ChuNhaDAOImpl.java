@@ -118,6 +118,30 @@ public class ChuNhaDAOImpl implements ChuNhaDAO{
         }
     }
 
+    @Override
+    public void updateChuNhaByMa(int maChuNha, String maCCCD, String ten, LocalDate ngaySinh, String gioiTinh, String soDienThoai, String diaChi, int maTaiKhoan) {
+        String query = "UPDATE ChuNha SET maCCCD = ?, tenChuNha = ?, ngaySinh = ?, gioiTinh = ?, soDienThoai = ?, diaChi = ?, maTaiKhoan = ? WHERE maChuNha = ?";
+        try(PreparedStatement ps = connection.prepareStatement(query)){
+            ps.setString(1, maCCCD);
+            ps.setString(2, ten);
+            ps.setDate(3, java.sql.Date.valueOf(ngaySinh));
+            ps.setString(4, gioiTinh);
+            ps.setString(5, soDienThoai);
+            ps.setString(6, diaChi);
+            ps.setInt(7, maTaiKhoan);
+            ps.setInt(8, maChuNha);
+            ps.executeUpdate();
+            connection.commit();
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            throw new RuntimeException(e);
+        }
+    }
+
 
     public static void main(String[] args) {
         ChuNhaDAO chuNhaDAO = new ChuNhaDAOImpl();

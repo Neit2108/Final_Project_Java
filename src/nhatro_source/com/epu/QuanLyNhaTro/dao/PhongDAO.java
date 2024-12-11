@@ -14,4 +14,6 @@ public interface PhongDAO {
     double getGiaPhong(int maPhong);
     int getMaChuNha(int maPhong);
     void updateTrangThaiPhong(int maPhong, String trangThai);
+    List<Phong> getAllPhongByMaKhach(int maKhach);
+    void updateTrangThaiPhong(int maPhong);
 }

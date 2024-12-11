@@ -11,9 +11,13 @@ import java.util.List;
 public class AdminDAOImpl extends AbstractDAO implements AdminDAO{
     private final Connection conn;
 
-    public AdminDAOImpl() throws SQLException {
-        this.conn = DatabaseConnection.getConnection();
-        this.conn.setAutoCommit(false);
+    public AdminDAOImpl() {
+        try {
+            this.conn = DatabaseConnection.getConnection();
+            this.conn.setAutoCommit(false);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
     @Override
     public void addAdmin(String maCCCD, String ten, LocalDate ngaySinh, String gioiTinh, String soDienThoai, String diaChi, int maTaiKhoan) {
@@ -52,6 +56,30 @@ public class AdminDAOImpl extends AbstractDAO implements AdminDAO{
         try{
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, maCCCD);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()) {
+                Admin admin = new Admin();
+                admin.setMaAdmin(rs.getInt("maAdmin"));
+                admin.setMaCCCD(rs.getString("maCCCD"));
+                admin.setTen(rs.getString("tenAdmin"));
+                admin.setGioiTinh(rs.getString("gioiTinh"));
+                admin.setNgaySinh(rs.getDate("ngaySinh").toLocalDate());
+                admin.setSoDienThoai(rs.getString("soDienThoai"));
+                admin.setDiaChi(rs.getString("diaChi"));
+                admin.setMaTaiKhoan(rs.getInt("maTaiKhoan"));
+                return admin;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    @Override
+    public Admin getAdminByMa(int maAdmin) {
+        String query = "SELECT * FROM admin WHERE maAdmin = ?";
+        try(PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, maAdmin);
             ResultSet rs = ps.executeQuery();
             if(rs.next()) {
                 Admin admin = new Admin();

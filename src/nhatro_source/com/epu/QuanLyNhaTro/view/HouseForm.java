@@ -7,6 +7,8 @@ import lombok.Setter;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 @Setter
 @Getter
@@ -14,8 +16,8 @@ public class HouseForm extends JPanel {
 
     private JTextField maNhaField, diaChiField, soLuongPhongField;
     private JComboBox<String> trangThaiComboBox;
-    private JButton chonAnhBtn, themBtn, suaBtn, xoaBtn, lamMoiBtn;
-    private JPanel danhSachPanel;
+    private JButton chonAnhBtn, themBtn, suaBtn, xoaBtn, lamMoiBtn, chiTietBtn;
+    private JPanel danhSachPanel, buttonPanel;
 
     public HouseForm() {
         setSize(1346, 793);
@@ -140,7 +142,7 @@ public class HouseForm extends JPanel {
 
     // Tạo khung hiển thị thông tin nhà
     // Tạo khung hiển thị thông tin nhà
-    public JPanel createNhaPanel(String maNha, String trangThai) {
+    public JPanel createNhaPanel(int maNha, String trangThai) {
         JPanel nhaPanel = new JPanel();
         nhaPanel.setLayout(new BorderLayout(5, 5));
         nhaPanel.setBorder(BorderFactory.createTitledBorder(""));
@@ -165,12 +167,19 @@ public class HouseForm extends JPanel {
         infoPanel.add(new JLabel("Mã Nhà: " + maNha));
         infoPanel.add(Box.createVerticalStrut(20)); // Khoảng cách 20px
         infoPanel.add(new JLabel("Trạng Thái: " + trangThai));
-        JButton chiTietBtn = createDetailButton("Chi Tiết");
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        chiTietBtn = createDetailButton("Chi Tiết");
+        buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.add(chiTietBtn);
-        nhaPanel.add(buttonPanel, BorderLayout.SOUTH);
+        //nhaPanel.add(buttonPanel, BorderLayout.SOUTH);
 
         nhaPanel.add(infoPanel, BorderLayout.CENTER);
+
+        nhaPanel.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                HouseFormController controller = new HouseFormController(HouseForm.this);
+                controller.handleClickPanel(e, maNha);
+            }
+        });
 
         return nhaPanel;
     }
